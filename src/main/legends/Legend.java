@@ -42,11 +42,27 @@ public abstract class Legend {
     }
 
     /**
+     * Sets the Level of this Legend to the passed in value
+     * @param level level for this Legend
+     */
+    public void setLevel(Level level) {
+        this.level = level;
+    }
+
+    /**
      *
      * @return the healthPower of this Legend
      */
     public HealthPower getHealthPower() {
         return healthPower;
+    }
+
+    /**
+     * Sets the healthPower for this Legend to the passed in value.
+     * @param healthPower the new healthPower for this Legend
+     */
+    public void setHealthPower(HealthPower healthPower) {
+        this.healthPower = healthPower;
     }
 
     /**

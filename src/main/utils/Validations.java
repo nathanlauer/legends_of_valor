@@ -30,4 +30,16 @@ public class Validations {
     public static void nonNegative(int value, String name) {
         Validations.nonNegative((double)value, name);
     }
+
+    /**
+     * Throws an IllegalArgumentException if value is less than 0 or greater than 1.
+     * That is, value must be a percentage.
+     * @param value the value in question.
+     * @param name name of the variable in question.
+     */
+    public static void percentage(double value, String name) {
+        if(value < 0.0 || value > 1.0) {
+            throw new IllegalArgumentException(name + " must be a percentage! Valid range is [0, 1]");
+        }
+    }
 }
