@@ -1,5 +1,6 @@
 package main.legends;
 
+import main.attributes.Ability;
 import main.attributes.HealthPower;
 import main.attributes.Level;
 import main.utils.Validations;
@@ -21,18 +22,13 @@ public class MonsterBuilder {
      * @param name Name of this Monster
      * @param level Level for this Monster
      * @param healthPower HealthPower for this Monster
-     * @param attack attack value for this Monster. Can't be negative.
-     * @param defense defense value for this Monster. Can't be negative.
-     * @param dodgeChance dodgeChance value for this Monster. Must be a percentage. Valid range: [0, 1]
+     * @param damage damage Ability for this Monster. Can't be negative.
+     * @param defense defense Ability for this Monster. Can't be negative.
+     * @param dodgeChance dodgeChance Ability for this Monster. Can't be negative
      */
     public static void initializeMonsterAttributes(
             Monster monster, String name, Level level, HealthPower healthPower,
-            double attack, double defense, double dodgeChance) {
-
-        // Validate input
-        Validations.nonNegative(attack, "attack");
-        Validations.nonNegative(defense, "defense");
-        Validations.percentage(dodgeChance, "dodgeChance");
+            Ability damage, Ability defense, Ability dodgeChance) {
 
         // Set Legend attributes
         monster.setName(name);
@@ -40,7 +36,7 @@ public class MonsterBuilder {
         monster.setHealthPower(healthPower);
 
         // Set Monster attributes
-        monster.setAttackDamage(attack);
+        monster.setDamage(damage);
         monster.setDefense(defense);
         monster.setDodgeChance(dodgeChance);
     }

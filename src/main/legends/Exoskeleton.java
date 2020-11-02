@@ -1,5 +1,6 @@
 package main.legends;
 
+import main.attributes.Ability;
 import main.attributes.HealthPower;
 import main.attributes.Level;
 import main.attributes.UncappedHealthPower;
@@ -16,12 +17,16 @@ import main.attributes.UncappedHealthPower;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public class Exoskeleton extends Monster {
+    public static final String defaultName = "Exoskeleton Monster";
     /**
      * Empty constructor for a Exoskeleton Monster.
      * All values are initialized to zero, and the name is set to "Exoskeleton Monster"
      */
     public Exoskeleton() {
-        this("Exoskeleton Monster!", new Level(0), new UncappedHealthPower(0), 0, 0, 0);
+        this(Exoskeleton.defaultName, new Level(0), new UncappedHealthPower(0),
+                new Ability("Damage", 0),
+                new Ability("Defense", 0),
+                new Ability("DodgeChance", 0));
     }
 
     /**
@@ -29,12 +34,12 @@ public class Exoskeleton extends Monster {
      * @param name name of this Exoskeleton Monster
      * @param level the level of this Monster.
      * @param healthPower healthPower of this Monster.
-     * @param attack attack value for this Exoskeleton monster. Can't be negative.
-     * @param defense defense value for this Exoskeleton monster. Can't be negative.
-     * @param dodgeChance dodgeChance value for this Exoskeleton. Must be in range [0, 1]
+     * @param damage damage Ability for this Exoskeleton monster.
+     * @param defense defense Ability for this Exoskeleton monster.
+     * @param dodgeChance dodgeChance Ability for this Exoskeleton.
      */
-    public Exoskeleton(String name, Level level, HealthPower healthPower, double attack, double defense, double dodgeChance) {
-        MonsterBuilder.initializeMonsterAttributes(this, name, level, healthPower, attack, defense, dodgeChance);
+    public Exoskeleton(String name, Level level, HealthPower healthPower, Ability damage, Ability defense, Ability dodgeChance) {
+        MonsterBuilder.initializeMonsterAttributes(this, name, level, healthPower, damage, defense, dodgeChance);
     }
 
     /**

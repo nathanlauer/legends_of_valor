@@ -1,5 +1,6 @@
 package main.legends;
 
+import main.attributes.Ability;
 import main.attributes.HealthPower;
 import main.attributes.Level;
 import main.attributes.UncappedHealthPower;
@@ -17,12 +18,16 @@ import main.utils.Validations;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public class Spirit extends Monster {
+    public static final String defaultName = "Spirit Monster";
     /**
      * Empty constructor for a Spirit Monster.
      * All values are initialized to zero, and the name is set to "Spirit Monster"
      */
     public Spirit() {
-        this("Spirit Monster!", new Level(0), new UncappedHealthPower(0), 0, 0, 0);
+        this(Spirit.defaultName, new Level(0), new UncappedHealthPower(0),
+                new Ability("Damage", 0),
+                new Ability("Defense", 0),
+                new Ability("DodgeChance", 0));
     }
 
     /**
@@ -30,12 +35,12 @@ public class Spirit extends Monster {
      * @param name name of this Spirit Monster
      * @param level the level of this Monster.
      * @param healthPower healthPower of this Monster.
-     * @param attack attack value for this Spirit monster. Can't be negative.
-     * @param defense defense value for this Spirit monster. Can't be negative.
-     * @param dodgeChance dodgeChance value for this Spirit. Must be in range [0, 1]
+     * @param damage attack Ability for this Spirit monster.
+     * @param defense defense Ability for this Spirit monster.
+     * @param dodgeChance dodgeChance Ability for this Spirit.
      */
-    public Spirit(String name, Level level, HealthPower healthPower, double attack, double defense, double dodgeChance) {
-        MonsterBuilder.initializeMonsterAttributes(this, name, level, healthPower, attack, defense, dodgeChance);
+    public Spirit(String name, Level level, HealthPower healthPower, Ability damage, Ability defense, Ability dodgeChance) {
+        MonsterBuilder.initializeMonsterAttributes(this, name, level, healthPower, damage, defense, dodgeChance);
     }
 
     /**
