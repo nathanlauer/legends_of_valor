@@ -6,7 +6,8 @@ import main.attributes.UncappedHealthPower;
 
 /**
  * Class Dragon is a concrete instance of a Monster.
- * At the moment, Dragons don't have any abilities that generic Monsters don't have.
+ * At the moment, Dragons don't have any abilities that generic Monsters don't have,
+ * however, Dragons tend to have higher damage Abilities.
  *
  * @author: Nathan Lauer
  * @email: lauern@bu.edu
@@ -21,26 +22,6 @@ public class Dragon extends Monster {
      */
     public Dragon() {
         this("Dragon Monster!", new Level(0), new UncappedHealthPower(0), 0, 0, 0);
-    }
-
-    /**
-     * Constructor with just the name for this Monster. All other values are set to zero.
-     * @param name the name of this Monster.
-     */
-    public Dragon(String name) {
-        this(name, new Level(0), new UncappedHealthPower(0), 0, 0, 0);
-    }
-
-    /**
-     * Construct a Dragon Monster with the passed in name, attack, defense, and dodgeChance attributes.
-     * HealthPower and Level are initialized to zero.
-     * @param name name of this Dragon Monster
-     * @param attack attack value for this Dragon monster. Can't be negative.
-     * @param defense defense value for this Dragon monster. Can't be negative.
-     * @param dodgeChance dodgeChance value for this Dragon. Must be in range [0, 1]
-     */
-    public Dragon(String name, double attack, double defense, double dodgeChance) {
-        this(name, new Level(0), new UncappedHealthPower(0), attack, defense, dodgeChance);
     }
 
     /**

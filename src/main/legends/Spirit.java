@@ -7,8 +7,8 @@ import main.utils.Validations;
 
 /**
  * Class Spirit is a concrete instance of a Monster.
- * At the moment, Spirits don't have any abilities that generic Monsters don't have.
- *
+ * At the moment, Spirits don't have any abilities that generic Monsters don't have,
+ * however, Spirits tend to have higher dodgeChance Abilities.
  *
  * @author: Nathan Lauer
  * @email: lauern@bu.edu
@@ -23,26 +23,6 @@ public class Spirit extends Monster {
      */
     public Spirit() {
         this("Spirit Monster!", new Level(0), new UncappedHealthPower(0), 0, 0, 0);
-    }
-
-    /**
-     * Constructor with just the name for this Monster. All other values are set to zero.
-     * @param name the name of this Monster.
-     */
-    public Spirit(String name) {
-        this(name, new Level(0), new UncappedHealthPower(0), 0, 0, 0);
-    }
-
-    /**
-     * Construct a Spirit Monster with the passed in name, attack, defense, and dodgeChance attributes.
-     * HealthPower and Level are initialized to zero.
-     * @param name name of this Spirit Monster
-     * @param attack attack value for this Spirit monster. Can't be negative.
-     * @param defense defense value for this Spirit monster. Can't be negative.
-     * @param dodgeChance dodgeChance value for this Spirit. Must be in range [0, 1]
-     */
-    public Spirit(String name, double attack, double defense, double dodgeChance) {
-        this(name, new Level(0), new UncappedHealthPower(0), attack, defense, dodgeChance);
     }
 
     /**

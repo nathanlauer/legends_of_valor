@@ -5,6 +5,7 @@ import main.utils.Validations;
 /**
  * Abstract Class Monster extends Legend, and represents a Monster. There are
  * a number of different types of Monster, thus this class is an abstract class.
+ * The structure of this class and its subclasses is similar to that of Hero.
  *
  * Every monster has a name, some HealthPower, and a Level: these are common
  * to all Legends, and hence these attributes are inherited from Legend.
