@@ -1,10 +1,12 @@
 package main.legends;
 
+import main.attributes.Ability;
 import main.utils.Validations;
 
 /**
  * Abstract Class Monster extends Legend, and represents a Monster. There are
  * a number of different types of Monster, thus this class is an abstract class.
+ * The structure of this class and its subclasses is similar to that of Hero.
  *
  * Every monster has a name, some HealthPower, and a Level: these are common
  * to all Legends, and hence these attributes are inherited from Legend.
@@ -19,61 +21,55 @@ import main.utils.Validations;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public abstract class Monster extends Legend {
-    private double attackDamage;
-    private double defense;
-    private double dodgeChance;
+    private Ability damage;
+    private Ability defense;
+    private Ability dodgeChance;
 
     /**
-     * Sets the attackDamage for this Monster to the passed in value.
-     * Throws an IllegalArgumentException if newAttackDamage is negative.
-     * @param newAttackDamage new value for attackDamage
+     * Sets the damage Ability for this Monster to the passed in value.
+     * @param newDamage new Ability for damage
      */
-    public void setAttackDamage(double newAttackDamage) {
-        Validations.nonNegative(newAttackDamage, "newAttackDamange");
-        attackDamage = newAttackDamage;
+    public void setDamage(Ability newDamage) {
+        damage = newDamage;
     }
 
     /**
      *
-     * @return the attackDamage for this Monster
+     * @return the damage Ability for this Monster
      */
-    public double getAttackDamage() {
-        return attackDamage;
+    public Ability getDamage() {
+        return damage;
     }
 
     /**
-     * Sets the defense value for this Monster to the passed in value
-     * Throws an IllegalArgumentException if newDefense is negative.
+     * Sets the defense Ability for this Monster to the passed in value
      * @param newDefense the new value for defense of this Monster
      */
-    public void setDefense(double newDefense) {
-        Validations.nonNegative(newDefense, "newDefense");
+    public void setDefense(Ability newDefense) {
         defense = newDefense;
     }
 
     /**
      *
-     * @return the defense value for this Monster
+     * @return the defense Ability for this Monster
      */
-    public double getDefense() {
+    public Ability getDefense() {
         return defense;
     }
 
     /**
-     * Sets the dodgeChance for this Monster.
-     * Throws an IllegalArgumentException if newDodgeChance is not a percentage (valid range [0, 1])
-     * @param newDodgeChance the new value for dodgeChance of this Monster.
+     * Sets the dodgeChance Ability for this Monster.
+     * @param newDodgeChance the new Ability for dodgeChance of this Monster.
      */
-    public void setDodgeChance(double newDodgeChance) {
-        Validations.percentage(newDodgeChance, "newDodgeChance");
+    public void setDodgeChance(Ability newDodgeChance) {
         dodgeChance = newDodgeChance;
     }
 
     /**
      *
-     * @return the dodge chance for this Monster
+     * @return the dodgeChance Ability for this Monster
      */
-    public double getDodgeChance() {
+    public Ability getDodgeChance() {
         return dodgeChance;
     }
 
@@ -83,7 +79,7 @@ public abstract class Monster extends Legend {
     @Override
     public String toString() {
         String legend = super.toString();
-        return legend + ". Monster! Stats: Attack: " + attackDamage + ", Defense: " + defense + ", dodge_chance: " + dodgeChance;
+        return legend + ". Monster! Stats: Attack: " + damage.toString() + ", Defense: " + defense.toString() + ", dodge_chance: " + dodgeChance.toString();
     }
 
     /**
@@ -104,9 +100,9 @@ public abstract class Monster extends Legend {
         }
 
         Monster other = (Monster) o;
-        return Double.compare(this.getAttackDamage(), other.getAttackDamage()) == 0 &&
-                Double.compare(this.getDefense(), other.getDefense()) == 0 &&
-                Double.compare(this.getDodgeChance(), other.getDodgeChance()) == 0 &&
+        return this.getDefense().equals(other.getDefense()) &&
+                this.getDamage().equals(other.getDamage()) &&
+                this.getDodgeChance().equals(other.getDodgeChance()) &&
                 super.equals(o);
     }
 }

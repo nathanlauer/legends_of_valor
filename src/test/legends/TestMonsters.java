@@ -1,5 +1,6 @@
 package test.legends;
 
+import main.attributes.Ability;
 import main.attributes.Level;
 import main.attributes.UncappedHealthPower;
 import main.legends.Dragon;
@@ -23,72 +24,88 @@ public class TestMonsters {
     @Test
     public void testDragons() {
         Dragon rhaegal = new Dragon(); // rhaegal is sad :(
-        assertEquals("Dragon Monster!", rhaegal.getName());
+        assertEquals(Dragon.defaultName, rhaegal.getName());
         assertEquals(new Level(0), rhaegal.getLevel());
         assertEquals(new UncappedHealthPower(0), rhaegal.getHealthPower());
-        assertEquals(0, rhaegal.getAttackDamage());
-        assertEquals(0, rhaegal.getDefense());
-        assertEquals(0, rhaegal.getDodgeChance());
+        assertEquals(new Ability("Damage", 0), rhaegal.getDamage());
+        assertEquals(new Ability("Defense", 0), rhaegal.getDefense());
+        assertEquals(new Ability("DodgeChance", 0), rhaegal.getDodgeChance());
 
-        Dragon drogon = new Dragon("Drogon", new Level(34), new UncappedHealthPower(100), 1000, 900, 0.75);
+        Ability damage = new Ability("Damage", 1000);
+        Ability defense = new Ability("Defense", 900);
+        Ability dodgeChance = new Ability("DodgeChance", 200);
+
+        Dragon drogon = new Dragon("Drogon", new Level(34), new UncappedHealthPower(100), damage, defense, dodgeChance);
         assertEquals("Drogon", drogon.getName());
         assertEquals(new Level(34), drogon.getLevel());
         assertEquals(new UncappedHealthPower(100), drogon.getHealthPower());
-        assertEquals(1000, drogon.getAttackDamage());
-        assertEquals(900, drogon.getDefense());
-        assertEquals(0.75, drogon.getDodgeChance());
+        assertEquals(damage, drogon.getDamage());
+        assertEquals(defense, drogon.getDefense());
+        assertEquals(dodgeChance, drogon.getDodgeChance());
     }
 
     @Test
     public void testExoskeletons() {
         Exoskeleton beetle = new Exoskeleton(); // beetles are monsters indeed.
-        assertEquals("Exoskeleton Monster!", beetle.getName());
+        assertEquals(Exoskeleton.defaultName, beetle.getName());
         assertEquals(new Level(0), beetle.getLevel());
         assertEquals(new UncappedHealthPower(0), beetle.getHealthPower());
-        assertEquals(0, beetle.getAttackDamage());
-        assertEquals(0, beetle.getDefense());
-        assertEquals(0, beetle.getDodgeChance());
+        assertEquals(new Ability("Damage", 0), beetle.getDamage());
+        assertEquals(new Ability("Defense", 0), beetle.getDefense());
+        assertEquals(new Ability("DodgeChance", 0), beetle.getDodgeChance());
 
-        Exoskeleton rancor = new Exoskeleton("Rancor", new Level(34), new UncappedHealthPower(100), 1000, 900, 0.75);
+        Ability damage = new Ability("Damage", 1000);
+        Ability defense = new Ability("Defense", 900);
+        Ability dodgeChance = new Ability("DodgeChance", 200);
+
+        Exoskeleton rancor = new Exoskeleton("Rancor", new Level(34), new UncappedHealthPower(100), damage, defense, dodgeChance);
         assertEquals("Rancor", rancor.getName());
         assertEquals(new Level(34), rancor.getLevel());
         assertEquals(new UncappedHealthPower(100), rancor.getHealthPower());
-        assertEquals(1000, rancor.getAttackDamage());
-        assertEquals(900, rancor.getDefense());
-        assertEquals(0.75, rancor.getDodgeChance());
+        assertEquals(damage, rancor.getDamage());
+        assertEquals(defense, rancor.getDefense());
+        assertEquals(dodgeChance, rancor.getDodgeChance());
     }
 
     @Test
     public void testSpirits() {
         Spirit ghost = new Spirit(); // beetles are monsters indeed.
-        assertEquals("Spirit Monster!", ghost.getName());
+        assertEquals(Spirit.defaultName, ghost.getName());
         assertEquals(new Level(0), ghost.getLevel());
         assertEquals(new UncappedHealthPower(0), ghost.getHealthPower());
-        assertEquals(0, ghost.getAttackDamage());
-        assertEquals(0, ghost.getDefense());
-        assertEquals(0, ghost.getDodgeChance());
+        assertEquals(new Ability("Damage", 0), ghost.getDamage());
+        assertEquals(new Ability("Defense", 0), ghost.getDefense());
+        assertEquals(new Ability("DodgeChance", 0), ghost.getDodgeChance());
 
-        Spirit dementor = new Spirit("Dementor", new Level(34), new UncappedHealthPower(100), 1000, 900, 0.75);
+        Ability damage = new Ability("Damage", 1000);
+        Ability defense = new Ability("Defense", 900);
+        Ability dodgeChance = new Ability("DodgeChance", 200);
+
+        Spirit dementor = new Spirit("Dementor", new Level(34), new UncappedHealthPower(100), damage, defense, dodgeChance);
         assertEquals("Dementor", dementor.getName());
         assertEquals(new Level(34), dementor.getLevel());
         assertEquals(new UncappedHealthPower(100), dementor.getHealthPower());
-        assertEquals(1000, dementor.getAttackDamage());
-        assertEquals(900, dementor.getDefense());
-        assertEquals(0.75, dementor.getDodgeChance());
+        assertEquals(damage, dementor.getDamage());
+        assertEquals(defense, dementor.getDefense());
+        assertEquals(dodgeChance, dementor.getDodgeChance());
     }
 
     @Test
     public void testEquality() {
-        Spirit dementor = new Spirit("Dementor", new Level(34), new UncappedHealthPower(100), 1000, 900, 0.75);
-        Exoskeleton rancor = new Exoskeleton("Rancor", new Level(34), new UncappedHealthPower(100), 1000, 900, 0.75);
-        Dragon drogon = new Dragon("Drogon", new Level(34), new UncappedHealthPower(100), 1000, 900, 0.75);
+        Ability damage = new Ability("Damage", 1000);
+        Ability defense = new Ability("Defense", 900);
+        Ability dodgeChance = new Ability("DodgeChance", 200);
+
+        Spirit dementor = new Spirit("Dementor", new Level(34), new UncappedHealthPower(100), damage, defense, dodgeChance);
+        Exoskeleton rancor = new Exoskeleton("Rancor", new Level(34), new UncappedHealthPower(100), damage, defense, dodgeChance);
+        Dragon drogon = new Dragon("Drogon", new Level(34), new UncappedHealthPower(100), damage, defense, dodgeChance);
         assertNotEquals(dementor, rancor);
         assertNotEquals(dementor, drogon);
         assertNotEquals(drogon, rancor);
 
-        Spirit otherSpirit = new Spirit("Dementor", new Level(34), new UncappedHealthPower(100), 1000, 900, 0.75);
-        Exoskeleton otherExo = new Exoskeleton("Rancor", new Level(34), new UncappedHealthPower(100), 1000, 900, 0.75);
-        Dragon otherDragon = new Dragon("Drogon", new Level(34), new UncappedHealthPower(100), 1000, 900, 0.75);
+        Spirit otherSpirit = new Spirit("Dementor", new Level(34), new UncappedHealthPower(100), damage, defense, dodgeChance);
+        Exoskeleton otherExo = new Exoskeleton("Rancor", new Level(34), new UncappedHealthPower(100), damage, defense, dodgeChance);
+        Dragon otherDragon = new Dragon("Drogon", new Level(34), new UncappedHealthPower(100), damage, defense, dodgeChance);
         assertEquals(dementor, otherSpirit);
         assertEquals(rancor, otherExo);
         assertEquals(drogon, otherDragon);

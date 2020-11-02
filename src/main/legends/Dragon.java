@@ -1,12 +1,14 @@
 package main.legends;
 
+import main.attributes.Ability;
 import main.attributes.HealthPower;
 import main.attributes.Level;
 import main.attributes.UncappedHealthPower;
 
 /**
  * Class Dragon is a concrete instance of a Monster.
- * At the moment, Dragons don't have any abilities that generic Monsters don't have.
+ * At the moment, Dragons don't have any abilities that generic Monsters don't have,
+ * however, Dragons tend to have higher damage Abilities.
  *
  * @author: Nathan Lauer
  * @email: lauern@bu.edu
@@ -15,32 +17,16 @@ import main.attributes.UncappedHealthPower;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public class Dragon extends Monster {
+    public static final String defaultName = "Dragon Monster";
     /**
      * Empty constructor for a Dragon Monster.
      * All values are initialized to zero, and the name is set to "Dragon Monster"
      */
     public Dragon() {
-        this("Dragon Monster!", new Level(0), new UncappedHealthPower(0), 0, 0, 0);
-    }
-
-    /**
-     * Constructor with just the name for this Monster. All other values are set to zero.
-     * @param name the name of this Monster.
-     */
-    public Dragon(String name) {
-        this(name, new Level(0), new UncappedHealthPower(0), 0, 0, 0);
-    }
-
-    /**
-     * Construct a Dragon Monster with the passed in name, attack, defense, and dodgeChance attributes.
-     * HealthPower and Level are initialized to zero.
-     * @param name name of this Dragon Monster
-     * @param attack attack value for this Dragon monster. Can't be negative.
-     * @param defense defense value for this Dragon monster. Can't be negative.
-     * @param dodgeChance dodgeChance value for this Dragon. Must be in range [0, 1]
-     */
-    public Dragon(String name, double attack, double defense, double dodgeChance) {
-        this(name, new Level(0), new UncappedHealthPower(0), attack, defense, dodgeChance);
+        this(Dragon.defaultName, new Level(0), new UncappedHealthPower(0),
+                new Ability("Damage", 0),
+                new Ability("Defense", 0),
+                new Ability("DodgeChance", 0));
     }
 
     /**
@@ -48,12 +34,12 @@ public class Dragon extends Monster {
      * @param name name of this Dragon Monster
      * @param level the level of this Monster.
      * @param healthPower healthPower of this Monster.
-     * @param attack attack value for this Dragon monster. Can't be negative.
-     * @param defense defense value for this Dragon monster. Can't be negative.
-     * @param dodgeChance dodgeChance value for this Dragon. Must be in range [0, 1]
+     * @param damage attack Ability for this Dragon monster.
+     * @param defense defense Ability for this Dragon monster.
+     * @param dodgeChance dodgeChance Ability for this Dragon.
      */
-    public Dragon(String name, Level level, HealthPower healthPower, double attack, double defense, double dodgeChance) {
-        MonsterBuilder.initializeMonsterAttributes(this, name, level, healthPower, attack, defense, dodgeChance);
+    public Dragon(String name, Level level, HealthPower healthPower, Ability damage, Ability defense, Ability dodgeChance) {
+        MonsterBuilder.initializeMonsterAttributes(this, name, level, healthPower, damage, defense, dodgeChance);
     }
 
     /**
