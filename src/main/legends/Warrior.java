@@ -1,9 +1,7 @@
 package main.legends;
 
-import main.attributes.Ability;
-import main.attributes.HealthPower;
-import main.attributes.Level;
-import main.attributes.UncappedHealthPower;
+import main.attributes.*;
+import main.utils.Coffer;
 
 /**
  * Class Warrior is a concrete type of Hero. Warriors favor their strength and
@@ -24,6 +22,7 @@ public class Warrior extends Hero {
      */
     public Warrior() {
         this(Warrior.defaultName, new Level(0), new UncappedHealthPower(0),
+                new Mana(0), new Coffer(0),
                 new Ability("Agility", 0),
                 new Ability("Dexterity", 0),
                 new Ability("Strength", 0));
@@ -38,9 +37,9 @@ public class Warrior extends Hero {
      * @param dexterity dexterity Ability of this Hero
      * @param strength strength Ability of this Hero
      */
-    public Warrior(String name, Level level, HealthPower healthPower,
+    public Warrior(String name, Level level, HealthPower healthPower, Mana mana, Coffer coffer,
                    Ability agility, Ability dexterity, Ability strength) {
-        HeroBuilder.initializeHeroAttributes(this, name, level, healthPower, agility, dexterity, strength);
+        HeroBuilder.initializeHeroAttributes(this, name, level, healthPower, mana, coffer, agility, dexterity, strength);
     }
 
     /**

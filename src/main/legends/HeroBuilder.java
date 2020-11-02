@@ -3,6 +3,8 @@ package main.legends;
 import main.attributes.Ability;
 import main.attributes.HealthPower;
 import main.attributes.Level;
+import main.attributes.Mana;
+import main.utils.Coffer;
 
 /**
  * Class HeroBuilder is a static class that provides helpful methods for building Heroes.
@@ -16,6 +18,7 @@ import main.attributes.Level;
 public class HeroBuilder {
     public static void initializeHeroAttributes(
             Hero hero, String name, Level level, HealthPower healthPower,
+            Mana mana, Coffer coffer,
             Ability agility, Ability dexterity, Ability strength) {
         // Set Legend attributes
         hero.setName(name);
@@ -26,5 +29,10 @@ public class HeroBuilder {
         hero.setAgility(agility);
         hero.setDexterity(dexterity);
         hero.setStrength(strength);
+        hero.setCoffer(coffer);
+        hero.setMana(mana);
+
+        // By default, a hero has not fainted
+        hero.setFainted(Hero.defaultFainted);
     }
 }

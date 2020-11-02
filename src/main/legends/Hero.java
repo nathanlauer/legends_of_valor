@@ -1,6 +1,8 @@
 package main.legends;
 
 import main.attributes.Ability;
+import main.attributes.Mana;
+import main.utils.Coffer;
 
 /**
  * Class Hero extends Legends, and represents a "good guy" in this game. There are a number
@@ -23,12 +25,62 @@ import main.attributes.Ability;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public abstract class Hero extends Legend {
+    public static final boolean defaultFainted = false;
+
     private boolean fainted;
-    // TODO: class mana
-    // TODO: class Coffer
+    Mana mana;
+    Coffer coffer;
     Ability agility;
     Ability dexterity;
     Ability strength;
+
+    /**
+     * Indicates whether or not this Hero has fainted.
+     * @return true if this Hero has fainted, false otherwise.
+     */
+    public boolean hasFainted() {
+        return fainted;
+    }
+
+    /**
+     * Sets this Hero to be fainted or not.
+     * @param fainted whether or not this Hero has fainted.
+     */
+    public void setFainted(boolean fainted) {
+        this.fainted = fainted;
+    }
+
+    /**
+     *
+     * @return the Mana for this Hero
+     */
+    public Mana getMana() {
+        return mana;
+    }
+
+    /**
+     * Sets the Mana for this Hero to the passed in mana
+     * @param mana the new Mana for this Hero
+     */
+    public void setMana(Mana mana) {
+        this.mana = mana;
+    }
+
+    /**
+     *
+     * @return the Coffer belonging to this Hero
+     */
+    public Coffer getCoffer() {
+        return coffer;
+    }
+
+    /**
+     * Sets the Coffer for this Hero to the passed in Coffer.
+     * @param coffer the new Coffer for this Hero.
+     */
+    public void setCoffer(Coffer coffer) {
+        this.coffer = coffer;
+    }
 
     /**
      *
