@@ -17,6 +17,17 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public class TestWeapon {
+    private final String name = "Sword";
+    private final Level minLevel = new Level(10);
+    private final double price = 250;
+    private final double damage = 500;
+    private final int numHands = 2;
+    private final Weapon weapon;
+
+    public TestWeapon() {
+        weapon = new Weapon(name, price, minLevel, damage, numHands);
+    }
+
     @Test
     public void emptyInit() {
         Weapon weapon = new Weapon();
@@ -29,15 +40,8 @@ public class TestWeapon {
 
     @Test
     public void nonEmptyInit() {
-        String name = "Sword";
-        Level minLevel = new Level(10);
-        double price = 250;
-        double damage = 500;
-        int numHands = 2;
-
-        Weapon weapon = new Weapon(name, price, minLevel, damage, numHands);
-        assertEquals("Sword", weapon.getName());
-        assertEquals(new Level(10), weapon.getMinLevel());
+        assertEquals(name, weapon.getName());
+        assertEquals(minLevel, weapon.getMinLevel());
         assertEquals(price, weapon.getPrice());
         assertEquals(damage, weapon.getDamage());
         assertEquals(numHands, weapon.getNumHands());
@@ -45,14 +49,6 @@ public class TestWeapon {
 
     @Test
     public void attributes() {
-        String name = "Sword";
-        Level minLevel = new Level(10);
-        double price = 250;
-        double damage = 500;
-        int numHands = 2;
-
-        Weapon weapon = new Weapon(name, price, minLevel, damage, numHands);
-
         weapon.setName("Axe");
         try {
             weapon.setPrice(-100);
