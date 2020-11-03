@@ -1,9 +1,6 @@
 package main.legends;
 
-import main.attributes.Ability;
-import main.attributes.HealthPower;
-import main.attributes.Level;
-import main.attributes.UncappedHealthPower;
+import main.attributes.*;
 import main.utils.Validations;
 
 /**
@@ -25,9 +22,9 @@ public class Spirit extends Monster {
      */
     public Spirit() {
         this(Spirit.defaultName, new Level(0), new UncappedHealthPower(0),
-                new Ability("Damage", 0),
-                new Ability("Defense", 0),
-                new Ability("DodgeChance", 0));
+                AbilityBuilder.baseDamageAbility(),
+                AbilityBuilder.baseDefenseAbility(),
+                AbilityBuilder.baseDodgeChanceAbility());;
     }
 
     /**

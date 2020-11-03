@@ -1,6 +1,7 @@
 package test.market_and_gear;
 
 import main.attributes.Ability;
+import main.attributes.AbilityBuilder;
 import main.attributes.Level;
 import main.attributes.Mana;
 import main.market_and_gear.FireSpell;
@@ -31,21 +32,21 @@ public class TestSpell {
     public void testIceSpell() {
         Spell iceSpell = new IceSpell(name, price, minLevel, mana, damage);
         testAttributes(iceSpell);
-        assertEquals(new Ability("Damage", 0), iceSpell.getAbility());
+        assertEquals(AbilityBuilder.baseDamageAbility(), iceSpell.getAbility());
     }
 
     @Test
     public void testFireSpell() {
         Spell fireSpell = new FireSpell(name, price, minLevel, mana, damage);
         testAttributes(fireSpell);
-        assertEquals(new Ability("Defense", 0), fireSpell.getAbility());
+        assertEquals(AbilityBuilder.baseDefenseAbility(), fireSpell.getAbility());
     }
 
     @Test
     public void testLightningSpell() {
         Spell lightningSpell = new LightningSpell(name, price, minLevel, mana, damage);
         testAttributes(lightningSpell);
-        assertEquals(new Ability("DodgeChance", 0), lightningSpell.getAbility());
+        assertEquals(AbilityBuilder.baseDodgeChanceAbility(), lightningSpell.getAbility());
     }
 
     public void testAttributes(Spell spell) {

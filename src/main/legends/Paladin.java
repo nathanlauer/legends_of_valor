@@ -23,9 +23,9 @@ public class Paladin extends Hero {
     public Paladin() {
         this(Paladin.defaultName, new Level(0), new UncappedHealthPower(0),
                 new Mana(0), new Coffer(0),
-                new Ability("Agility", 0),
-                new Ability("Dexterity", 0),
-                new Ability("Strength", 0));
+                AbilityBuilder.baseAgilityAbility(),
+                AbilityBuilder.baseDexterityAbility(),
+                AbilityBuilder.baseStrengthAbility());
     }
 
     /**

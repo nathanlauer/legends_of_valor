@@ -1,9 +1,6 @@
 package test.legends;
 
-import main.attributes.Ability;
-import main.attributes.Level;
-import main.attributes.Mana;
-import main.attributes.UncappedHealthPower;
+import main.attributes.*;
 import main.legends.Paladin;
 import main.legends.Sorcerer;
 import main.legends.Warrior;
@@ -23,11 +20,11 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public class TestHeroes {
-    private Ability agility;
-    private Ability dexterity;
-    private Ability strength;
-    private Mana mana;
-    private Coffer coffer;
+    private final Ability agility;
+    private final Ability dexterity;
+    private final Ability strength;
+    private final Mana mana;
+    private final Coffer coffer;
 
     public TestHeroes() {
         agility = new Ability("Agility", 1000);
@@ -43,9 +40,9 @@ public class TestHeroes {
         assertEquals(Sorcerer.defaultName, gandalf.getName());
         assertEquals(new Level(0), gandalf.getLevel());
         assertEquals(new UncappedHealthPower(0), gandalf.getHealthPower());
-        assertEquals(new Ability("Agility", 0), gandalf.getAgility());
-        assertEquals(new Ability("Dexterity", 0), gandalf.getDexterity());
-        assertEquals(new Ability("Strength", 0), gandalf.getStrength());
+        assertEquals(AbilityBuilder.baseAgilityAbility(), gandalf.getAgility());
+        assertEquals(AbilityBuilder.baseDexterityAbility(), gandalf.getDexterity());
+        assertEquals(AbilityBuilder.baseStrengthAbility(), gandalf.getStrength());
         assertEquals(new Coffer(0), gandalf.getCoffer());
         assertEquals(new Mana(0), gandalf.getMana());
 
@@ -66,9 +63,9 @@ public class TestHeroes {
         assertEquals(Warrior.defaultName, gimli.getName());
         assertEquals(new Level(0), gimli.getLevel());
         assertEquals(new UncappedHealthPower(0), gimli.getHealthPower());
-        assertEquals(new Ability("Agility", 0), gimli.getAgility());
-        assertEquals(new Ability("Dexterity", 0), gimli.getDexterity());
-        assertEquals(new Ability("Strength", 0), gimli.getStrength());
+        assertEquals(AbilityBuilder.baseAgilityAbility(), gimli.getAgility());
+        assertEquals(AbilityBuilder.baseDexterityAbility(), gimli.getDexterity());
+        assertEquals(AbilityBuilder.baseStrengthAbility(), gimli.getStrength());
         assertEquals(new Coffer(0), gimli.getCoffer());
         assertEquals(new Mana(0), gimli.getMana());
 
@@ -89,9 +86,9 @@ public class TestHeroes {
         assertEquals(Paladin.defaultName, aragorn.getName());
         assertEquals(new Level(0), aragorn.getLevel());
         assertEquals(new UncappedHealthPower(0), aragorn.getHealthPower());
-        assertEquals(new Ability("Agility", 0), aragorn.getAgility());
-        assertEquals(new Ability("Dexterity", 0), aragorn.getDexterity());
-        assertEquals(new Ability("Strength", 0), aragorn.getStrength());
+        assertEquals(AbilityBuilder.baseAgilityAbility(), aragorn.getAgility());
+        assertEquals(AbilityBuilder.baseDexterityAbility(), aragorn.getDexterity());
+        assertEquals(AbilityBuilder.baseStrengthAbility(), aragorn.getStrength());
         assertEquals(new Coffer(0), aragorn.getCoffer());
         assertEquals(new Mana(0), aragorn.getMana());
 

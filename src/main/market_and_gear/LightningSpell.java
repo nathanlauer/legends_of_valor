@@ -1,6 +1,6 @@
 package main.market_and_gear;
 
-import main.attributes.Ability;
+import main.attributes.AbilityBuilder;
 import main.attributes.Level;
 import main.attributes.Mana;
 
@@ -33,7 +33,7 @@ public class LightningSpell extends Spell {
      * @param damage amount of damage caused by this Spell.
      */
     public LightningSpell(String name, double price, Level minLevel, Mana mana, double damage) {
-        super(name, price, minLevel, damage, mana, new Ability("DodgeChance", 0));
+        super(name, price, minLevel, damage, mana, AbilityBuilder.baseDodgeChanceAbility());
     }
 
     /**
