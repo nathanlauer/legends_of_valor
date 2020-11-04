@@ -81,6 +81,15 @@ public class Market {
     }
 
     /**
+     * Indicates whether or not this Market has the passed in GearItem
+     * @param gearItem the GearItem in question
+     * @return true if this Market has the GearItem, false otherwise
+     */
+    public boolean hasGearItem(GearItem gearItem) {
+        return this.getGearItems().contains(gearItem);
+    }
+
+    /**
      * @return String representation of this Market object.
      */
     @Override

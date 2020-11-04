@@ -229,7 +229,7 @@ public class ActiveGearItems {
      * @return true if the GearItem is active, false otherwise.
      */
     public boolean gearItemIsActive(GearItem gearItem) {
-        boolean hasItem = false;
+        boolean hasItem;
         switch (gearItem.getType()) {
             case WEAPON:
                 hasItem = this.getWeapon().equals(gearItem);

@@ -1,5 +1,10 @@
 package main.market_and_gear;
 
+import main.legends.Hero;
+import main.legends.NonOwnedGearItemException;
+import main.utils.BeneathLevelException;
+import main.utils.NotEnoughCoinsException;
+
 /**
  * Interface Buyable describes a type of entity that can be bought.
  * Specifically, in this game, we define Buyable in the context of
@@ -13,5 +18,5 @@ package main.market_and_gear;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public interface Buyable {
-
+    void buy(Market market, Hero hero) throws NonOwnedGearItemException, NotEnoughCoinsException, BeneathLevelException;
 }
