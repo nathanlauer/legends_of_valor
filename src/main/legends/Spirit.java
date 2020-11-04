@@ -24,7 +24,7 @@ public class Spirit extends Monster {
         this(Spirit.defaultName, new Level(0), new UncappedHealthPower(0),
                 AbilityBuilder.baseDamageAbility(),
                 AbilityBuilder.baseDefenseAbility(),
-                AbilityBuilder.baseDodgeChanceAbility());;
+                AbilityBuilder.baseDodgeChanceAbility());
     }
 
     /**
