@@ -21,6 +21,18 @@ public abstract class Legend {
     private Level level;
     private HealthPower healthPower;
 
+    /**
+     * Standard constructor for a Legend.
+     * @param name Name of this Legend
+     * @param level Level of this Legend
+     * @param healthPower HealthPower of this Legend
+     */
+    public Legend(String name, Level level, HealthPower healthPower) {
+        this.name = name;
+        this.level = level;
+        this.healthPower = healthPower;
+    }
+
     public void setName(String name) {
         this.name = name;
     }

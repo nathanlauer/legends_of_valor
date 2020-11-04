@@ -1,6 +1,8 @@
 package main.legends;
 
 import main.attributes.Ability;
+import main.attributes.HealthPower;
+import main.attributes.Level;
 import main.attributes.Mana;
 import main.utils.Coffer;
 
@@ -28,11 +30,29 @@ public abstract class Hero extends Legend {
     public static final boolean defaultFainted = false;
 
     private boolean fainted;
-    Mana mana;
-    Coffer coffer;
-    Ability agility;
-    Ability dexterity;
-    Ability strength;
+    private Mana mana;
+    private Coffer coffer;
+    private Ability agility;
+    private Ability dexterity;
+    private Ability strength;
+
+    /**
+     * Standard constructor for a Hero.
+     * @param mana Mana of this Hero
+     * @param coffer Coffer for this Hero
+     * @param agility agility Ability of this Hero
+     * @param dexterity dexterity Ability of this Hero
+     * @param strength strength Ability of this Hero
+     */
+    public Hero(String name, Level level, HealthPower healthPower,
+                Mana mana, Coffer coffer, Ability agility, Ability dexterity, Ability strength) {
+        super(name, level, healthPower);
+        this.mana = mana;
+        this.coffer = coffer;
+        this.agility = agility;
+        this.dexterity = dexterity;
+        this.strength = strength;
+    }
 
     /**
      * Indicates whether or not this Hero has fainted.

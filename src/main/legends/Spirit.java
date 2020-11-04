@@ -37,7 +37,7 @@ public class Spirit extends Monster {
      * @param dodgeChance dodgeChance Ability for this Spirit.
      */
     public Spirit(String name, Level level, HealthPower healthPower, Ability damage, Ability defense, Ability dodgeChance) {
-        MonsterBuilder.initializeMonsterAttributes(this, name, level, healthPower, damage, defense, dodgeChance);
+        super(name, level, healthPower, damage, defense, dodgeChance);
     }
 
     /**
