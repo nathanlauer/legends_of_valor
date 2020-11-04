@@ -22,7 +22,7 @@ import main.utils.Validations;
  * <p>
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
-public class Level implements Comparable<Level> {
+public class Level implements Comparable<Level>, Cloneable{
     private int level;
 
     /**
@@ -120,5 +120,14 @@ public class Level implements Comparable<Level> {
     @Override
     public int compareTo(Level o) {
         return this.getLevel() - o.getLevel();
+    }
+
+    /**
+     *
+     * @return a cloned copy of this Level
+     */
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

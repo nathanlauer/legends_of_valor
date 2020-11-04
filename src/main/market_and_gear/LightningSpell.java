@@ -21,7 +21,7 @@ public class LightningSpell extends Spell {
      * Empty constructor for a LightningSpell.
      */
     public LightningSpell() {
-        this(LightningSpell.defaultName, 0.0, new Level(0), new Mana(0), 0.0);
+        this(LightningSpell.defaultName, 0, new Level(0), new Mana(0), 0);
     }
 
     /**
@@ -32,7 +32,7 @@ public class LightningSpell extends Spell {
      * @param mana Mana required to use this Spell.
      * @param damage amount of damage caused by this Spell.
      */
-    public LightningSpell(String name, double price, Level minLevel, Mana mana, double damage) {
+    public LightningSpell(String name, int price, Level minLevel, Mana mana, int damage) {
         super(name, price, minLevel, damage, mana, AbilityBuilder.baseDodgeChanceAbility());
     }
 

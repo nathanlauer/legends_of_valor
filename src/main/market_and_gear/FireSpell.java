@@ -20,7 +20,7 @@ public class FireSpell extends Spell {
      * Empty constructor for a FireSpell.
      */
     public FireSpell() {
-        this(FireSpell.defaultName, 0.0, new Level(0), new Mana(0), 0.0);
+        this(FireSpell.defaultName, 0, new Level(0), new Mana(0), 0);
     }
 
     /**
@@ -31,7 +31,7 @@ public class FireSpell extends Spell {
      * @param mana Mana required to use this Spell.
      * @param damage amount of damage caused by this Spell.
      */
-    public FireSpell(String name, double price, Level minLevel, Mana mana, double damage) {
+    public FireSpell(String name, int price, Level minLevel, Mana mana, int damage) {
         super(name, price, minLevel, damage, mana, AbilityBuilder.baseDefenseAbility());
     }
 

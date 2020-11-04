@@ -7,8 +7,7 @@ import main.attributes.Mana;
 import main.market_and_gear.*;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Class TestSpell
@@ -21,10 +20,12 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class TestSpell {
     private final String name = "Wingardium Leviooooosa";
-    private final double price = 100;
-    private final Level minLevel = new Level(10);
-    private final Mana mana = new Mana(100);
-    private final double damage = 20;
+    private final int price = 100;
+    private final int minLevelNum = 10;
+    private final Level minLevel = new Level(minLevelNum);
+    private final int manaNum = 100;
+    private final Mana mana = new Mana(manaNum);
+    private final int damage = 20;
 
     @Test
     public void testIceSpell() {
@@ -52,7 +53,28 @@ public class TestSpell {
         Spell lightningSpell = new LightningSpell(name, price, minLevel, mana, damage);
         try {
             Spell other = (LightningSpell)lightningSpell.clone();
-            testAttributes(other);
+
+            // Make some changes to the cloned object
+            other.getMana().decreaseManaBy(10);
+            other.getAbility().increaseAbilityBy(50);
+            other.getMinLevel().incrementLevel();
+
+            // Ensure these changes are reflected
+            assertEquals(name, other.getName());
+            assertEquals(price, other.getPrice());
+            assertEquals(damage, other.getDamage());
+            assertNotEquals(minLevel, other.getMinLevel());
+            assertNotEquals(mana, other.getMana());
+            assertNotEquals(lightningSpell.getAbility(), other.getAbility());
+            assertEquals(new Mana(manaNum - 10), other.getMana());
+            assertEquals(new Level(minLevelNum + 1), other.getMinLevel());
+            Ability expected = AbilityBuilder.baseDodgeChanceAbility();
+            expected.increaseAbilityBy(50);
+            assertEquals(expected, other.getAbility());
+
+
+            // but the original is still the same
+            testAttributes(lightningSpell);
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
             fail();

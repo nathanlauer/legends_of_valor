@@ -4,6 +4,9 @@ import main.attributes.Ability;
 import main.attributes.Level;
 import main.utils.Validations;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Class Potion is a concrete type of GearItem. In addition to a name, price, and
  * minimum level, it also can increase an Ability by a certain amount, and can only
@@ -17,8 +20,8 @@ import main.utils.Validations;
  */
 public class Potion extends GearItem {
     public static final String defaultName = "Potion";
-    private Ability ability;
-    private double incrementAmount;
+    private List<Ability> abilities;
+    private int incrementAmount;
     private boolean used;
 
     /**
@@ -26,7 +29,7 @@ public class Potion extends GearItem {
      * to zero values.
      */
     public Potion() {
-        this(Potion.defaultName, 0.0, new Level(0), new Ability(0.0), 0.0);
+        this(Potion.defaultName, 0, new Level(0), Ability.emptyAbilityList(), 0);
     }
 
     /**
@@ -38,39 +41,55 @@ public class Potion extends GearItem {
      * @param name name of this GearItem
      * @param price price of this GearItem
      * @param minLevel min Level of this GearItem
-     * @param ability Ability of this Potion
+     * @param abilities Abilities this Potion affects
      * @param incrementAmount amount to increment ability of this Potion
      */
-    public Potion(String name, double price, Level minLevel, Ability ability, double incrementAmount) {
+    public Potion(String name, int price, Level minLevel, List<Ability> abilities, int incrementAmount) {
         super(name, price, minLevel);
 
         Validations.nonNegative(incrementAmount, "incrementAmount");
-        this.ability = ability;
+        this.abilities = new ArrayList<>(abilities);
         this.incrementAmount = incrementAmount;
         this.used = false;
     }
 
     /**
      *
-     * @return the Ability associated with this Potion
+     * @return the Abilities associated with this Potion
      */
-    public Ability getAbility() {
-        return ability;
+    public List<Ability> getAbilities() {
+        return abilities;
     }
 
     /**
-     * Sets the ability of this Potion to the passed in Ability.
-     * @param ability new Ability for this Potion
+     * Sets the abilities of this Potion to the passed in List of Abilities.
+     * @param abilities new List of Abilities for this Potion
      */
-    public void setAbility(Ability ability) {
-        this.ability = ability;
+    public void setAbilities(List<Ability> abilities) {
+        this.abilities = abilities;
+    }
+
+    /**
+     * Adds the passed in Ability to this Potion
+     * @param ability the Ability to add
+     */
+    public void addAbility(Ability ability) {
+        abilities.add(ability);
+    }
+
+    /**
+     * Removes the passed in Ability from the list of Abilities for this Potion
+     * @param ability Ability to be removed
+     */
+    public void removeAbility(Ability ability) {
+        abilities.remove(ability);
     }
 
     /**
      *
      * @return the amount to increment the associated Ability by
      */
-    public double getIncrementAmount() {
+    public int getIncrementAmount() {
         return incrementAmount;
     }
 
@@ -79,7 +98,7 @@ public class Potion extends GearItem {
      * Throws an IllegalArgumentException if newAmount is negative
      * @param newAmount the new amount that this Potion will increase its Ability.
      */
-    public void setIncrementAmount(double newAmount) {
+    public void setIncrementAmount(int newAmount) {
         Validations.nonNegative(newAmount, "newAmount");
         incrementAmount = newAmount;
     }
@@ -105,7 +124,7 @@ public class Potion extends GearItem {
      */
     @Override
     public String toString() {
-        return super.toString() + ". Potion! Ability: " + this.getAbility() + ", increment amount: " + this.getIncrementAmount() + ", used: " + this.wasUsed();
+        return super.toString() + ". Potion! Abilities: " + this.getAbilities() + ", increment amount: " + this.getIncrementAmount() + ", used: " + this.wasUsed();
     }
 
     /**
@@ -126,8 +145,8 @@ public class Potion extends GearItem {
         }
 
         Potion other = (Potion) o;
-        return this.getAbility().equals(other.getAbility()) &&
-                Double.compare(this.getIncrementAmount(), other.getIncrementAmount()) == 0 &&
+        return this.getAbilities().equals(other.getAbilities()) &&
+                this.getIncrementAmount() == other.getIncrementAmount() &&
                 this.wasUsed() == other.wasUsed() &&
                 super.equals(o);
     }

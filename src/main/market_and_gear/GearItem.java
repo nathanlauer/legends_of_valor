@@ -22,7 +22,7 @@ import main.utils.Validations;
 public abstract class GearItem implements Cloneable {
     public static final int mostExpensiveGearItem = 1400; // TSwords are 1400
     private String name;
-    private double price;
+    private int price;
     private Level minLevel;
 
     /**
@@ -32,7 +32,7 @@ public abstract class GearItem implements Cloneable {
      * @param price price of this GearItem.
      * @param minLevel min Level for this GearItem.
      */
-    public GearItem(String name, double price, Level minLevel) {
+    public GearItem(String name, int price, Level minLevel) {
         Validations.nonNegative(price, "price");
         this.name = name;
         this.price = price;
@@ -59,7 +59,7 @@ public abstract class GearItem implements Cloneable {
      *
      * @return the price of this GearItem
      */
-    public double getPrice() {
+    public int getPrice() {
         return price;
     }
 
@@ -68,7 +68,7 @@ public abstract class GearItem implements Cloneable {
      * Throws an IllegalArgumentException if newPrice is negative.
      * @param newPrice the new price for this GearItem
      */
-    public void setPrice(double newPrice) {
+    public void setPrice(int newPrice) {
         Validations.nonNegative(newPrice, "newPrice");
         price = newPrice;
     }
@@ -115,12 +115,21 @@ public abstract class GearItem implements Cloneable {
 
         GearItem other = (GearItem) o;
         return this.getName().equals(other.getName()) &&
-                Double.compare(this.getPrice(), other.getPrice()) == 0 &&
+                this.getPrice() == other.getPrice() &&
                 this.getMinLevel().equals(other.getMinLevel());
     }
 
+    /**
+     * Clones a GearItem object, that is, returns a deep copy of this GearItem.
+     * @return deep copy of this GearItem
+     * @throws CloneNotSupportedException if this Object can't be cloned
+     */
     @Override
     public Object clone() throws CloneNotSupportedException {
-        return (GearItem)super.clone();
+        GearItem cloned = (GearItem)super.clone();
+        Level copiedLevel = (Level)this.getMinLevel().clone();
+        cloned.setMinLevel(copiedLevel);
+
+        return cloned;
     }
 }

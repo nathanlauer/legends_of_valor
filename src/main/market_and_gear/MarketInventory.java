@@ -191,10 +191,9 @@ public class MarketInventory {
                 int price = Integer.parseInt(items[1]);
                 int minLevel = Integer.parseInt(items[2]);
                 int incrementAmount = Integer.parseInt(items[3]);
-                // TODO: there may be multiple Abilities!
-                // TODO: switch double attributes to ints
+                // TODO: there may be multiple Abilities
 
-                GearItem potion = new Potion(name, price, new Level(minLevel), new Ability(), incrementAmount);
+                GearItem potion = new Potion(name, price, new Level(minLevel), Ability.emptyAbilityList(), incrementAmount);
                 gearItems.add(potion);
             }
         }

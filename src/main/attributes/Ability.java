@@ -2,12 +2,16 @@ package main.attributes;
 
 import main.utils.Validations;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
- * Class Ability is a wrapper around a double, which represents some ability that a Monster
+ * Class Ability is a wrapper around a integer, which represents some ability that a Monster
  * or a Hero have. There are two key points here:
  * 1) These are extracted out to a class, to clearly represent the concept of an ability.
- * Even though this class is just a wrapper around a double, the naming convention makes
- * it clear to clients precisely what this double represents.
+ * Even though this class is just a wrapper around a int, the naming convention makes
+ * it clear to clients precisely what this int represents.
  * 2) Abilities cannot be negative.
  *
  * @author: Nathan Lauer
@@ -16,9 +20,9 @@ import main.utils.Validations;
  * <p>
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
-public class Ability {
+public class Ability implements Cloneable {
     private final String name;
-    private double abilityValue;
+    private int abilityValue;
     public static final String defaultName = "Ability";
 
     /**
@@ -33,7 +37,7 @@ public class Ability {
      * Throws IllegalArgumentException if abilityValue is negative
      * @param abilityValue initial value for abilityValue.
      */
-    public Ability(double abilityValue) {
+    public Ability(int abilityValue) {
         this(Ability.defaultName, abilityValue);
     }
 
@@ -43,7 +47,7 @@ public class Ability {
      * @param name name of this Ability.
      * @param abilityValue the value for this ability
      */
-    public Ability(String name, double abilityValue) {
+    public Ability(String name, int abilityValue) {
         Validations.nonNegative(abilityValue, "abilityValue");
         this.name = name;
         this.abilityValue = abilityValue;
@@ -57,7 +61,7 @@ public class Ability {
      *
      * @return the abilityValue of this Ability
      */
-    public double getAbilityValue() {
+    public int getAbilityValue() {
         return abilityValue;
     }
 
@@ -66,7 +70,7 @@ public class Ability {
      * Throws an IllegalArgumentException if newAbilityValue is negative.
      * @param newAbilityValue new value for this Ability.
      */
-    public void setAbilityValue(double newAbilityValue) {
+    public void setAbilityValue(int newAbilityValue) {
         Validations.nonNegative(newAbilityValue, "newAbilityValue");
         abilityValue = newAbilityValue;
     }
@@ -76,7 +80,7 @@ public class Ability {
      * Throws an IllegalArgumentException if amount is negative.
      * @param amount amount to increase abilityValue by
      */
-    public void increaseAbilityBy(double amount) {
+    public void increaseAbilityBy(int amount) {
         Validations.nonNegative(amount, "amount");
         this.setAbilityValue(this.getAbilityValue() + amount);
     }
@@ -88,7 +92,7 @@ public class Ability {
      * Throws an IllegalArgumentException if amount is negative.
      * @param amount amount to decrease this ability by.
      */
-    public void decreaseAbilityBy(double amount) {
+    public void decreaseAbilityBy(int amount) {
         Validations.nonNegative(amount, "amount");
         if(amount > this.getAbilityValue()) {
             this.setAbilityValue(0);
@@ -123,6 +127,24 @@ public class Ability {
 
         Ability other = (Ability) o;
         return this.getName().equals(other.getName()) &&
-                Double.compare(this.getAbilityValue(), other.getAbilityValue()) == 0;
+                this.getAbilityValue() == other.getAbilityValue();
+    }
+
+    /**
+     *
+     * @return a cloned copy of this Ability
+     */
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
+    /**
+     *
+     * @return a List with a single Ability that is "empty" - meaning it has 0 value
+     * and no name.
+     */
+    public static List<Ability> emptyAbilityList() {
+        return new ArrayList<>(Collections.singletonList(new Ability()));
     }
 }

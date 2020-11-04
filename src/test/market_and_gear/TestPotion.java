@@ -2,9 +2,13 @@ package test.market_and_gear;
 
 import main.attributes.Ability;
 import main.attributes.Level;
-import main.market_and_gear.Armor;
 import main.market_and_gear.Potion;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -21,9 +25,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class TestPotion {
     private final String name;
     private final Level minLevel;
-    private final double price;
-    private final double incrementAmount;
+    private final int price;
+    private final int incrementAmount;
     private final Ability dexterity;
+    private final List<Ability> abilities;
     private final Potion potion;
 
     public TestPotion() {
@@ -32,7 +37,8 @@ public class TestPotion {
         price = 250;
         incrementAmount = 100;
         dexterity = new Ability("Dexterity", 300);
-        potion = new Potion(name, price, minLevel, dexterity, incrementAmount);
+        abilities = new ArrayList<>(Collections.singletonList(dexterity));
+        potion = new Potion(name, price, minLevel, abilities, incrementAmount);
     }
 
     @Test
@@ -42,7 +48,7 @@ public class TestPotion {
         assertEquals(new Level(0), polyJuice.getMinLevel());
         assertEquals(0.0, polyJuice.getPrice());
         assertEquals(0.0, polyJuice.getIncrementAmount());
-        assertEquals(new Ability(), polyJuice.getAbility());
+        assertEquals(Ability.emptyAbilityList(), polyJuice.getAbilities());
     }
 
     @Test
@@ -51,7 +57,7 @@ public class TestPotion {
         assertEquals(minLevel, potion.getMinLevel());
         assertEquals(price, potion.getPrice());
         assertEquals(incrementAmount, potion.getIncrementAmount());
-        assertEquals(dexterity, potion.getAbility());
+        assertEquals(abilities, potion.getAbilities());
     }
 
     @Test
@@ -72,12 +78,14 @@ public class TestPotion {
             // passed
             potion.setIncrementAmount(400);
         }
-        potion.setAbility(new Ability("Agility", 10));
+        potion.addAbility(new Ability("Agility", 10));
 
         assertEquals("Felix Felicis", potion.getName());
         assertEquals(new Level(34), potion.getMinLevel());
         assertEquals(200, potion.getPrice());
         assertEquals(400, potion.getIncrementAmount());
-        assertEquals(new Ability("Agility", 10), potion.getAbility());
+        List<Ability> expected = new ArrayList<>(abilities);
+        expected.add(new Ability("Agility", 10));
+        assertEquals(expected, potion.getAbilities());
     }
 }

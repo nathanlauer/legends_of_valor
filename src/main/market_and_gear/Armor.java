@@ -15,14 +15,14 @@ import main.utils.Validations;
  */
 public class Armor extends GearItem {
     public static final String defaultName = "Armor";
-    private double defense;
+    private int defense;
 
     /**
      * Empty constructor for an Armor. Sets name to "Armor" and
      * all other attributes to zero.
      */
     public Armor() {
-        this(Armor.defaultName, 0.0, new Level(0), 0.0);
+        this(Armor.defaultName, 0, new Level(0), 0);
     }
 
     /**
@@ -33,7 +33,7 @@ public class Armor extends GearItem {
      * @param minLevel min Level for this GearItem
      * @param defense defense value of this Armor.
      */
-    public Armor(String name, double price, Level minLevel, double defense) {
+    public Armor(String name, int price, Level minLevel, int defense) {
         super(name, price, minLevel);
 
         Validations.nonNegative(defense, "defense");
@@ -44,7 +44,7 @@ public class Armor extends GearItem {
      *
      * @return the defense value for this Armor
      */
-    public double getDefense() {
+    public int getDefense() {
         return defense;
     }
 
@@ -52,7 +52,7 @@ public class Armor extends GearItem {
      * Sets the defense value for this Armor to the passed in value.
      * @param newDefense the new value for the defense of this Armor.
      */
-    public void setDefense(double newDefense) {
+    public void setDefense(int newDefense) {
         Validations.nonNegative(newDefense, "newDefense");
         defense = newDefense;
     }
@@ -82,7 +82,7 @@ public class Armor extends GearItem {
         }
 
         Armor other = (Armor) o;
-        return Double.compare(this.getDefense(), other.getDefense()) == 0 &&
+        return this.getDefense() == other.getDefense() &&
                 super.equals(o);
     }
 }

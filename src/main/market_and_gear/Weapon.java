@@ -16,7 +16,7 @@ import main.utils.Validations;
  */
 public class Weapon extends GearItem {
     public static final String defaultName = "Weapon";
-    private double damage;
+    private int damage;
     private int numHands;
 
     /**
@@ -24,7 +24,7 @@ public class Weapon extends GearItem {
      * and all other attributes to zero.
      */
     public Weapon() {
-        this(Weapon.defaultName, 0.0, new Level(0), 0.0, 0);
+        this(Weapon.defaultName, 0, new Level(0), 0, 0);
     }
 
     /**
@@ -36,7 +36,7 @@ public class Weapon extends GearItem {
      * @param damage damage this Weapon causes
      * @param numHands required hands to hold this Weapon
      */
-    public Weapon(String name, double price, Level minLevel, double damage, int numHands) {
+    public Weapon(String name, int price, Level minLevel, int damage, int numHands) {
         super(name, price, minLevel);
 
         // Validate input
@@ -52,7 +52,7 @@ public class Weapon extends GearItem {
      *
      * @return the amount of damage this Weapon causes
      */
-    public double getDamage() {
+    public int getDamage() {
         return damage;
     }
 
@@ -61,7 +61,7 @@ public class Weapon extends GearItem {
      * Throws an IllegalArgumentException if newDamage is negative
      * @param newDamage the amount of damage this Weapon will now cause
      */
-    public void setDamage(double newDamage) {
+    public void setDamage(int newDamage) {
         Validations.nonNegative(newDamage, "newDamage");
         damage = newDamage;
     }
@@ -110,7 +110,7 @@ public class Weapon extends GearItem {
         }
 
         Weapon other = (Weapon) o;
-        return Double.compare(this.getDamage(), other.getDamage()) == 0 &&
+        return this.getDamage() == other.getDamage() &&
             this.getNumHands() == other.getNumHands() &&
             super.equals(o);
     }

@@ -18,7 +18,7 @@ import main.utils.Validations;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public abstract class Spell extends GearItem {
-    private double damage;
+    private int damage;
     private Mana mana;
     private Ability ability;
 
@@ -32,7 +32,7 @@ public abstract class Spell extends GearItem {
      * @param damage the amount of damage this Spell will cause (and how much it reduces an opponent's Ability)
      * @param mana the required amount of Mana to use this Spell
      */
-    public Spell(String name, double price, Level minLevel, double damage, Mana mana, Ability ability) {
+    public Spell(String name, int price, Level minLevel, int damage, Mana mana, Ability ability) {
         super(name, price, minLevel);
 
         Validations.nonNegative(damage, "damage");
@@ -45,7 +45,7 @@ public abstract class Spell extends GearItem {
      *
      * @return the damage amount of this Spell
      */
-    public double getDamage() {
+    public int getDamage() {
         return damage;
     }
 
@@ -54,7 +54,7 @@ public abstract class Spell extends GearItem {
      * Throws an IllegalArgumentException if newDamage is negative
      * @param newDamage the new amount of damage this Spell will cause.
      */
-    public void setDamage(double newDamage) {
+    public void setDamage(int newDamage) {
         Validations.nonNegative(newDamage, "newDamage");
         damage = newDamage;
     }
@@ -119,7 +119,21 @@ public abstract class Spell extends GearItem {
         Spell other = (Spell) o;
         return this.getMana().equals(other.getMana()) &&
                 this.getAbility().equals(other.getAbility()) &&
-                Double.compare(this.getDamage(), other.getDamage()) == 0 &&
+                this.getDamage() == other.getDamage()&&
                 super.equals(o);
+    }
+
+    /**
+     * Clones a Spell object, that is, returns a deep copy of this Spell.
+     * @return deep copy of this Spell
+     * @throws CloneNotSupportedException if this Object can't be cloned
+     */
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        Spell cloned = (Spell)super.clone();
+        cloned.setMana((Mana)this.getMana().clone());
+        cloned.setAbility((Ability)this.getAbility().clone());
+
+        return cloned;
     }
 }

@@ -13,8 +13,8 @@ import main.utils.Validations;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public class CappedHealthPower extends HealthPower {
-    private double max;
-    public static final double defaultMax = 100;
+    private int max;
+    public static final int defaultMax = 100;
 
     /**
      * Empty constructor for CappedHealthPower, which initialized
@@ -30,7 +30,7 @@ public class CappedHealthPower extends HealthPower {
      * to max as well.
      * @param max maximum value for healthPower.
      */
-    public CappedHealthPower(double max) {
+    public CappedHealthPower(int max) {
         this(max, max); // sets max to max, and initial healthPower to max.
     }
 
@@ -44,7 +44,7 @@ public class CappedHealthPower extends HealthPower {
      * @param healthPower initial value for healthPower
      * @param max max value for healthPower
      */
-    public CappedHealthPower(double healthPower, double max) {
+    public CappedHealthPower(int healthPower, int max) {
         Validations.nonNegative(healthPower, "healthPower");
         Validations.nonNegative(max, "max");
 
@@ -68,10 +68,10 @@ public class CappedHealthPower extends HealthPower {
      * @param newHealthPower new healthPower
      */
     @Override
-    public void setHealthPower(double newHealthPower) {
+    public void setHealthPower(int newHealthPower) {
         Validations.nonNegative(newHealthPower, "newHealthPower");
 
-        double healthPower = newHealthPower;
+        int healthPower = newHealthPower;
         if(healthPower > this.getMaxHealthValue()) {
             healthPower = this.getMaxHealthValue();
         }
@@ -87,10 +87,10 @@ public class CappedHealthPower extends HealthPower {
      * @param amount the amount to increase healthPower.
      */
     @Override
-    public void increaseHealthPowerBy(double amount) {
+    public void increaseHealthPowerBy(int amount) {
         Validations.nonNegative(amount, "amount");
 
-        double healthPower = this.getHealthPower() + amount;
+        int healthPower = this.getHealthPower() + amount;
         if(healthPower > this.getMaxHealthValue()) {
             healthPower = this.getMaxHealthValue();
         }
@@ -103,7 +103,7 @@ public class CappedHealthPower extends HealthPower {
      * Throws an illegal argument exception if max is negative.
      * @param newMax the new maximum value.
      */
-    public void setMaxHealthValue(double newMax) {
+    public void setMaxHealthValue(int newMax) {
         Validations.nonNegative(newMax, "newMax");
 
         max = newMax;
@@ -116,7 +116,7 @@ public class CappedHealthPower extends HealthPower {
      *
      * @return the maximum healthValue for this HealthValue
      */
-    public double getMaxHealthValue() {
+    public int getMaxHealthValue() {
         return max;
     }
 
@@ -145,7 +145,7 @@ public class CappedHealthPower extends HealthPower {
         }
 
         CappedHealthPower other = (CappedHealthPower) o;
-        return Double.compare(this.getMaxHealthValue(), other.getMaxHealthValue()) == 0 &&
+        return this.getMaxHealthValue() == other.getMaxHealthValue() &&
                 super.equals(o);
     }
 }

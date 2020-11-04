@@ -20,7 +20,7 @@ public class IceSpell extends Spell {
      * Empty constructor for a IceSpell.
      */
     public IceSpell() {
-        this(IceSpell.defaultName, 0.0, new Level(0), new Mana(0), 0.0);
+        this(IceSpell.defaultName, 0, new Level(0), new Mana(0), 0);
     }
 
     /**
@@ -31,7 +31,7 @@ public class IceSpell extends Spell {
      * @param mana Mana required to use this Spell.
      * @param damage amount of damage caused by this Spell.
      */
-    public IceSpell(String name, double price, Level minLevel, Mana mana, double damage) {
+    public IceSpell(String name, int price, Level minLevel, Mana mana, int damage) {
         super(name, price, minLevel, damage, mana, AbilityBuilder.baseDamageAbility());
     }
 

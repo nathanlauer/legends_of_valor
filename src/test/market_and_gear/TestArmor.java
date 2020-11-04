@@ -2,7 +2,6 @@ package test.market_and_gear;
 
 import main.attributes.Level;
 import main.market_and_gear.Armor;
-import main.market_and_gear.Weapon;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,8 +19,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class TestArmor {
     private final String name = "Plate";
     private final Level minLevel = new Level(10);
-    private final double price = 250;
-    private final double defense = 500;
+    private final int price = 250;
+    private final int defense = 500;
     private final Armor armor;
 
     public TestArmor() {
