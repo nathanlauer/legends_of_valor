@@ -1,7 +1,16 @@
 package main.market_and_gear;
 
+import main.attributes.Ability;
+import main.attributes.Level;
+import main.attributes.Mana;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Class MarketInventory is a Singleton class that contains every possible
@@ -14,8 +23,6 @@ import java.util.List;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public class MarketInventory {
-    public static final int maxSubsetSize = 80;
-    public static final int minSubsetSize = 30;
     private static MarketInventory instance = null;
     private final List<GearItem> gearItems;
 
@@ -36,8 +43,12 @@ public class MarketInventory {
      */
     private MarketInventory() {
         gearItems = new ArrayList<>();
-        // TODO: read all GearItems from file
-        // TODO: assert required files can be found
+        try {
+            new ReadDataFromDisk().run();
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Shouldn't happen. Note that if the input files are missing, this won't catch that.
+        }
     }
 
     /**
@@ -45,8 +56,7 @@ public class MarketInventory {
      * @return a List of every GearItem contained in the game.
      */
     public List<GearItem> getAllGearItems() {
-        // TODO:
-        return new ArrayList<>();
+        return gearItems;
     }
 
     /**
@@ -54,8 +64,8 @@ public class MarketInventory {
      * @return all GearItems that are Weapons
      */
     public List<GearItem> getAllWeapons() {
-        // TODO:
-        return new ArrayList<>();
+        Stream<GearItem> weapons = gearItems.stream().filter(gearItem -> gearItem instanceof Weapon);
+        return weapons.collect(Collectors.toList());
     }
 
     /**
@@ -63,8 +73,8 @@ public class MarketInventory {
      * @return all GearItems that are Armor
      */
     public List<GearItem> getAllArmor() {
-        // TODO:
-        return new ArrayList<>();
+        Stream<GearItem> armors = gearItems.stream().filter(gearItem -> gearItem instanceof Armor);
+        return armors.collect(Collectors.toList());
     }
 
     /**
@@ -72,8 +82,8 @@ public class MarketInventory {
      * @return all GearItems that are Potions
      */
     public List<GearItem> getAllPotions() {
-        // TODO:
-        return new ArrayList<>();
+        Stream<GearItem> potions = gearItems.stream().filter(gearItem -> gearItem instanceof Potion);
+        return potions.collect(Collectors.toList());
     }
 
     /**
@@ -81,7 +91,172 @@ public class MarketInventory {
      * @return all GearItems that are Spells
      */
     public List<GearItem> getAllSpells() {
-        // TODO:
-        return new ArrayList<>();
+        Stream<GearItem> spells = gearItems.stream().filter(gearItem -> gearItem instanceof Spell);
+        return spells.collect(Collectors.toList());
+    }
+
+    /**
+     * This is a private which encapsulates the process of reading all data from disk.
+     */
+    private class ReadDataFromDisk {
+        File weaponry;
+        File armory;
+        File potions;
+        File iceSpells;
+        File fireSpells;
+        File lightningSpells;
+
+        /**
+         * Constructor. Checks that the required files all exist.
+         */
+        public ReadDataFromDisk() {
+            weaponry = new File("data/Weaponry.txt");
+            armory = new File("data/Armory.txt");
+            potions = new File("data/Potions.txt");
+            iceSpells = new File("data/IceSpells.txt");
+            fireSpells = new File("data/FireSpells.txt");
+            lightningSpells = new File("data/LightningSpells.txt");
+
+            // We need these files to operate
+            assert(weaponry.exists());
+            assert(armory.exists());
+            assert(potions.exists());
+            assert(iceSpells.exists());
+            assert(fireSpells.exists());
+            assert(lightningSpells.exists());
+        }
+
+        /**
+         * Primary method of this class which coordinates the process of reading in
+         * data files from disk.
+         * @throws IOException if a read operation fails.
+         */
+        public void run() throws IOException {
+            readWeaponry();
+            readArmory();
+            readPotions();
+            readIceSpells();
+            readFireSpells();
+            readLightningSpells();
+        }
+
+        /**
+         * Helper function which reads in weaponry
+         */
+        private void readWeaponry() throws IOException {
+            List<String> lines = Files.readAllLines(weaponry.toPath());
+            List<String> relevantLines = lines.subList(1, lines.size()); // Ignore header line
+            for(String line : relevantLines) {
+                line = line.trim();
+                String[] items = line.split("\\s+"); // split by whitespace
+                String name = items[0];
+                int price = Integer.parseInt(items[1]);
+                int minLevel = Integer.parseInt(items[2]);
+                int damage = Integer.parseInt(items[3]);
+                int numHands = Integer.parseInt(items[4]);
+                GearItem weapon = new Weapon(name, price, new Level(minLevel), damage, numHands);
+                gearItems.add(weapon);
+            }
+        }
+
+        /**
+         * Helper function which reads in armory
+         */
+        private void readArmory() throws IOException {
+            List<String> lines = Files.readAllLines(armory.toPath());
+            List<String> relevantLines = lines.subList(1, lines.size()); // Ignore header line
+            for(String line : relevantLines) {
+                line = line.trim();
+                String[] items = line.split("\\s+"); // split by whitespace
+                String name = items[0];
+                int price = Integer.parseInt(items[1]);
+                int minLevel = Integer.parseInt(items[2]);
+                int defense = Integer.parseInt(items[3]);
+
+                GearItem armor = new Armor(name, price, new Level(minLevel), defense);
+                gearItems.add(armor);
+            }
+        }
+
+        /**
+         * Helper function which reads in potions
+         */
+        private void readPotions() throws IOException {
+            List<String> lines = Files.readAllLines(potions.toPath());
+            List<String> relevantLines = lines.subList(1, lines.size()); // Ignore header line
+            for(String line : relevantLines) {
+                line = line.trim();
+                String[] items = line.split("\\s+"); // split by whitespace
+                String name = items[0];
+                int price = Integer.parseInt(items[1]);
+                int minLevel = Integer.parseInt(items[2]);
+                int incrementAmount = Integer.parseInt(items[3]);
+                // TODO: there may be multiple Abilities!
+                // TODO: switch double attributes to ints
+
+                GearItem potion = new Potion(name, price, new Level(minLevel), new Ability(), incrementAmount);
+                gearItems.add(potion);
+            }
+        }
+
+        /**
+         * Helper function which reads in ice spells
+         */
+        private void readIceSpells() throws IOException {
+            List<String> lines = Files.readAllLines(iceSpells.toPath());
+            List<String> relevantLines = lines.subList(1, lines.size()); // Ignore header line
+            for(String line : relevantLines) {
+                line = line.trim();
+                String[] items = line.split("\\s+"); // split by whitespace
+                String name = items[0];
+                int price = Integer.parseInt(items[1]);
+                int minLevel = Integer.parseInt(items[2]);
+                int damage = Integer.parseInt(items[3]);
+                int mana = Integer.parseInt(items[4]);
+
+                GearItem spell = new IceSpell(name, price, new Level(minLevel), new Mana(mana), damage);
+                gearItems.add(spell);
+            }
+        }
+
+        /**
+         * Helper function which reads in fire spells
+         */
+        private void readFireSpells() throws IOException {
+            List<String> lines = Files.readAllLines(fireSpells.toPath());
+            List<String> relevantLines = lines.subList(1, lines.size()); // Ignore header line
+            for(String line : relevantLines) {
+                line = line.trim();
+                String[] items = line.split("\\s+"); // split by whitespace
+                String name = items[0];
+                int price = Integer.parseInt(items[1]);
+                int minLevel = Integer.parseInt(items[2]);
+                int damage = Integer.parseInt(items[3]);
+                int mana = Integer.parseInt(items[4]);
+
+                GearItem spell = new FireSpell(name, price, new Level(minLevel), new Mana(mana), damage);
+                gearItems.add(spell);
+            }
+        }
+
+        /**
+         * Helper function which reads in lightning spells
+         */
+        private void readLightningSpells() throws IOException {
+            List<String> lines = Files.readAllLines(lightningSpells.toPath());
+            List<String> relevantLines = lines.subList(1, lines.size()); // Ignore header line
+            for(String line : relevantLines) {
+                line = line.trim();
+                String[] items = line.split("\\s+"); // split by whitespace
+                String name = items[0];
+                int price = Integer.parseInt(items[1]);
+                int minLevel = Integer.parseInt(items[2]);
+                int damage = Integer.parseInt(items[3]);
+                int mana = Integer.parseInt(items[4]);
+
+                GearItem spell = new LightningSpell(name, price, new Level(minLevel), new Mana(mana), damage);
+                gearItems.add(spell);
+            }
+        }
     }
 }
