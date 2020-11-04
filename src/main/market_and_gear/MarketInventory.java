@@ -16,6 +16,14 @@ import java.util.stream.Stream;
  * Class MarketInventory is a Singleton class that contains every possible
  * GearItem that can be bought or sold in the game.
  *
+ * The first time some client calls the getInstance static method on this class,
+ * a private instance is created internally. When that happens, data is read
+ * from disk, and should that fail, an error will occur. However, an error
+ * should not occur, and, since there is only a single instance of this class,
+ * data will only be read from disk once. Any later times that a client
+ * calls the getInstance method of this class, the instance will have been
+ * previously created, and so data will not be read in from disk again.
+ *
  * @author: Nathan Lauer
  * @email: lauern@bu.edu
  * Creation Date: 11/3/20
@@ -191,9 +199,21 @@ public class MarketInventory {
                 int price = Integer.parseInt(items[1]);
                 int minLevel = Integer.parseInt(items[2]);
                 int incrementAmount = Integer.parseInt(items[3]);
-                // TODO: there may be multiple Abilities
+                // Abilities: this part is trickier, as there may be a single ability,
+                // multiple abilities, or a format "All ability/ability/...", where
+                // there is an extra space!
+                List<Ability> abilities = new ArrayList<>();
+                String relevantAbilities = items[4];
+                if(items[4].equals("All")) {
+                    relevantAbilities = items[5];
+                }
+                String[] abilityStrings = relevantAbilities.split("/");
+                for(String abilityName : abilityStrings) {
+                    Ability ability = new Ability(abilityName, 0);
+                    abilities.add(ability);
+                }
 
-                GearItem potion = new Potion(name, price, new Level(minLevel), Ability.emptyAbilityList(), incrementAmount);
+                GearItem potion = new Potion(name, price, new Level(minLevel), abilities, incrementAmount);
                 gearItems.add(potion);
             }
         }
