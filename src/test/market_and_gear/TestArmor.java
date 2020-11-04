@@ -69,4 +69,18 @@ public class TestArmor {
         assertEquals(200, armor.getPrice());
         assertEquals(400, armor.getDefense());
     }
+
+    @Test
+    public void testClone() {
+        try {
+            Armor other = (Armor)armor.clone();
+            assertEquals(name, other.getName());
+            assertEquals(minLevel, other.getMinLevel());
+            assertEquals(price, other.getPrice());
+            assertEquals(defense, other.getDefense());
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
 }

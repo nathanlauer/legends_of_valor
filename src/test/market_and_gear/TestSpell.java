@@ -4,13 +4,11 @@ import main.attributes.Ability;
 import main.attributes.AbilityBuilder;
 import main.attributes.Level;
 import main.attributes.Mana;
-import main.market_and_gear.FireSpell;
-import main.market_and_gear.IceSpell;
-import main.market_and_gear.LightningSpell;
-import main.market_and_gear.Spell;
+import main.market_and_gear.*;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Class TestSpell
@@ -47,6 +45,18 @@ public class TestSpell {
         Spell lightningSpell = new LightningSpell(name, price, minLevel, mana, damage);
         testAttributes(lightningSpell);
         assertEquals(AbilityBuilder.baseDodgeChanceAbility(), lightningSpell.getAbility());
+    }
+
+    @Test
+    public void testClone() {
+        Spell lightningSpell = new LightningSpell(name, price, minLevel, mana, damage);
+        try {
+            Spell other = (LightningSpell)lightningSpell.clone();
+            testAttributes(other);
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+            fail();
+        }
     }
 
     public void testAttributes(Spell spell) {

@@ -19,7 +19,8 @@ import main.utils.Validations;
  * <p>
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
-public abstract class GearItem {
+public abstract class GearItem implements Cloneable {
+    public static final int mostExpensiveGearItem = 1400; // TSwords are 1400
     private String name;
     private double price;
     private Level minLevel;
@@ -116,5 +117,10 @@ public abstract class GearItem {
         return this.getName().equals(other.getName()) &&
                 Double.compare(this.getPrice(), other.getPrice()) == 0 &&
                 this.getMinLevel().equals(other.getMinLevel());
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return (GearItem)super.clone();
     }
 }
