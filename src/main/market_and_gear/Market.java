@@ -92,7 +92,7 @@ public class Market {
      * Defines equality for two Market objects.
      *
      * @param o Other object in consideration for equality
-     * @return true if o is an instance of Market, and TODO
+     * @return true if o is an instance of Market, they have the same GearItems and the same coffer
      */
     @Override
     public boolean equals(Object o) {

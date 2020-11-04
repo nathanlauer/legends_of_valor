@@ -132,7 +132,7 @@ public class CappedHealthPower extends HealthPower {
      * Defines equality for two CappedHealthPower objects.
      *
      * @param o Other object in consideration for equality
-     * @return true if o is an instance of CappedHealthPower, and TODO
+     * @return true if o is an instance of CappedHealthPower, they have the same max, and the same health power
      */
     @Override
     public boolean equals(Object o) {

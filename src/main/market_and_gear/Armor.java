@@ -77,7 +77,7 @@ public class Armor extends GearItem {
      * Defines equality for two Armor objects.
      *
      * @param o Other object in consideration for equality
-     * @return true if o is an instance of Armor, and TODO
+     * @return true if o is an instance of Armor, they have the same defense, and are the same GearItem
      */
     @Override
     public boolean equals(Object o) {
