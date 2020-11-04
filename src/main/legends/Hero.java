@@ -4,7 +4,10 @@ import main.attributes.Ability;
 import main.attributes.HealthPower;
 import main.attributes.Level;
 import main.attributes.Mana;
+import main.market_and_gear.GearItem;
 import main.utils.Coffer;
+
+import java.util.List;
 
 /**
  * Class Hero extends Legends, and represents a "good guy" in this game. There are a number
@@ -35,9 +38,11 @@ public abstract class Hero extends Legend {
     private Ability agility;
     private Ability dexterity;
     private Ability strength;
+    private final GearItemList gearItemList;
+    private final ActiveGearItems activeGearItems;
 
     /**
-     * Standard constructor for a Hero.
+     * Standard constructor for a Hero. By default, a Hero is created without any GearItems.
      * @param mana Mana of this Hero
      * @param coffer Coffer for this Hero
      * @param agility agility Ability of this Hero
@@ -53,6 +58,24 @@ public abstract class Hero extends Legend {
         this.dexterity = dexterity;
         this.strength = strength;
         this.fainted = Hero.defaultFainted;
+        this.gearItemList = new GearItemList();
+        this.activeGearItems = new ActiveGearItems(this);
+    }
+
+    /**
+     *
+     * @return the List of all GearItem's this Hero has
+     */
+    public GearItemList getGearItemList() {
+        return gearItemList;
+    }
+
+    /**
+     *
+     * @return the active GearItems this Hero has
+     */
+    public ActiveGearItems getActiveGearItems() {
+        return activeGearItems;
     }
 
     /**
