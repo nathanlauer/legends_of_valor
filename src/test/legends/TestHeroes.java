@@ -1,14 +1,14 @@
 package test.legends;
 
 import main.attributes.*;
+import main.legends.Hero;
 import main.legends.Paladin;
 import main.legends.Sorcerer;
 import main.legends.Warrior;
 import main.utils.Coffer;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Class TestHeroes
@@ -118,5 +118,13 @@ public class TestHeroes {
         assertEquals(gandalf, otherSorcerer);
         assertEquals(gimli, otherWarrior);
         assertEquals(aragorn, otherPaladin);
+    }
+
+    @Test
+    public void fainted() {
+        Hero hero = new Sorcerer("Gandalf", new Level(34), new UncappedHealthPower(100), mana, coffer, agility, dexterity, strength);
+        assertFalse(hero.hasFainted());
+        hero.setFainted(true);
+        assertTrue(hero.hasFainted());
     }
 }

@@ -52,6 +52,7 @@ public abstract class Hero extends Legend {
         this.agility = agility;
         this.dexterity = dexterity;
         this.strength = strength;
+        this.fainted = Hero.defaultFainted;
     }
 
     /**

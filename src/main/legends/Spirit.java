@@ -1,7 +1,6 @@
 package main.legends;
 
 import main.attributes.*;
-import main.utils.Validations;
 
 /**
  * Class Spirit is a concrete instance of a Monster.

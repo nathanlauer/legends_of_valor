@@ -27,7 +27,6 @@ public class Warrior extends Hero {
                 AbilityBuilder.baseDexterityAbility(),
                 AbilityBuilder.baseStrengthAbility());
     }
-    // TODO: refactor so that there is a constructor in Hero and Monster!!
 
     /**
      * Standard constructor for a Warrior.
