@@ -1,11 +1,11 @@
 package test.market_and_gear;
 
 import main.attributes.Level;
+import main.market_and_gear.GearItemType;
 import main.market_and_gear.Weapon;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Class TestWeapon
@@ -78,5 +78,10 @@ public class TestWeapon {
         assertEquals(200, weapon.getPrice());
         assertEquals(400, weapon.getDamage());
         assertEquals(1, weapon.getNumHands());
+    }
+
+    @Test
+    public void type() {
+        assertTrue(weapon.getType().equals(GearItemType.WEAPON));
     }
 }

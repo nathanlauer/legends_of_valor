@@ -90,6 +90,12 @@ public abstract class GearItem implements Cloneable {
     }
 
     /**
+     *
+     * @return the Type of this Gear Item
+     */
+    public abstract GearItemType getType();
+
+    /**
      * @return String representation of this GearItem object.
      */
     @Override

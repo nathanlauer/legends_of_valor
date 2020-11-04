@@ -58,6 +58,14 @@ public class Armor extends GearItem {
     }
 
     /**
+     * @return the Type of this Gear Item
+     */
+    @Override
+    public GearItemType getType() {
+        return GearItemType.ARMOR;
+    }
+
+    /**
      * @return String representation of this Armor object.
      */
     @Override

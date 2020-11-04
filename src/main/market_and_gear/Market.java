@@ -37,7 +37,8 @@ import java.util.List;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public class Market {
-    private final List<GearItem> gearItems;
+    public static final int startingCofferMultiplier = 5;
+    private List<GearItem> gearItems;
     private final Coffer coffer;
 
     /**
@@ -50,35 +51,60 @@ public class Market {
     public Market() {
         GearItemFactoryCreator factory = new RandomGearItemFactory();
         gearItems = factory.createGearItems();
-        int numCoins = GearItem.mostExpensiveGearItem * 5; // Markets should have plenty of coins for this Game.
+        int numCoins = GearItem.mostExpensiveGearItem * Market.startingCofferMultiplier; // Markets should have plenty of coins for this Game.
         coffer = new Coffer(numCoins);
     }
 
-//    /**
-//     * @return String representation of this Market object.
-//     */
-//    @Override
-//    public String toString() {
-//        // TODO
-//    }
-//
-//    /**
-//     * Defines equality for two Market objects.
-//     *
-//     * @param o Other object in consideration for equality
-//     * @return true if o is an instance of Market, and TODO
-//     */
-//    @Override
-//    public boolean equals(Object o) {
-//        if (o == null) {
-//            return false;
-//        }
-//
-//        if (!(o instanceof Market)) {
-//            return false;
-//        }
-//
-//        Market other = (Market) o;
-//        // TODO
-//    }
+    /**
+     * Regenerates the list of available GearItems in this Market, according
+     * to the semantics of the passed in factory.
+     * @param factory GearItemFactoryCreator, responsible for creating the relevant GearItems.
+     */
+    public void regenerateGearItems(GearItemFactoryCreator factory) {
+        gearItems = factory.createGearItems();
+    }
+
+    /**
+     *
+     * @return a List of the available GearItems in this Market.
+     */
+    public List<GearItem> getGearItems() {
+        return gearItems;
+    }
+
+    /**
+     *
+     * @return the Coffer containing the coins this Market owns.
+     */
+    public Coffer getCoffer() {
+        return coffer;
+    }
+
+    /**
+     * @return String representation of this Market object.
+     */
+    @Override
+    public String toString() {
+        return "Market with GearItems: " + getGearItems();
+    }
+
+    /**
+     * Defines equality for two Market objects.
+     *
+     * @param o Other object in consideration for equality
+     * @return true if o is an instance of Market, and TODO
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) {
+            return false;
+        }
+
+        if (!(o instanceof Market)) {
+            return false;
+        }
+
+        Market other = (Market) o;
+        return this.getGearItems().equals(other.getGearItems()) && this.getCoffer().equals(other.getCoffer());
+    }
 }

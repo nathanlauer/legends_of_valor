@@ -88,4 +88,11 @@ public class TestSpell {
         assertEquals(mana, spell.getMana());
         assertEquals(damage, spell.getDamage());
     }
+
+    @Test
+    public void type() {
+        assertTrue(new FireSpell().getType().equals(GearItemType.SPELL));
+        assertTrue(new IceSpell().getType().equals(GearItemType.SPELL));
+        assertTrue(new LightningSpell().getType().equals(GearItemType.SPELL));
+    }
 }

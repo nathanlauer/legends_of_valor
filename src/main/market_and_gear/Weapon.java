@@ -85,6 +85,14 @@ public class Weapon extends GearItem {
     }
 
     /**
+     * @return the Type of this Gear Item
+     */
+    @Override
+    public GearItemType getType() {
+        return GearItemType.WEAPON;
+    }
+
+    /**
      * @return String representation of this Weapon object.
      */
     @Override

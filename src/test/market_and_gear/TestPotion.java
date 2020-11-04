@@ -2,6 +2,7 @@ package test.market_and_gear;
 
 import main.attributes.Ability;
 import main.attributes.Level;
+import main.market_and_gear.GearItemType;
 import main.market_and_gear.Potion;
 import org.junit.jupiter.api.Test;
 
@@ -10,8 +11,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Class TestPotion
@@ -87,5 +87,10 @@ public class TestPotion {
         List<Ability> expected = new ArrayList<>(abilities);
         expected.add(new Ability("Agility", 10));
         assertEquals(expected, potion.getAbilities());
+    }
+
+    @Test
+    public void type() {
+        assertTrue(potion.getType().equals(GearItemType.POTION));
     }
 }

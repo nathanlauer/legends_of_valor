@@ -120,6 +120,14 @@ public class Potion extends GearItem {
     }
 
     /**
+     * @return the Type of this Gear Item
+     */
+    @Override
+    public GearItemType getType() {
+        return GearItemType.POTION;
+    }
+
+    /**
      * @return String representation of this Potion object.
      */
     @Override

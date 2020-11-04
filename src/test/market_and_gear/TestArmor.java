@@ -2,10 +2,10 @@ package test.market_and_gear;
 
 import main.attributes.Level;
 import main.market_and_gear.Armor;
+import main.market_and_gear.GearItemType;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Class TestArmor
@@ -81,5 +81,10 @@ public class TestArmor {
             e.printStackTrace();
             fail();
         }
+    }
+
+    @Test
+    public void type() {
+        assertTrue(armor.getType().equals(GearItemType.ARMOR));
     }
 }

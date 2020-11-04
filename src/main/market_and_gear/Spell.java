@@ -92,6 +92,15 @@ public abstract class Spell extends GearItem {
     }
 
     /**
+     *
+     * @return the Type of this Gear Item
+     */
+    @Override
+    public GearItemType getType() {
+        return GearItemType.SPELL;
+    }
+
+    /**
      * @return String representation of this Spell object.
      */
     @Override
