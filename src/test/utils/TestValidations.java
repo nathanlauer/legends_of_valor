@@ -42,31 +42,4 @@ public class TestValidations {
             fail("Should not have thrown an exception!");
         }
     }
-
-    @Test
-    public void doubleNonNegative() {
-        double doubleValue = -1.0;
-        try {
-            Validations.nonNegative(doubleValue, "Value");
-            fail("Should have thrown an exception!");
-        } catch (IllegalArgumentException e) {
-            // succeeded
-        }
-
-        doubleValue = 0.0;
-        try {
-            Validations.nonNegative(doubleValue, "Value");
-            // succeeded
-        } catch (IllegalArgumentException e) {
-            fail("Should not have thrown an exception!");
-        }
-
-        doubleValue = 1.0;
-        try {
-            Validations.nonNegative(doubleValue, "Value");
-            // succeeded
-        } catch (IllegalArgumentException e) {
-            fail("Should not have thrown an exception!");
-        }
-    }
 }

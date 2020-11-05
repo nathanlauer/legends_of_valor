@@ -6,7 +6,7 @@ import main.utils.Validations;
  * Class Mana represents a concept similar to HealthPower, but for magic. It is essentially
  * how much magical ability a Legend has accessible.
  *
- * At the moment, it is essentially a wrapper around a double value. However, similar
+ * At the moment, it is essentially a wrapper around a int value. However, similar
  * to some other classes in this game, mana cannot be negative.
  *
  * @author: Nathan Lauer
@@ -15,8 +15,8 @@ import main.utils.Validations;
  * <p>
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
-public class Mana {
-    private double mana;
+public class Mana implements Cloneable {
+    private int mana;
 
     /**
      * Empty constructor, sets mana to zero.
@@ -30,7 +30,7 @@ public class Mana {
      * Throws an IllegalArgumentException if mana is negative
      * @param mana amount of mana as initial value.
      */
-    public Mana(double mana) {
+    public Mana(int mana) {
         Validations.nonNegative(mana, "mana");
         this.mana = mana;
     }
@@ -39,7 +39,7 @@ public class Mana {
      *
      * @return the amount of Mana
      */
-    public double getManaAmount() {
+    public int getManaAmount() {
         return mana;
     }
 
@@ -48,7 +48,7 @@ public class Mana {
      * Throws an IllegalArgumentException is amount is negative
      * @param amount new amount of Mana
      */
-    public void setMana(double amount) {
+    public void setMana(int amount) {
         Validations.nonNegative(amount, "amount");
         mana = amount;
     }
@@ -58,7 +58,7 @@ public class Mana {
      * Throws an IllegalArgumentException if amount is negative
      * @param amount amount to increase
      */
-    public void increaseManaBy(double amount) {
+    public void increaseManaBy(int amount) {
         Validations.nonNegative(amount, "amount");
         this.setMana(this.getManaAmount() + amount);
     }
@@ -71,7 +71,7 @@ public class Mana {
      * Throws an IllegalArgumentException if amount is negative
      * @param amount amount to decrease
      */
-    public void decreaseManaBy(double amount) {
+    public void decreaseManaBy(int amount) {
         Validations.nonNegative(amount, "amount");
         if(amount > mana) {
             this.setMana(0);
@@ -105,6 +105,15 @@ public class Mana {
         }
 
         Mana other = (Mana) o;
-        return Double.compare(this.getManaAmount(), other.getManaAmount()) == 0;
+        return this.getManaAmount() == other.getManaAmount();
+    }
+
+    /**
+     *
+     * @return a cloned copy of this Mana
+     */
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

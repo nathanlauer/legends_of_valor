@@ -1,9 +1,6 @@
 package main.legends;
 
-import main.attributes.Ability;
-import main.attributes.HealthPower;
-import main.attributes.Level;
-import main.attributes.UncappedHealthPower;
+import main.attributes.*;
 
 /**
  * Class Exoskeleton is a concrete instance of a Monster.
@@ -24,9 +21,9 @@ public class Exoskeleton extends Monster {
      */
     public Exoskeleton() {
         this(Exoskeleton.defaultName, new Level(0), new UncappedHealthPower(0),
-                new Ability("Damage", 0),
-                new Ability("Defense", 0),
-                new Ability("DodgeChance", 0));
+                AbilityBuilder.baseDamageAbility(),
+                AbilityBuilder.baseDefenseAbility(),
+                AbilityBuilder.baseDodgeChanceAbility());
     }
 
     /**
@@ -39,7 +36,7 @@ public class Exoskeleton extends Monster {
      * @param dodgeChance dodgeChance Ability for this Exoskeleton.
      */
     public Exoskeleton(String name, Level level, HealthPower healthPower, Ability damage, Ability defense, Ability dodgeChance) {
-        MonsterBuilder.initializeMonsterAttributes(this, name, level, healthPower, damage, defense, dodgeChance);
+        super(name, level, healthPower, damage, defense, dodgeChance);
     }
 
     /**

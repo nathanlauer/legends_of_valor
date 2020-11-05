@@ -1,7 +1,8 @@
 package main.legends;
 
 import main.attributes.Ability;
-import main.utils.Validations;
+import main.attributes.HealthPower;
+import main.attributes.Level;
 
 /**
  * Abstract Class Monster extends Legend, and represents a Monster. There are
@@ -24,6 +25,23 @@ public abstract class Monster extends Legend {
     private Ability damage;
     private Ability defense;
     private Ability dodgeChance;
+
+    /**
+     * Standard constructor for a Monster
+     * @param name Name of this Monster
+     * @param level Level of this Monster
+     * @param healthPower HealthPower of this Monster
+     * @param damage Damage of this Monster
+     * @param defense Defense of this Monster
+     * @param dodgeChance DodgeChange of this Monster
+     */
+    public Monster(String name, Level level, HealthPower healthPower,
+                   Ability damage, Ability defense, Ability dodgeChance) {
+        super(name, level, healthPower);
+        this.damage = damage;
+        this.defense = defense;
+        this.dodgeChance = dodgeChance;
+    }
 
     /**
      * Sets the damage Ability for this Monster to the passed in value.

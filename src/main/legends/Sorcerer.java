@@ -23,9 +23,9 @@ public class Sorcerer extends Hero {
     public Sorcerer() {
         this(Sorcerer.defaultName, new Level(0), new UncappedHealthPower(0),
                 new Mana(0), new Coffer(0),
-                new Ability("Agility", 0),
-                new Ability("Dexterity", 0),
-                new Ability("Strength", 0));
+                AbilityBuilder.baseAgilityAbility(),
+                AbilityBuilder.baseDexterityAbility(),
+                AbilityBuilder.baseStrengthAbility());
     }
 
     /**
@@ -39,7 +39,7 @@ public class Sorcerer extends Hero {
      */
     public Sorcerer(String name, Level level, HealthPower healthPower, Mana mana, Coffer coffer,
                     Ability agility, Ability dexterity, Ability strength) {
-        HeroBuilder.initializeHeroAttributes(this, name, level, healthPower, mana, coffer, agility, dexterity, strength);
+        super(name, level, healthPower, mana, coffer, agility, dexterity, strength);
     }
 
     /**

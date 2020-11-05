@@ -22,7 +22,7 @@ import main.utils.Validations;
  * <p>
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
-public class Level {
+public class Level implements Comparable<Level>, Cloneable{
     private int level;
 
     /**
@@ -68,6 +68,16 @@ public class Level {
     }
 
     /**
+     * Helper method which indicates if this level is less than the passed in level.
+     * A Level is less than another if it's level is lower.
+     * @param other the other Level in question
+     * @return true if this level is less than other, false otherwise.
+     */
+    public boolean isLessThan(Level other) {
+        return this.compareTo(other) < 0;
+    }
+
+    /**
      *
      * @return a String representation of this Level
      */
@@ -93,5 +103,31 @@ public class Level {
 
         Level other = (Level)o;
         return other.getLevel() == this.getLevel();
+    }
+
+    /**
+     * Compares this object with the specified object for order.  Returns a
+     * negative integer, zero, or a positive integer as this object is less
+     * than, equal to, or greater than the specified object.
+     *
+     * @param o the object to be compared.
+     * @return a negative integer, zero, or a positive integer as this object
+     * is less than, equal to, or greater than the specified object.
+     * @throws NullPointerException if the specified object is null
+     * @throws ClassCastException   if the specified object's type prevents it
+     *                              from being compared to this object.
+     */
+    @Override
+    public int compareTo(Level o) {
+        return this.getLevel() - o.getLevel();
+    }
+
+    /**
+     *
+     * @return a cloned copy of this Level
+     */
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

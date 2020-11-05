@@ -1,7 +1,13 @@
 package test.attributes;
 
+import main.attributes.HigherLevelComparator;
 import main.attributes.Level;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -55,5 +61,19 @@ public class TestLevel {
         assertNotEquals(first, second);
         second.incrementLevel();
         assertEquals(first, second);
+    }
+
+    @Test
+    public void compare() {
+        Level lower = new Level(12);
+        Level higher = new Level(14);
+        assertTrue(lower.isLessThan(higher));
+        assertTrue(lower.compareTo(higher) < 0);
+
+        // Test higher level comparator
+        List<Level> levels = new ArrayList<>(Arrays.asList(lower, higher));
+        Collections.sort(levels, new HigherLevelComparator());
+        assertEquals(levels.get(0), higher);
+        assertEquals(levels.get(1), lower);
     }
 }

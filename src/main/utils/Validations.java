@@ -1,5 +1,9 @@
 package main.utils;
 
+import main.legends.Hero;
+import main.legends.NonOwnedGearItemException;
+import main.market_and_gear.GearItem;
+
 /**
  * Class Validations is a static class that offers a couple helper methods,
  * which throw IllegalArgumentException if a relevant condition fails.
@@ -16,30 +20,21 @@ public class Validations {
      * @param value the value in question
      * @param name variable name that wraps value
      */
-    public static void nonNegative(double value, String name) {
-        if(value < 0.0) {
+    public static void nonNegative(int value, String name) {
+        if(value < 0) {
             throw new IllegalArgumentException(name + " can't be negative!");
         }
     }
 
     /**
-     * Throws an IllegalArgumentException if value is negative.
-     * @param value the value in question
-     * @param name variable name that wraps value
+     * Throws a NonOwnedGearItemException if the passed in GearItem is
+     * not owned by the passed in Hero
+     * @param hero the Hero in question
+     * @param gearItem the GearItem in question
      */
-    public static void nonNegative(int value, String name) {
-        Validations.nonNegative((double)value, name);
-    }
-
-    /**
-     * Throws an IllegalArgumentException if value is less than 0 or greater than 1.
-     * That is, value must be a percentage.
-     * @param value the value in question.
-     * @param name name of the variable in question.
-     */
-    public static void percentage(double value, String name) {
-        if(value < 0.0 || value > 1.0) {
-            throw new IllegalArgumentException(name + " must be a percentage! Valid range is [0, 1]");
+    public static void HeroOwnsGearItem(Hero hero, GearItem gearItem) {
+        if(!hero.getGearItemList().containsGearItem(gearItem)) {
+            throw new NonOwnedGearItemException("Attempted to activate GearItem that is not owned!");
         }
     }
 }

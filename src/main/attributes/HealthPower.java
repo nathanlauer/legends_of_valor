@@ -7,7 +7,7 @@ import main.utils.Validations;
  * Legend has healthPower of 100, while a Legend that feints/dies has a healthPower
  * of 0.
  *
- * This class is a wrapper around a double healthPower, which encapsulates the logic
+ * This class is a wrapper around a int healthPower, which encapsulates the logic
  * for incrementing and decrementing health of a Legend.
  *
  * In general, the following rules apply to health power:
@@ -25,7 +25,7 @@ import main.utils.Validations;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public abstract class HealthPower {
-    private double healthPower;
+    private int healthPower;
 
     /**
      * Sets the healthPower to the passed in value.
@@ -35,7 +35,7 @@ public abstract class HealthPower {
      * throw an IllegalArgumentException
      * @param newHealthPower new healthPower
      */
-    public void setHealthPower(double newHealthPower) {
+    public void setHealthPower(int newHealthPower) {
         Validations.nonNegative(newHealthPower, "newHealthPower");
         healthPower = newHealthPower;
     }
@@ -49,12 +49,12 @@ public abstract class HealthPower {
      * Throws an IllegalArgumentException if amount is less than 0.
      * @param amount the amount to reduce health power by
      */
-    public void reduceHealthPowerBy(double amount) {
+    public void reduceHealthPowerBy(int amount) {
         Validations.nonNegative(amount, "amount");
 
-        double currentHealthPower = this.getHealthPower();
-        if((currentHealthPower - amount) <= 0.0) {
-            this.setHealthPower(0.0);
+        int currentHealthPower = this.getHealthPower();
+        if((currentHealthPower - amount) <= 0) {
+            this.setHealthPower(0);
         } else {
             this.setHealthPower(currentHealthPower - amount);
         }
@@ -66,7 +66,7 @@ public abstract class HealthPower {
      *
      * @param amount the amount to increase healthPower.
      */
-    public void increaseHealthPowerBy(double amount) {
+    public void increaseHealthPowerBy(int amount) {
         Validations.nonNegative(amount, "amount");
         this.setHealthPower(this.getHealthPower() + amount);
     }
@@ -75,7 +75,7 @@ public abstract class HealthPower {
      *
      * @return the healthPower of this Legend
      */
-    public double getHealthPower() {
+    public int getHealthPower() {
         return healthPower;
     }
 
@@ -92,9 +92,9 @@ public abstract class HealthPower {
      * Defines equality for two HealthPower objects.
      * @param o the other object in question
      * @return true if the other object is a health power, and has the same
-     *          healthPower value as this. Note that we are comparing doubles
+     *          healthPower value as this. Note that we are comparing ints
      *          here, so two healthPower's are considered equivalent if
-     *          their double values are within a certain round off value.
+     *          their int values are within a certain round off value.
      */
     @Override
     public boolean equals(Object o) {
@@ -107,6 +107,6 @@ public abstract class HealthPower {
         }
 
         HealthPower other = (HealthPower)o;
-        return Double.compare(other.getHealthPower(), this.getHealthPower()) == 0;
+        return other.getHealthPower() == this.getHealthPower();
     }
 }

@@ -1,6 +1,7 @@
 package test.legends;
 
 import main.attributes.Ability;
+import main.attributes.AbilityBuilder;
 import main.attributes.Level;
 import main.attributes.UncappedHealthPower;
 import main.legends.Dragon;
@@ -27,9 +28,9 @@ public class TestMonsters {
         assertEquals(Dragon.defaultName, rhaegal.getName());
         assertEquals(new Level(0), rhaegal.getLevel());
         assertEquals(new UncappedHealthPower(0), rhaegal.getHealthPower());
-        assertEquals(new Ability("Damage", 0), rhaegal.getDamage());
-        assertEquals(new Ability("Defense", 0), rhaegal.getDefense());
-        assertEquals(new Ability("DodgeChance", 0), rhaegal.getDodgeChance());
+        assertEquals(AbilityBuilder.baseDamageAbility(), rhaegal.getDamage());
+        assertEquals(AbilityBuilder.baseDefenseAbility(), rhaegal.getDefense());
+        assertEquals(AbilityBuilder.baseDodgeChanceAbility(), rhaegal.getDodgeChance());
 
         Ability damage = new Ability("Damage", 1000);
         Ability defense = new Ability("Defense", 900);
@@ -50,9 +51,9 @@ public class TestMonsters {
         assertEquals(Exoskeleton.defaultName, beetle.getName());
         assertEquals(new Level(0), beetle.getLevel());
         assertEquals(new UncappedHealthPower(0), beetle.getHealthPower());
-        assertEquals(new Ability("Damage", 0), beetle.getDamage());
-        assertEquals(new Ability("Defense", 0), beetle.getDefense());
-        assertEquals(new Ability("DodgeChance", 0), beetle.getDodgeChance());
+        assertEquals(AbilityBuilder.baseDamageAbility(), beetle.getDamage());
+        assertEquals(AbilityBuilder.baseDefenseAbility(), beetle.getDefense());
+        assertEquals(AbilityBuilder.baseDodgeChanceAbility(), beetle.getDodgeChance());
 
         Ability damage = new Ability("Damage", 1000);
         Ability defense = new Ability("Defense", 900);
@@ -73,9 +74,9 @@ public class TestMonsters {
         assertEquals(Spirit.defaultName, ghost.getName());
         assertEquals(new Level(0), ghost.getLevel());
         assertEquals(new UncappedHealthPower(0), ghost.getHealthPower());
-        assertEquals(new Ability("Damage", 0), ghost.getDamage());
-        assertEquals(new Ability("Defense", 0), ghost.getDefense());
-        assertEquals(new Ability("DodgeChance", 0), ghost.getDodgeChance());
+        assertEquals(AbilityBuilder.baseDamageAbility(), ghost.getDamage());
+        assertEquals(AbilityBuilder.baseDefenseAbility(), ghost.getDefense());
+        assertEquals(AbilityBuilder.baseDodgeChanceAbility(), ghost.getDodgeChance());
 
         Ability damage = new Ability("Damage", 1000);
         Ability defense = new Ability("Defense", 900);

@@ -28,7 +28,7 @@ public class UncappedHealthPower extends HealthPower {
      * Throws an IllegalArgumentException if healthPower is negative.
      * @param healthPower the initial value of healthPower
      */
-    public UncappedHealthPower(double healthPower) {
+    public UncappedHealthPower(int healthPower) {
         Validations.nonNegative(healthPower, "healthPower");
         super.setHealthPower(healthPower);
     }
