@@ -106,4 +106,40 @@ public class TestBuyingGearItems {
         }
         assertEquals(wasCaught, 1);
     }
+
+    @Test
+    public void buyPotion() {
+        Market market = new Market();
+        GearItem potion = market.getPotions().get(0);
+        hero.getCoffer().setNumCoins(GearItem.mostExpensiveGearItem + 100);
+        try {
+            potion.buy(market, hero);
+        } catch (NotEnoughCoinsException | BeneathLevelException e) {
+            e.printStackTrace();
+            fail();
+        }
+
+        assertFalse(market.hasGearItem(potion));
+        assertTrue(hero.getGearItemList().containsGearItem(potion));
+        assertTrue(hero.getActiveGearItems().gearItemIsActive(potion));
+        assertTrue(hero.getActiveGearItems().hasActivePotions());
+    }
+
+    @Test
+    public void buySpell() {
+        Market market = new Market();
+        GearItem spell = market.getSpells().get(0);
+        hero.getCoffer().setNumCoins(GearItem.mostExpensiveGearItem + 100);
+        try {
+            spell.buy(market, hero);
+        } catch (NotEnoughCoinsException | BeneathLevelException e) {
+            e.printStackTrace();
+            fail();
+        }
+
+        assertFalse(market.hasGearItem(spell));
+        assertTrue(hero.getGearItemList().containsGearItem(spell));
+        assertTrue(hero.getActiveGearItems().gearItemIsActive(spell));
+        assertTrue(hero.getActiveGearItems().hasActiveSpells());
+    }
 }

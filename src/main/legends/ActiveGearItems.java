@@ -203,12 +203,12 @@ public class ActiveGearItems {
     public void removeGearItem(GearItem gearItem) {
         switch (gearItem.getType()) {
             case WEAPON:
-                if(this.getWeapon().equals(gearItem)) {
+                if(this.hasActiveWeapon() && this.getWeapon().equals(gearItem)) {
                     this.deactivateWeapon();
                 }
                 break;
             case ARMOR:
-                if(this.getArmor().equals(gearItem)) {
+                if(this.hasActiveArmor() && this.getArmor().equals(gearItem)) {
                     this.removeArmor();
                 }
                 break;
@@ -232,10 +232,10 @@ public class ActiveGearItems {
         boolean hasItem;
         switch (gearItem.getType()) {
             case WEAPON:
-                hasItem = this.getWeapon().equals(gearItem);
+                hasItem = this.hasActiveWeapon() && this.getWeapon().equals(gearItem);
                 break;
             case ARMOR:
-                hasItem = this.getArmor().equals(gearItem);
+                hasItem = this.hasActiveArmor() && this.getArmor().equals(gearItem);
                 break;
             case POTION:
                 hasItem = this.getPotions().contains((Potion)gearItem);

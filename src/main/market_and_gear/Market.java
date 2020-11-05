@@ -3,6 +3,8 @@ package main.market_and_gear;
 import main.utils.Coffer;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Class Market is a class that represents a place in the game where Heroes
@@ -70,6 +72,42 @@ public class Market {
      */
     public List<GearItem> getGearItems() {
         return gearItems;
+    }
+
+    /**
+     *
+     * @return a List of all Weapons in this Market
+     */
+    public List<GearItem> getWeapons() {
+        Stream<GearItem> weapons = getGearItems().stream().filter(gearItem -> gearItem instanceof Weapon);
+        return weapons.collect(Collectors.toList());
+    }
+
+    /**
+     *
+     * @return List of all Armor in this Market
+     */
+    public List<GearItem> getArmor() {
+        Stream<GearItem> armor = getGearItems().stream().filter(gearItem -> gearItem instanceof Armor);
+        return armor.collect(Collectors.toList());
+    }
+
+    /**
+     *
+     * @return List of all Potions in this Market
+     */
+    public List<GearItem> getPotions() {
+        Stream<GearItem> potions = getGearItems().stream().filter(gearItem -> gearItem instanceof Potion);
+        return potions.collect(Collectors.toList());
+    }
+
+    /**
+     *
+     * @return List of all Spells in this Market
+     */
+    public List<GearItem> getSpells() {
+        Stream<GearItem> spells = getGearItems().stream().filter(gearItem -> gearItem instanceof Spell);
+        return spells.collect(Collectors.toList());
     }
 
     /**
