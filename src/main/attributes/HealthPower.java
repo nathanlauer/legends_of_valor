@@ -95,6 +95,15 @@ public abstract class HealthPower {
     }
 
     /**
+     * Indicates whether or not this HealthPower has "some" health, meaning
+     * that it represents a Legend that is alive.
+     * @return true if healthPower > 0, false otherwise
+     */
+    public boolean hasSomeHealth() {
+        return healthPower > 0;
+    }
+
+    /**
      *
      * @return String representation of this HealthPower
      */

@@ -36,7 +36,12 @@ public class TurnBasedGame extends Game {
     public void play() {
         boolean finished = executor.finishedAllTurns();
         while(!finished) {
-            executor.setupNextTurn();
+            try {
+                executor.setupNextTurn();
+            } catch (InvalidNextTurnException e) {
+                e.printStackTrace();
+                // TODO: figure out what to do here...
+            }
             executor.playNextTurn();
             executor.processEndOfTurn();
             finished = executor.finishedAllTurns();

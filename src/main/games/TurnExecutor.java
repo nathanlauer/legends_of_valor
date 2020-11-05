@@ -16,7 +16,7 @@ public interface TurnExecutor {
     /**
      * Performs any required setup for the next turn.
      */
-    void setupNextTurn();
+    void setupNextTurn() throws InvalidNextTurnException;
 
     /**
      * Plays the next turn
