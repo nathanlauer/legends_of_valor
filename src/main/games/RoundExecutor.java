@@ -14,9 +14,19 @@ package main.games;
  */
 public interface RoundExecutor {
     /**
+     * Performs any preprocessing required before the start of a round.
+     */
+    void setupNextRound();
+
+    /**
      * Method which encapsulates the logic for proceeding through a single round of the game.
      */
     void playRound();
+
+    /**
+     * Performs any required processing at the conclusion of a round of play.
+     */
+    void processEndOfRound();
 
     /**
      * Indicates whether or not the Game has ended. Implementing subclasses are expected

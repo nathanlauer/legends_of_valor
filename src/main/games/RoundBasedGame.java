@@ -37,6 +37,7 @@ public class RoundBasedGame extends Game {
         boolean finished = executor.finishedGame();
         while(!finished) {
             executor.playRound();
+            executor.processEndOfRound();
             finished = executor.finishedGame();
         }
     }

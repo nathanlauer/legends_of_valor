@@ -24,6 +24,11 @@ public interface TurnExecutor {
     void playNextTurn();
 
     /**
+     * Performs any processing necessary at the completion of the previous turn.
+     */
+    void processEndOfTurn();
+
+    /**
      * Indicates whether or not all turns have finished.
      * @return true if all turns have completed, false otherwise.
      */

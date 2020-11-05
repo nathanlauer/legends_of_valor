@@ -38,6 +38,7 @@ public class TurnBasedGame extends Game {
         while(!finished) {
             executor.setupNextTurn();
             executor.playNextTurn();
+            executor.processEndOfTurn();
             finished = executor.finishedAllTurns();
         }
     }

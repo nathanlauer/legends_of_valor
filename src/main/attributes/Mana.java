@@ -64,6 +64,21 @@ public class Mana implements Cloneable {
     }
 
     /**
+     * Increments the Mana by a the passed in percentage.
+     * For example, a client may choose to increase the Mana by 10%
+     * (which is different than increaseManaBy, which increase by a
+     * fixed amount)
+     *
+     * Throws an IllegalArgumentException if percentage is negative.
+     * @param percentage the percentage to increase, on a scale of 0-100
+     */
+    public void increaseByPercentage(int percentage) {
+        Validations.nonNegative(percentage, "percentage");
+        int amountToIncrease = (int)Math.ceil(percentage/100.0 * this.getManaAmount());
+        this.increaseManaBy(amountToIncrease);
+    }
+
+    /**
      * Decreases the amount of Mana by the passed in value.
      * If amount is greater than the current mana, then the mana
      * is set to zero (e.g. mana can't be negative).

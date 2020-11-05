@@ -72,6 +72,21 @@ public abstract class HealthPower {
     }
 
     /**
+     * Increments the HealthPower by a the passed in percentage.
+     * For example, a client may choose to increase the HealthPower by 10%
+     * (which is different than increaseHealthPowerBy, which increase by a
+     * fixed amount)
+     *
+     * Throws an IllegalArgumentException if percentage is negative.
+     * @param percentage the percentage to increase, on a scale of 0-100
+     */
+    public void increaseByPercentage(int percentage) {
+        Validations.nonNegative(percentage, "percentage");
+        int amountToIncrease = (int)Math.ceil(percentage/100.0 * this.getHealthPower());
+        this.increaseHealthPowerBy(amountToIncrease);
+    }
+
+    /**
      *
      * @return the healthPower of this Legend
      */
