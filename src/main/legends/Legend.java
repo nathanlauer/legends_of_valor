@@ -3,6 +3,9 @@ package main.legends;
 import main.attributes.HealthPower;
 import main.attributes.Level;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Abstract Class Legend sits at the top of the inheritance hierarchy for all heroes and monsters.
  * The idea is that heroes and monsters share some common characteristics, such as health power,
@@ -10,16 +13,22 @@ import main.attributes.Level;
  * this game into one hierarchy, which allows for common collections to be used in a number of other
  * places.
  *
+ * We use the observer pattern to implement fights between Heroes and Monster (subclasses
+ * of Legend), and because these fights are bi-directional (Heroes attack Monsters and
+ * vise versa, Monsters attack Heroes), we register a Legend as both a Subject and an
+ * Observer.
+ *
  * @author: Nathan Lauer
  * @email: lauern@bu.edu
  * Creation Date: 11/2/20
  * <p>
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
-public abstract class Legend {
+public abstract class Legend implements Subject, Observer {
     private String name;
     private Level level;
     private HealthPower healthPower;
+    private List<Observer> observers;
 
     /**
      * Standard constructor for a Legend.
@@ -31,6 +40,7 @@ public abstract class Legend {
         this.name = name;
         this.level = level;
         this.healthPower = healthPower;
+        observers = new ArrayList<>();
     }
 
     public void setName(String name) {
@@ -75,6 +85,41 @@ public abstract class Legend {
      */
     public void setHealthPower(HealthPower healthPower) {
         this.healthPower = healthPower;
+    }
+
+    /**
+     * Registers an Observer for this Subject
+     * @param observer the Observer to register for the Subject
+     */
+    @Override
+    public void registerObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    /**
+     * Unregisters the passed in Observer
+     * @param observer Observer to unregister
+     */
+    @Override
+    public void unregisterObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    /**
+     * Subject notifies its observers when some event occurs.
+     */
+    @Override
+    public void notifyObservers() {
+        observers.forEach(Observer::update);
+    }
+
+    /**
+     * When an event occurs, and the subject updates, the Observer updates
+     * its internal state.
+     */
+    @Override
+    public void update() {
+        // TODO
     }
 
     /**
