@@ -4,10 +4,7 @@ import main.attributes.Ability;
 import main.attributes.HealthPower;
 import main.attributes.Level;
 import main.attributes.Mana;
-import main.market_and_gear.GearItem;
 import main.utils.Coffer;
-
-import java.util.List;
 
 /**
  * Class Hero extends Legends, and represents a "good guy" in this game. There are a number
