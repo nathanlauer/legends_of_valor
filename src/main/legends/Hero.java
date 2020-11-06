@@ -1,9 +1,7 @@
 package main.legends;
 
-import main.attributes.Ability;
-import main.attributes.HealthPower;
-import main.attributes.Level;
-import main.attributes.Mana;
+import main.attributes.*;
+import main.market_and_gear.Weapon;
 import main.utils.Coffer;
 
 /**
@@ -30,30 +28,31 @@ public abstract class Hero extends Legend {
     public static final boolean defaultFainted = false;
 
     private boolean fainted;
-    private Mana mana;
-    private Coffer coffer;
-    private Ability agility;
-    private Ability dexterity;
-    private Ability strength;
+    private final Mana mana;
+    private final Ability dexterity;
+    private final Coffer coffer;
     private final GearItemList gearItemList;
     private final ActiveGearItems activeGearItems;
 
     /**
      * Standard constructor for a Hero. By default, a Hero is created without any GearItems.
+     * Heroes have a defense ability, but it starts at zero - that is, there is no natural
+     * defense ability, a Hero must wear some Armor in order to increase their defense.
+     * @param name Name of this Hero
+     * @param level Level of this Hero
+     * @param healthPower HealthPower of this Hero
      * @param mana Mana of this Hero
      * @param coffer Coffer for this Hero
-     * @param agility agility Ability of this Hero
-     * @param dexterity dexterity Ability of this Hero
-     * @param strength strength Ability of this Hero
+     * @param strength Strength Ability of this Hero
+     * @param agility Agility Ability of this Hero
+     * @param dexterity Dexterity Ability of this Hero
      */
     public Hero(String name, Level level, HealthPower healthPower,
-                Mana mana, Coffer coffer, Ability agility, Ability dexterity, Ability strength) {
-        super(name, level, healthPower);
+                Mana mana, Coffer coffer, Ability strength,Ability agility, Ability dexterity) {
+        super(name, level, healthPower, strength, AbilityBuilder.baseDefenseAbility(), agility);
         this.mana = mana;
         this.coffer = coffer;
-        this.agility = agility;
         this.dexterity = dexterity;
-        this.strength = strength;
         this.fainted = Hero.defaultFainted;
         this.gearItemList = new GearItemList();
         this.activeGearItems = new ActiveGearItems(this);
@@ -99,13 +98,6 @@ public abstract class Hero extends Legend {
         return mana;
     }
 
-    /**
-     * Sets the Mana for this Hero to the passed in mana
-     * @param mana the new Mana for this Hero
-     */
-    public void setMana(Mana mana) {
-        this.mana = mana;
-    }
 
     /**
      *
@@ -116,30 +108,6 @@ public abstract class Hero extends Legend {
     }
 
     /**
-     * Sets the Coffer for this Hero to the passed in Coffer.
-     * @param coffer the new Coffer for this Hero.
-     */
-    public void setCoffer(Coffer coffer) {
-        this.coffer = coffer;
-    }
-
-    /**
-     *
-     * @return the agility Ability of this Hero
-     */
-    public Ability getAgility() {
-        return agility;
-    }
-
-    /**
-     * Sets the agility of this Hero to the passed in agility.
-     * @param newAgility new agility Ability for this Hero
-     */
-    public void setAgility(Ability newAgility) {
-        agility = newAgility;
-    }
-
-    /**
      *
      * @return the dexterity Ability of this Hero
      */
@@ -147,36 +115,58 @@ public abstract class Hero extends Legend {
         return dexterity;
     }
 
-    /**
-     * Sets the dexterity of this Hero to the passed in dexterity.
-     * @param newDexterity new dexterity Ability for this Hero
-     */
-    public void setDexterity(Ability newDexterity) {
-        dexterity = newDexterity;
-    }
 
     /**
+     * Calculates the amount of Damage this Legend would cause if it attacked.
+     * Note: this is not just the Strength ability - a Legend may wield some
+     * other GearItem which increases their damage amount.
      *
-     * @return strength Ability of this Hero
+     * For a Hero, the amount of damage is (Strength + Weapon) * 0.05;
+     * @return the amount of Damage in an attack
      */
-    public Ability getStrength() {
-        return strength;
+    public int getDamageAmount() {
+        int baseDamage = this.getStrength().getAbilityValue();
+        if(this.getActiveGearItems().hasActiveWeapon()) {
+            baseDamage += this.getActiveGearItems().getWeapon().getDamage();
+        }
+        double damageAmount = baseDamage * 0.05;
+        return (int)Math.ceil(damageAmount); // favor the Hero
     }
 
     /**
-     * Sets the strength Ability of this Hero.
-     * @param newStrength new strength Ability for this Hero
+     * Calculates the amount of Defense this Legend has if it were attacked.
+     * Note: this is not just the Defense Ability - a legend may have some
+     * GearItem which increases their defense amount.
+     *
+     * A Hero's defense comes entirely from Armor being worn
+     * @return the Defense amount
      */
-    public void setStrength(Ability newStrength) {
-        strength = newStrength;
+    public int getDefenseAmount() {
+        if(!this.getActiveGearItems().hasActiveArmor()) {
+            return 0;
+        }
+
+        return this.getActiveGearItems().getArmor().getDefense();
     }
+
+    /**
+     * Calculates the chance of dodging an attack for this Legend.
+     * This is a probability, so it is normalized to range [0,1]
+     *
+     * For a Hero, this is calculated as agility * 0.002
+     * @return the likelihood of dodging an attack.
+     */
+    public double getDodgeChance() {
+        return Math.max(this.getAgility().getAbilityValue() * 0.002, 1);
+    }
+
 
     /**
      * @return String representation of this Hero object.
      */
     @Override
     public String toString() {
-        return super.toString() + ". Hero! Abilities: " + agility.toString() + dexterity.toString() + strength.toString();
+        return "Hero! " + super.toString();
     }
 
     /**
@@ -196,9 +186,8 @@ public abstract class Hero extends Legend {
         }
 
         Hero other = (Hero) o;
-        return this.getStrength().equals(other.getStrength()) &&
-                this.getAgility().equals(other.getAgility()) &&
-                this.getDexterity().equals(other.getDexterity()) &&
+        return this.getDexterity().equals(other.getDexterity()) &&
+                this.getMana().equals(other.getMana()) &&
                 super.equals(o);
     }
 }

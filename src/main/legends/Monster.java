@@ -22,9 +22,7 @@ import main.attributes.Level;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public abstract class Monster extends Legend {
-    private Ability strength; // amount of damage a Monster does
-    private Ability defense;
-    private Ability agility; // dodge chance
+
 
     /**
      * Standard constructor for a Monster
@@ -37,58 +35,44 @@ public abstract class Monster extends Legend {
      */
     public Monster(String name, Level level, HealthPower healthPower,
                    Ability strength, Ability defense, Ability agility) {
-        super(name, level, healthPower);
-        this.strength = strength;
-        this.defense = defense;
-        this.agility = agility;
+        super(name, level, healthPower, strength, defense, agility);
     }
 
     /**
-     * Sets the strength Ability for this Monster to the passed in value.
-     * @param newStrength new Ability for damage
-     */
-    public void setStrength(Ability newStrength) {
-        strength = newStrength;
-    }
-
-    /**
+     * Calculates the amount of Damage this Legend would cause if it attacked.
+     * Note: this is not just the Strength ability - a Legend may wield some
+     * other GearItem which increases their damage amount.
      *
-     * @return the strength Ability for this Monster
+     * For a Monster, the damage amount is the strength of the Monster.
+     * @return the amount of Damage in an attack
      */
-    public Ability getStrength() {
-        return strength;
+    @Override
+    public int getDamageAmount() {
+        return this.getStrength().getAbilityValue();
     }
 
     /**
-     * Sets the defense Ability for this Monster to the passed in value
-     * @param newDefense the new value for defense of this Monster
-     */
-    public void setDefense(Ability newDefense) {
-        defense = newDefense;
-    }
-
-    /**
+     * Calculates the amount of Defense this Legend has if it were attacked.
+     * Note: this is not just the Defense Ability - a legend may have some
+     * GearItem which increases their defense amount.
      *
-     * @return the defense Ability for this Monster
+     * For a Monster, the defense amount is just the defense ability
+     * @return the Defense amount
      */
-    public Ability getDefense() {
-        return defense;
+    @Override
+    public int getDefenseAmount() {
+        return this.getDefense().getAbilityValue();
     }
 
     /**
-     * Sets the Agility (dodge chance) Ability for this Monster.
-     * @param newAgility the new Ability for Agility of this Monster.
-     */
-    public void setAgility(Ability newAgility) {
-        agility = newAgility;
-    }
-
-    /**
+     * Calculates the chance of dodging an attack for this Legend.
+     * This is a probability, so it is normalized to range [0,1]
      *
-     * @return the dodgeChance Ability for this Monster
+     * For a Monster, the chance of dodging an attack is agility * .01
+     * @return the likelihood of dodging an attack.
      */
-    public Ability getAgility() {
-        return agility;
+    public double getDodgeChance() {
+        return Math.max(this.getAgility().getAbilityValue() * 0.01, 1);
     }
 
     /**
@@ -97,7 +81,7 @@ public abstract class Monster extends Legend {
     @Override
     public String toString() {
         String legend = super.toString();
-        return legend + ". Monster! Stats: Damage: " + strength.toString() + ", Defense: " + defense.toString() + ", dodge_chance: " + agility.toString();
+        return "Monster! " + legend;
     }
 
     /**
@@ -117,10 +101,6 @@ public abstract class Monster extends Legend {
             return false;
         }
 
-        Monster other = (Monster) o;
-        return this.getDefense().equals(other.getDefense()) &&
-                this.getStrength().equals(other.getStrength()) &&
-                this.getAgility().equals(other.getAgility()) &&
-                super.equals(o);
+        return super.equals(o);
     }
 }

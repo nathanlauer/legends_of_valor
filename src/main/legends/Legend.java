@@ -5,6 +5,7 @@ import main.attributes.HealthPower;
 import main.attributes.Level;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -14,8 +15,8 @@ import java.util.List;
  * this game into one hierarchy, which allows for common collections to be used in a number of other
  * places.
  *
- * Every Legend has at least two Abilities: HealthPower and Defense. Subclasses of Legends
- * have further Abilities.
+ * Every Legend has at least four Abilities: HealthPower, Strength (used for attacks),
+ * Defense, Agility (used for dodge chance). Subclasses may have further abilities.
  *
  * @author: Nathan Lauer
  * @email: lauern@bu.edu
@@ -25,9 +26,13 @@ import java.util.List;
  */
 public abstract class Legend {
     private String name;
-    private Level level;
-    private HealthPower healthPower;
+    private final Level level;
+    private final HealthPower healthPower;
+
     private final List<Ability> abilities;
+    private final Ability strength; // amount of damage a Monster does
+    private final Ability defense;
+    private final Ability agility; // dodge chance
 
     /**
      * Standard constructor for a Legend.
@@ -35,14 +40,16 @@ public abstract class Legend {
      * @param level Level of this Legend
      * @param healthPower HealthPower of this Legend
      */
-    public Legend(String name, Level level, HealthPower healthPower) {
+    public Legend(String name, Level level, HealthPower healthPower, Ability strength, Ability defense, Ability agility) {
         this.name = name;
         this.level = level;
         this.healthPower = healthPower;
-        abilities = new ArrayList<>();
-        // TODO: use enum ability type instead of name.
-        // Then, list of abilities by type
+        this.strength = strength;
+        this.defense = defense;
+        this.agility = agility;
+        abilities = new ArrayList<>(Arrays.asList(this.healthPower, this.strength, this.defense, this.agility));
     }
+    // TODO: fix tests to reflect updates abilities structure
 
     public void setName(String name) {
         this.name = name;
@@ -65,14 +72,6 @@ public abstract class Legend {
     }
 
     /**
-     * Sets the Level of this Legend to the passed in value
-     * @param level level for this Legend
-     */
-    public void setLevel(Level level) {
-        this.level = level;
-    }
-
-    /**
      *
      * @return the healthPower of this Legend
      */
@@ -81,12 +80,67 @@ public abstract class Legend {
     }
 
     /**
-     * Sets the healthPower for this Legend to the passed in value.
-     * @param healthPower the new healthPower for this Legend
+     *
+     * @return the Strength of this Legend
      */
-    public void setHealthPower(HealthPower healthPower) {
-        this.healthPower = healthPower;
+    public Ability getStrength() {
+        return strength;
     }
+
+    /**
+     *
+     * @return the Defense of this Legend
+     */
+    public Ability getDefense() {
+        return defense;
+    }
+
+    /**
+     *
+     * @return the Agility of this Legend
+     */
+    public Ability getAgility() {
+        return agility;
+    }
+
+    /**
+     * Adds the passed in Ability to the List of Abilities for this Legend
+     * @param ability the Ability to be added
+     */
+    public void addAbility(Ability ability) {
+        this.abilities.add(ability);
+    }
+
+    /**
+     *
+     * @return a List of all the abilities for this Legend
+     */
+    public List<Ability> getAbilities() {
+        return abilities;
+    }
+
+    /**
+     * Calculates the amount of Damage this Legend would cause if it attacked.
+     * Note: this is not just the Strength ability - a Legend may wield some
+     * other GearItem which increases their damage amount.
+     * @return the amount of Damage in an attack
+     */
+    public abstract int getDamageAmount();
+
+    /**
+     * Calculates the amount of Defense this Legend has if it were attacked.
+     * Note: this is not just the Defense Ability - a legend may have some
+     * GearItem which increases their defense amount.
+     * @return the Defense amount
+     */
+    public abstract int getDefenseAmount();
+
+    /**
+     * Calculates the chance of dodging an attack for this Legend.
+     * This is a probability, so it is normalized to range [0,1]
+     * @return the likelihood of dodging an attack.
+     */
+    public abstract double getDodgeChance();
 
     /**
      *
@@ -94,7 +148,7 @@ public abstract class Legend {
      */
     @Override
     public String toString() {
-        return "Legend: " + getName() + ", " + this.getLevel().toString() + ", " + this.getHealthPower().toString();
+        return "Legend: " + getName() + ", " + this.getLevel().toString();
     }
 
     /**
@@ -117,6 +171,7 @@ public abstract class Legend {
         Legend other = (Legend)o;
         return other.getName().equals(this.getName()) &&
                 other.getLevel().equals(this.getLevel()) &&
-                other.getHealthPower().equals(this.getHealthPower());
+                other.getHealthPower().equals(this.getHealthPower()) &&
+                other.getAbilities().equals(this.getAbilities());
     }
 }
