@@ -49,7 +49,6 @@ public abstract class Legend {
         this.agility = agility;
         abilities = new ArrayList<>(Arrays.asList(this.healthPower, this.strength, this.defense, this.agility));
     }
-    // TODO: fix tests to reflect updates abilities structure
 
     public void setName(String name) {
         this.name = name;

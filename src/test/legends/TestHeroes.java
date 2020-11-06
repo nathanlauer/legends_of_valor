@@ -46,7 +46,7 @@ public class TestHeroes {
         assertEquals(new Coffer(0), gandalf.getCoffer());
         assertEquals(new Mana(0), gandalf.getMana());
 
-        gandalf = new Sorcerer("Gandalf", new Level(34), new UncappedHealthPower(100), mana, coffer, agility, dexterity, strength);
+        gandalf = new Sorcerer("Gandalf", new Level(34), new UncappedHealthPower(100), mana, coffer, strength, dexterity, agility);
         assertEquals("Gandalf", gandalf.getName());
         assertEquals(new Level(34), gandalf.getLevel());
         assertEquals(new UncappedHealthPower(100), gandalf.getHealthPower());
@@ -69,7 +69,7 @@ public class TestHeroes {
         assertEquals(new Coffer(0), gimli.getCoffer());
         assertEquals(new Mana(0), gimli.getMana());
 
-        gimli = new Warrior("Gimli", new Level(34), new UncappedHealthPower(100), mana, coffer, agility, dexterity, strength);
+        gimli = new Warrior("Gimli", new Level(34), new UncappedHealthPower(100), mana, coffer, strength, dexterity, agility);
         assertEquals("Gimli", gimli.getName());
         assertEquals(new Level(34), gimli.getLevel());
         assertEquals(new UncappedHealthPower(100), gimli.getHealthPower());
@@ -92,7 +92,7 @@ public class TestHeroes {
         assertEquals(new Coffer(0), aragorn.getCoffer());
         assertEquals(new Mana(0), aragorn.getMana());
 
-        aragorn = new Paladin("Aragorn", new Level(34), new UncappedHealthPower(100), mana, coffer, agility, dexterity, strength);
+        aragorn = new Paladin("Aragorn", new Level(34), new UncappedHealthPower(100), mana, coffer, strength, dexterity, agility);
         assertEquals("Aragorn", aragorn.getName());
         assertEquals(new Level(34), aragorn.getLevel());
         assertEquals(new UncappedHealthPower(100), aragorn.getHealthPower());
@@ -105,16 +105,16 @@ public class TestHeroes {
 
     @Test
     public void testEquality() {
-        Sorcerer gandalf = new Sorcerer("Gandalf", new Level(34), new UncappedHealthPower(100), mana, coffer, agility, dexterity, strength);
-        Warrior gimli = new Warrior("Gimli", new Level(34), new UncappedHealthPower(100), mana, coffer, agility, dexterity, strength);
-        Paladin aragorn = new Paladin("Aragorn", new Level(34), new UncappedHealthPower(100), mana, coffer, agility, dexterity, strength);
+        Sorcerer gandalf = new Sorcerer("Gandalf", new Level(34), new UncappedHealthPower(100), mana, coffer, strength, dexterity, agility);
+        Warrior gimli = new Warrior("Gimli", new Level(34), new UncappedHealthPower(100), mana, coffer, strength, dexterity, agility);
+        Paladin aragorn = new Paladin("Aragorn", new Level(34), new UncappedHealthPower(100), mana, coffer, strength, dexterity, agility);
         assertNotEquals(gandalf, gimli);
         assertNotEquals(gandalf, aragorn);
         assertNotEquals(gimli, aragorn);
 
-        Sorcerer otherSorcerer = new Sorcerer("Gandalf", new Level(34), new UncappedHealthPower(100), mana, coffer, agility, dexterity, strength);
-        Warrior otherWarrior = new Warrior("Gimli", new Level(34), new UncappedHealthPower(100), mana, coffer, agility, dexterity, strength);
-        Paladin otherPaladin = new Paladin("Aragorn", new Level(34), new UncappedHealthPower(100), mana, coffer, agility, dexterity, strength);
+        Sorcerer otherSorcerer = new Sorcerer("Gandalf", new Level(34), new UncappedHealthPower(100), mana, coffer, strength, dexterity, agility);
+        Warrior otherWarrior = new Warrior("Gimli", new Level(34), new UncappedHealthPower(100), mana, coffer, strength, dexterity, agility);
+        Paladin otherPaladin = new Paladin("Aragorn", new Level(34), new UncappedHealthPower(100), mana, coffer, strength, dexterity, agility);
         assertEquals(gandalf, otherSorcerer);
         assertEquals(gimli, otherWarrior);
         assertEquals(aragorn, otherPaladin);
@@ -122,7 +122,7 @@ public class TestHeroes {
 
     @Test
     public void fainted() {
-        Hero hero = new Sorcerer("Gandalf", new Level(34), new UncappedHealthPower(100), mana, coffer, agility, dexterity, strength);
+        Hero hero = new Sorcerer("Gandalf", new Level(34), new UncappedHealthPower(100), mana, coffer, strength, dexterity, agility);
         assertFalse(hero.hasFainted());
         hero.setFainted(true);
         assertTrue(hero.hasFainted());

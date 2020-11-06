@@ -157,7 +157,7 @@ public abstract class Hero extends Legend {
      * @return the likelihood of dodging an attack.
      */
     public double getDodgeChance() {
-        return Math.max(this.getAgility().getAbilityValue() * 0.002, 1);
+        return Math.min(this.getAgility().getAbilityValue() * 0.002, 1);
     }
 
 

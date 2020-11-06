@@ -72,7 +72,7 @@ public abstract class Monster extends Legend {
      * @return the likelihood of dodging an attack.
      */
     public double getDodgeChance() {
-        return Math.max(this.getAgility().getAbilityValue() * 0.01, 1);
+        return Math.min(this.getAgility().getAbilityValue() * 0.01, 1);
     }
 
     /**
