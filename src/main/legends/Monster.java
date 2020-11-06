@@ -22,41 +22,41 @@ import main.attributes.Level;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public abstract class Monster extends Legend {
-    private Ability damage;
+    private Ability strength; // amount of damage a Monster does
     private Ability defense;
-    private Ability dodgeChance;
+    private Ability agility; // dodge chance
 
     /**
      * Standard constructor for a Monster
      * @param name Name of this Monster
      * @param level Level of this Monster
      * @param healthPower HealthPower of this Monster
-     * @param damage Damage of this Monster
+     * @param strength Strength (amount of Damage) of this Monster
      * @param defense Defense of this Monster
-     * @param dodgeChance DodgeChange of this Monster
+     * @param agility Agility (dodge change) of this Monster
      */
     public Monster(String name, Level level, HealthPower healthPower,
-                   Ability damage, Ability defense, Ability dodgeChance) {
+                   Ability strength, Ability defense, Ability agility) {
         super(name, level, healthPower);
-        this.damage = damage;
+        this.strength = strength;
         this.defense = defense;
-        this.dodgeChance = dodgeChance;
+        this.agility = agility;
     }
 
     /**
-     * Sets the damage Ability for this Monster to the passed in value.
-     * @param newDamage new Ability for damage
+     * Sets the strength Ability for this Monster to the passed in value.
+     * @param newStrength new Ability for damage
      */
-    public void setDamage(Ability newDamage) {
-        damage = newDamage;
+    public void setStrength(Ability newStrength) {
+        strength = newStrength;
     }
 
     /**
      *
-     * @return the damage Ability for this Monster
+     * @return the strength Ability for this Monster
      */
-    public Ability getDamage() {
-        return damage;
+    public Ability getStrength() {
+        return strength;
     }
 
     /**
@@ -76,19 +76,19 @@ public abstract class Monster extends Legend {
     }
 
     /**
-     * Sets the dodgeChance Ability for this Monster.
-     * @param newDodgeChance the new Ability for dodgeChance of this Monster.
+     * Sets the Agility (dodge chance) Ability for this Monster.
+     * @param newAgility the new Ability for Agility of this Monster.
      */
-    public void setDodgeChance(Ability newDodgeChance) {
-        dodgeChance = newDodgeChance;
+    public void setAgility(Ability newAgility) {
+        agility = newAgility;
     }
 
     /**
      *
      * @return the dodgeChance Ability for this Monster
      */
-    public Ability getDodgeChance() {
-        return dodgeChance;
+    public Ability getAgility() {
+        return agility;
     }
 
     /**
@@ -97,7 +97,7 @@ public abstract class Monster extends Legend {
     @Override
     public String toString() {
         String legend = super.toString();
-        return legend + ". Monster! Stats: Attack: " + damage.toString() + ", Defense: " + defense.toString() + ", dodge_chance: " + dodgeChance.toString();
+        return legend + ". Monster! Stats: Damage: " + strength.toString() + ", Defense: " + defense.toString() + ", dodge_chance: " + agility.toString();
     }
 
     /**
@@ -119,8 +119,8 @@ public abstract class Monster extends Legend {
 
         Monster other = (Monster) o;
         return this.getDefense().equals(other.getDefense()) &&
-                this.getDamage().equals(other.getDamage()) &&
-                this.getDodgeChance().equals(other.getDodgeChance()) &&
+                this.getStrength().equals(other.getStrength()) &&
+                this.getAgility().equals(other.getAgility()) &&
                 super.equals(o);
     }
 }

@@ -16,9 +16,7 @@ public enum AbilityType {
     STRENGTH("Strength"),
     DEXTERITY("Dexterity"),
     DEFENSE("Defense"),
-    AGILITY("Agility"),
-    DAMAGE("Damage"),
-    DODGE_CHANCE("DodgeChance");
+    AGILITY("Agility");
 
     private final String name;
 

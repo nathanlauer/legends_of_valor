@@ -13,27 +13,12 @@ package main.attributes;
 public class AbilityBuilder {
     /**
      *
-     * @return a new Ability with name "Damage" and value 0
-     */
-    public static Ability baseDamageAbility() {
-        return new Ability(AbilityType.DAMAGE, 0);
-    }
-
-    /**
-     *
      * @return a new Ability with name "Defense" and value 0
      */
     public static Ability baseDefenseAbility() {
         return new Ability(AbilityType.DEFENSE, 0);
     }
 
-    /**
-     *
-     * @return a new Ability with name "DodgeChance" and value 0
-     */
-    public static Ability baseDodgeChanceAbility() {
-        return new Ability(AbilityType.DODGE_CHANCE, 0);
-    }
 
     /**
      *
