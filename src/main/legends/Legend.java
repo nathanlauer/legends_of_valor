@@ -1,7 +1,11 @@
 package main.legends;
 
+import main.attributes.Ability;
 import main.attributes.HealthPower;
 import main.attributes.Level;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Abstract Class Legend sits at the top of the inheritance hierarchy for all heroes and monsters.
@@ -10,6 +14,8 @@ import main.attributes.Level;
  * this game into one hierarchy, which allows for common collections to be used in a number of other
  * places.
  *
+ * Every Legend has at least two Abilities: HealthPower and Defense. Subclasses of Legends
+ * have further Abilities.
  *
  * @author: Nathan Lauer
  * @email: lauern@bu.edu
@@ -21,6 +27,7 @@ public abstract class Legend {
     private String name;
     private Level level;
     private HealthPower healthPower;
+    private final List<Ability> abilities;
 
     /**
      * Standard constructor for a Legend.
@@ -32,6 +39,9 @@ public abstract class Legend {
         this.name = name;
         this.level = level;
         this.healthPower = healthPower;
+        abilities = new ArrayList<>();
+        // TODO: use enum ability type instead of name.
+        // Then, list of abilities by type
     }
 
     public void setName(String name) {

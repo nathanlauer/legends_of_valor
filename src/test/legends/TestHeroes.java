@@ -27,9 +27,9 @@ public class TestHeroes {
     private final Coffer coffer;
 
     public TestHeroes() {
-        agility = new Ability("Agility", 1000);
-        dexterity = new Ability("Dexterity", 900);
-        strength = new Ability("Strength", 200);
+        agility = new Ability(AbilityType.AGILITY, 1000);
+        dexterity = new Ability(AbilityType.DEXTERITY, 900);
+        strength = new Ability(AbilityType.STRENGTH, 200);
         coffer = new Coffer(50);
         mana = new Mana(300);
     }

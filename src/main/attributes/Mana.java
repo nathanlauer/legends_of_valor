@@ -30,7 +30,7 @@ public class Mana extends Ability implements Cloneable {
      * @param mana amount of mana as initial value.
      */
     public Mana(int mana) {
-        super("Mana", mana);
+        super(AbilityType.MANA, mana);
         Validations.nonNegative(mana, "mana");
     }
 

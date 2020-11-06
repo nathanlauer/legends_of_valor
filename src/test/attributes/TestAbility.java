@@ -1,6 +1,7 @@
 package test.attributes;
 
 import main.attributes.Ability;
+import main.attributes.AbilityType;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -19,22 +20,22 @@ public class TestAbility {
     @Test
     public void initialization() {
         Ability strength = new Ability();
-        assertEquals(Ability.defaultName, strength.getName());
+        assertEquals(Ability.defaultType, strength.getType());
         assertEquals(0, strength.getAbilityValue());
 
         strength = new Ability(100);
-        assertEquals(Ability.defaultName, strength.getName());
+        assertEquals(Ability.defaultType, strength.getType());
         assertEquals(100, strength.getAbilityValue());
 
-        strength = new Ability("Strength", 100);
-        assertEquals("Strength", strength.getName());
+        strength = new Ability(AbilityType.STRENGTH, 100);
+        assertEquals(AbilityType.STRENGTH, strength.getType());
         assertEquals(100, strength.getAbilityValue());
     }
 
     @Test
     public void setAbility() {
-        Ability strength = new Ability("Strength", 100);
-        assertEquals("Strength", strength.getName());
+        Ability strength = new Ability(AbilityType.STRENGTH, 100);
+        assertEquals(AbilityType.STRENGTH, strength.getType());
         assertEquals(100, strength.getAbilityValue());
 
         strength.setAbilityValue(730);
@@ -50,8 +51,8 @@ public class TestAbility {
 
     @Test
     public void increaseAbility() {
-        Ability strength = new Ability("Strength", 100);
-        assertEquals("Strength", strength.getName());
+        Ability strength = new Ability(AbilityType.STRENGTH, 100);
+        assertEquals(AbilityType.STRENGTH, strength.getType());
         assertEquals(100, strength.getAbilityValue());
 
         strength.increaseAbilityBy(40);
@@ -68,8 +69,8 @@ public class TestAbility {
 
     @Test
     public void decreaseAbility() {
-        Ability strength = new Ability("Strength", 100);
-        assertEquals("Strength", strength.getName());
+        Ability strength = new Ability(AbilityType.STRENGTH, 100);
+        assertEquals(AbilityType.STRENGTH, strength.getType());
         assertEquals(100, strength.getAbilityValue());
 
         strength.decreaseAbilityBy(40);

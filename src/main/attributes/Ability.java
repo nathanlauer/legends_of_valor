@@ -21,15 +21,15 @@ import java.util.List;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public class Ability implements Cloneable {
-    private final String name;
+    private final AbilityType type;
     private int abilityValue;
-    public static final String defaultName = "Ability";
+    public static final AbilityType defaultType = AbilityType.ABILITY;
 
     /**
      * Empty constructor for an Ability. Name is set to "Ability" and value is 0.
      */
     public Ability() {
-        this(Ability.defaultName, 0);
+        this(Ability.defaultType, 0);
     }
 
     /**
@@ -38,23 +38,36 @@ public class Ability implements Cloneable {
      * @param abilityValue initial value for abilityValue.
      */
     public Ability(int abilityValue) {
-        this(Ability.defaultName, abilityValue);
+        this(Ability.defaultType, abilityValue);
     }
 
     /**
      * Standard constructor for an Ability.
      * Throws IllegalArgumentException if abilityValue is negative
-     * @param name name of this Ability.
+     * @param type type of this Ability.
      * @param abilityValue the value for this ability
      */
-    public Ability(String name, int abilityValue) {
+    public Ability(AbilityType type, int abilityValue) {
         Validations.nonNegative(abilityValue, "abilityValue");
-        this.name = name;
+        this.type = type;
         this.abilityValue = abilityValue;
     }
 
-    public String getName() {
-        return name;
+    /**
+     *
+     * @return the AbilityType of this Ability
+     */
+    public AbilityType getType() {
+        return type;
+    }
+
+    /**
+     * Indicates whether or not this Ability has the passed in Ability Type.
+     * @param type the AbilityType in question
+     * @return true if this Ability has the specified type, false otherwise
+     */
+    public boolean hasType(AbilityType type) {
+        return this.type.equals(type);
     }
 
     /**
@@ -106,7 +119,7 @@ public class Ability implements Cloneable {
      */
     @Override
     public String toString() {
-        return "Ability " + name + ", value: " + this.getAbilityValue();
+        return type + ", value: " + this.getAbilityValue();
     }
 
     /**
@@ -126,7 +139,7 @@ public class Ability implements Cloneable {
         }
 
         Ability other = (Ability) o;
-        return this.getName().equals(other.getName()) &&
+        return this.getType().equals(other.getType()) &&
                 this.getAbilityValue() == other.getAbilityValue();
     }
 
@@ -142,7 +155,7 @@ public class Ability implements Cloneable {
     /**
      *
      * @return a List with a single Ability that is "empty" - meaning it has 0 value
-     * and no name.
+     * and the default AbilityType.
      */
     public static List<Ability> emptyAbilityList() {
         return new ArrayList<>(Collections.singletonList(new Ability()));

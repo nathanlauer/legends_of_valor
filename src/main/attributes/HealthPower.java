@@ -32,7 +32,7 @@ public abstract class HealthPower extends Ability {
      * @param healthPower the amount of HealthPower
      */
     public HealthPower(int healthPower) {
-        super("HealthPower", healthPower);
+        super(AbilityType.HEALTH, healthPower);
         Validations.nonNegative(healthPower, "healthPower");
     }
 

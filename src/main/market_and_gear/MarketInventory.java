@@ -1,6 +1,7 @@
 package main.market_and_gear;
 
 import main.attributes.Ability;
+import main.attributes.AbilityType;
 import main.attributes.Level;
 import main.attributes.Mana;
 
@@ -209,7 +210,8 @@ public class MarketInventory {
                 }
                 String[] abilityStrings = relevantAbilities.split("/");
                 for(String abilityName : abilityStrings) {
-                    Ability ability = new Ability(abilityName, 0);
+                    AbilityType type = AbilityType.fromStringName(abilityName);
+                    Ability ability = new Ability(type, 0);
                     abilities.add(ability);
                 }
 

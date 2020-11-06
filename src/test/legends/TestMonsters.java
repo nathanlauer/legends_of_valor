@@ -1,9 +1,6 @@
 package test.legends;
 
-import main.attributes.Ability;
-import main.attributes.AbilityBuilder;
-import main.attributes.Level;
-import main.attributes.UncappedHealthPower;
+import main.attributes.*;
 import main.legends.Dragon;
 import main.legends.Exoskeleton;
 import main.legends.Spirit;
@@ -32,9 +29,9 @@ public class TestMonsters {
         assertEquals(AbilityBuilder.baseDefenseAbility(), rhaegal.getDefense());
         assertEquals(AbilityBuilder.baseDodgeChanceAbility(), rhaegal.getDodgeChance());
 
-        Ability damage = new Ability("Damage", 1000);
-        Ability defense = new Ability("Defense", 900);
-        Ability dodgeChance = new Ability("DodgeChance", 200);
+        Ability damage = new Ability(AbilityType.DAMAGE, 1000);
+        Ability defense = new Ability(AbilityType.DEFENSE, 900);
+        Ability dodgeChance = new Ability(AbilityType.DODGE_CHANCE, 200);
 
         Dragon drogon = new Dragon("Drogon", new Level(34), new UncappedHealthPower(100), damage, defense, dodgeChance);
         assertEquals("Drogon", drogon.getName());
@@ -55,9 +52,9 @@ public class TestMonsters {
         assertEquals(AbilityBuilder.baseDefenseAbility(), beetle.getDefense());
         assertEquals(AbilityBuilder.baseDodgeChanceAbility(), beetle.getDodgeChance());
 
-        Ability damage = new Ability("Damage", 1000);
-        Ability defense = new Ability("Defense", 900);
-        Ability dodgeChance = new Ability("DodgeChance", 200);
+        Ability damage = new Ability(AbilityType.DAMAGE, 1000);
+        Ability defense = new Ability(AbilityType.DEFENSE, 900);
+        Ability dodgeChance = new Ability(AbilityType.DODGE_CHANCE, 200);
 
         Exoskeleton rancor = new Exoskeleton("Rancor", new Level(34), new UncappedHealthPower(100), damage, defense, dodgeChance);
         assertEquals("Rancor", rancor.getName());
@@ -78,9 +75,9 @@ public class TestMonsters {
         assertEquals(AbilityBuilder.baseDefenseAbility(), ghost.getDefense());
         assertEquals(AbilityBuilder.baseDodgeChanceAbility(), ghost.getDodgeChance());
 
-        Ability damage = new Ability("Damage", 1000);
-        Ability defense = new Ability("Defense", 900);
-        Ability dodgeChance = new Ability("DodgeChance", 200);
+        Ability damage = new Ability(AbilityType.DAMAGE, 1000);
+        Ability defense = new Ability(AbilityType.DEFENSE, 900);
+        Ability dodgeChance = new Ability(AbilityType.DODGE_CHANCE, 200);
 
         Spirit dementor = new Spirit("Dementor", new Level(34), new UncappedHealthPower(100), damage, defense, dodgeChance);
         assertEquals("Dementor", dementor.getName());
@@ -93,9 +90,9 @@ public class TestMonsters {
 
     @Test
     public void testEquality() {
-        Ability damage = new Ability("Damage", 1000);
-        Ability defense = new Ability("Defense", 900);
-        Ability dodgeChance = new Ability("DodgeChance", 200);
+        Ability damage = new Ability(AbilityType.DAMAGE, 1000);
+        Ability defense = new Ability(AbilityType.DEFENSE, 900);
+        Ability dodgeChance = new Ability(AbilityType.DODGE_CHANCE, 200);
 
         Spirit dementor = new Spirit("Dementor", new Level(34), new UncappedHealthPower(100), damage, defense, dodgeChance);
         Exoskeleton rancor = new Exoskeleton("Rancor", new Level(34), new UncappedHealthPower(100), damage, defense, dodgeChance);

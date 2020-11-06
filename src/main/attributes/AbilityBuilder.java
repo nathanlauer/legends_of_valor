@@ -16,7 +16,7 @@ public class AbilityBuilder {
      * @return a new Ability with name "Damage" and value 0
      */
     public static Ability baseDamageAbility() {
-        return new Ability("Damage", 0);
+        return new Ability(AbilityType.DAMAGE, 0);
     }
 
     /**
@@ -24,7 +24,7 @@ public class AbilityBuilder {
      * @return a new Ability with name "Defense" and value 0
      */
     public static Ability baseDefenseAbility() {
-        return new Ability("Defense", 0);
+        return new Ability(AbilityType.DEFENSE, 0);
     }
 
     /**
@@ -32,7 +32,7 @@ public class AbilityBuilder {
      * @return a new Ability with name "DodgeChance" and value 0
      */
     public static Ability baseDodgeChanceAbility() {
-        return new Ability("DodgeChance", 0);
+        return new Ability(AbilityType.DODGE_CHANCE, 0);
     }
 
     /**
@@ -40,7 +40,7 @@ public class AbilityBuilder {
      * @return a new Ability with name "Agility" and value 0
      */
     public static Ability baseAgilityAbility() {
-        return new Ability("Agility", 0);
+        return new Ability(AbilityType.AGILITY, 0);
     }
 
     /**
@@ -48,7 +48,7 @@ public class AbilityBuilder {
      * @return a new Ability with name "Dexterity" and value 0
      */
     public static Ability baseDexterityAbility() {
-        return new Ability("Dexterity", 0);
+        return new Ability(AbilityType.DEXTERITY, 0);
     }
 
     /**
@@ -56,6 +56,6 @@ public class AbilityBuilder {
      * @return a new Ability with name "Strength" and value 0
      */
     public static Ability baseStrengthAbility() {
-        return new Ability("Strength", 0);
+        return new Ability(AbilityType.STRENGTH, 0);
     }
 }
