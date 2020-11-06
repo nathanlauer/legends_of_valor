@@ -3,8 +3,6 @@ package main.legends;
 import main.attributes.HealthPower;
 import main.attributes.Level;
 
-import java.util.ArrayList;
-
 /**
  * Abstract Class Legend sits at the top of the inheritance hierarchy for all heroes and monsters.
  * The idea is that heroes and monsters share some common characteristics, such as health power,
