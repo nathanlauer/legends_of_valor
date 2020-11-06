@@ -130,7 +130,7 @@ public class ActiveGearItems {
      * @param weapon The Weapon to be activated
      */
     public void activateWeapon(Weapon weapon) {
-        Validations.HeroOwnsGearItem(hero, weapon);
+        Validations.heroOwnsGearItem(hero, weapon);
         if(this.hasActiveWeapon()) {
             this.deactivateWeapon();
         }
@@ -151,7 +151,7 @@ public class ActiveGearItems {
      * @param armor the Armor to be active
      */
     public void putOnArmor(Armor armor) {
-        Validations.HeroOwnsGearItem(hero, armor);
+        Validations.heroOwnsGearItem(hero, armor);
         if(this.hasActiveArmor()) {
             this.removeArmor();
         }
@@ -163,7 +163,7 @@ public class ActiveGearItems {
      * @param potion Potion to be activated
      */
     public void addPotion(Potion potion) {
-        Validations.HeroOwnsGearItem(hero, potion);
+        Validations.heroOwnsGearItem(hero, potion);
         this.potions.add(potion);
     }
 
@@ -180,7 +180,7 @@ public class ActiveGearItems {
      * @param spell the Spell to be activated
      */
     public void addSpell(Spell spell) {
-        Validations.HeroOwnsGearItem(hero, spell);
+        Validations.heroOwnsGearItem(hero, spell);
         this.spells.add(spell);
     }
 

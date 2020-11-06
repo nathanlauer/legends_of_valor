@@ -1,6 +1,7 @@
 package main.fight;
 
 import main.legends.Legend;
+import main.legends.NonOwnedGearItemException;
 
 /**
  * Class FightMove is an abstract class which represents a type of Move that can be
@@ -52,5 +53,5 @@ public abstract class FightMove {
     /**
      * Executes this FightMove
      */
-    public abstract void execute();
+    public abstract void execute() throws InvalidFightMoveException, NonOwnedGearItemException;
 }

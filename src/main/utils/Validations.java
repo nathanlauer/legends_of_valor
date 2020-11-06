@@ -1,8 +1,10 @@
 package main.utils;
 
+import main.fight.InvalidFightMoveException;
 import main.legends.Hero;
 import main.legends.NonOwnedGearItemException;
 import main.market_and_gear.GearItem;
+import main.market_and_gear.Potion;
 
 /**
  * Class Validations is a static class that offers a couple helper methods,
@@ -32,9 +34,31 @@ public class Validations {
      * @param hero the Hero in question
      * @param gearItem the GearItem in question
      */
-    public static void HeroOwnsGearItem(Hero hero, GearItem gearItem) {
+    public static void heroOwnsGearItem(Hero hero, GearItem gearItem) {
         if(!hero.getGearItemList().containsGearItem(gearItem)) {
             throw new NonOwnedGearItemException("Attempted to activate GearItem that is not owned!");
+        }
+    }
+
+    /**
+     * Throws an exception if the passed in Hero has fainted
+     * @param hero the Hero in question
+     * @throws InvalidFightMoveException if the Hero has fainted
+     */
+    public static void heroIsAlive(Hero hero) throws InvalidFightMoveException {
+        if(hero.hasFainted()) {
+            throw new InvalidFightMoveException("Hero has fainted!");
+        }
+    }
+
+    /**
+     * Throws an exception if the passed in Potion was already used
+     * @param potion the Potion in question
+     * @throws InvalidFightMoveException if the Potion was already used
+     */
+    public static void potionUnused(Potion potion) throws InvalidFightMoveException {
+        if(potion.wasUsed()) {
+            throw new InvalidFightMoveException("This Potion was already used!");
         }
     }
 }

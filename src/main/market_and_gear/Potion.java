@@ -120,6 +120,13 @@ public class Potion extends GearItem {
     }
 
     /**
+     * Convenient helper method which marks this Potion as having been used.
+     */
+    public void markUsed() {
+        this.setUsed(true);
+    }
+
+    /**
      * @return the Type of this Gear Item
      */
     @Override
