@@ -15,8 +15,7 @@ import main.utils.Validations;
  * <p>
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
-public class Mana implements Cloneable {
-    private int mana;
+public class Mana extends Ability implements Cloneable {
 
     /**
      * Empty constructor, sets mana to zero.
@@ -31,8 +30,8 @@ public class Mana implements Cloneable {
      * @param mana amount of mana as initial value.
      */
     public Mana(int mana) {
+        super("Mana", mana);
         Validations.nonNegative(mana, "mana");
-        this.mana = mana;
     }
 
     /**
@@ -40,7 +39,7 @@ public class Mana implements Cloneable {
      * @return the amount of Mana
      */
     public int getManaAmount() {
-        return mana;
+        return this.getAbilityValue();
     }
 
     /**
@@ -50,7 +49,7 @@ public class Mana implements Cloneable {
      */
     public void setMana(int amount) {
         Validations.nonNegative(amount, "amount");
-        mana = amount;
+        this.setAbilityValue(amount);
     }
 
     /**
@@ -88,7 +87,7 @@ public class Mana implements Cloneable {
      */
     public void decreaseManaBy(int amount) {
         Validations.nonNegative(amount, "amount");
-        if(amount > mana) {
+        if(amount > this.getManaAmount()) {
             this.setMana(0);
         } else {
             this.setMana(this.getManaAmount() - amount);

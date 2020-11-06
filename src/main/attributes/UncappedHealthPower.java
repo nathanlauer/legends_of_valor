@@ -29,8 +29,7 @@ public class UncappedHealthPower extends HealthPower {
      * @param healthPower the initial value of healthPower
      */
     public UncappedHealthPower(int healthPower) {
-        Validations.nonNegative(healthPower, "healthPower");
-        super.setHealthPower(healthPower);
+        super(healthPower);
     }
 
     /**

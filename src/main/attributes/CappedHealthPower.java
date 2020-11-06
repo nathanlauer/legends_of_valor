@@ -45,6 +45,7 @@ public class CappedHealthPower extends HealthPower {
      * @param max max value for healthPower
      */
     public CappedHealthPower(int healthPower, int max) {
+        super(healthPower);
         Validations.nonNegative(healthPower, "healthPower");
         Validations.nonNegative(max, "max");
 
@@ -52,7 +53,6 @@ public class CappedHealthPower extends HealthPower {
             throw new IllegalArgumentException("healthPower can't be greater than the max health power!");
         }
 
-        super.setHealthPower(healthPower);
         this.max = max;
     }
 

@@ -24,8 +24,17 @@ import main.utils.Validations;
  * <p>
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
-public abstract class HealthPower {
-    private int healthPower;
+public abstract class HealthPower extends Ability {
+
+    /**
+     * Standard constructor
+     * Throws an IllegalArgumentException if healthPower is negative
+     * @param healthPower the amount of HealthPower
+     */
+    public HealthPower(int healthPower) {
+        super("HealthPower", healthPower);
+        Validations.nonNegative(healthPower, "healthPower");
+    }
 
     /**
      * Sets the healthPower to the passed in value.
@@ -37,7 +46,7 @@ public abstract class HealthPower {
      */
     public void setHealthPower(int newHealthPower) {
         Validations.nonNegative(newHealthPower, "newHealthPower");
-        healthPower = newHealthPower;
+        this.setAbilityValue(newHealthPower);
     }
 
     /**
@@ -91,7 +100,7 @@ public abstract class HealthPower {
      * @return the healthPower of this Legend
      */
     public int getHealthPower() {
-        return healthPower;
+        return this.getAbilityValue();
     }
 
     /**
@@ -100,7 +109,7 @@ public abstract class HealthPower {
      * @return true if healthPower > 0, false otherwise
      */
     public boolean hasSomeHealth() {
-        return healthPower > 0;
+        return this.getHealthPower() > 0;
     }
 
     /**
