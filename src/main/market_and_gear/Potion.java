@@ -127,6 +127,14 @@ public class Potion extends GearItem {
     }
 
     /**
+     * Indicates whether or not this Potion can still be used.
+     * @return true if this Potion was not used yet, false otherwise
+     */
+    public boolean canBeUsed() {
+        return !wasUsed();
+    }
+
+    /**
      * @return the Type of this Gear Item
      */
     @Override

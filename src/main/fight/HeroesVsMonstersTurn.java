@@ -6,6 +6,7 @@ import main.legends.Hero;
 import main.legends.Legend;
 import main.legends.Monster;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
@@ -37,6 +38,7 @@ public class HeroesVsMonstersTurn implements TurnExecutor  {
     private final Iterator<Monster> monsterIterator;
     private boolean finished;
     private final PairHeroesAndMonsters pairing;
+    private int selectedOption;
 
     /**
      * Standard constructor for a HeroesVsMonstersTurn instance
@@ -49,6 +51,7 @@ public class HeroesVsMonstersTurn implements TurnExecutor  {
         firstTurn = true;
         finished = false;
         pairing = new PairHeroesAndMonsters(new Scanner(System.in), heroes, monsters);
+        selectedOption = 0;
     }
 
     /**
@@ -123,6 +126,30 @@ public class HeroesVsMonstersTurn implements TurnExecutor  {
     }
 
     /**
+     * Helper method which prompts the user for their desired move
+     */
+    private void getUserMove() {
+        // Display the status
+        Hero hero = (Hero)current;
+        System.out.println("It's " + hero.getName() + " turn.");
+        System.out.println("Faced Monsters:");
+        List<Monster> relevantMonsters = pairing.getMonstersForHero(hero);
+        for(Monster monster : relevantMonsters) {
+            System.out.println(monster.getName() + ", hp: " + monster.getHealthPower().getHealthPower());
+        }
+        String prompt = "What would you like to do?";
+        List<String> options = new ArrayList<>();
+        if(relevantMonsters.size() == 1) {
+            options.add("Attack!");
+        } else { // Assumes greater than 1
+            options.add("Attack! (Your attack will be divided equally amongst the " + relevantMonsters.size() + " monsters.");
+        }
+        options.add("Use a potion");
+        options.add("Cast a spell");
+
+    }
+
+    /**
      * Plays the next turn
      */
     @Override
@@ -133,6 +160,17 @@ public class HeroesVsMonstersTurn implements TurnExecutor  {
         }
 
         // If current is a Monster, execute an attack move
+        if(current instanceof Monster) {
+            List<Hero> attackedHeroes = pairing.getHeroesForMonster((Monster)current);
+            List<Legend> asLegends = new ArrayList<>(attackedHeroes);
+            FightMove attack = new Attack(current, asLegends);
+            try {
+                attack.execute();
+            } catch (InvalidFightMoveException e) {
+                e.printStackTrace();
+                // Shouldn't happen
+            }
+        }
 
         // If current is a Hero, prompt the user for their desired move, then execute it.
     }

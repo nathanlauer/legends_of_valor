@@ -107,6 +107,7 @@ public class GetUserNumericInput {
             for(int i = 0; i < this.options.size(); i++) {
                 int outputNum = i + 1; // don't prompt the user with a 0!
                 String message = outputNum + ") " + this.options.get(i); // get a copy of the option so we don't accidentally change it
+                System.out.println(message);
             }
             System.out.println("Please enter a number between 1 and " + options.size());
 

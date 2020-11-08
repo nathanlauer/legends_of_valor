@@ -1,9 +1,11 @@
 package main.legends;
 
-import main.market_and_gear.GearItem;
+import main.market_and_gear.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Class GearItemList is a class that contains the various GearItems held by a Hero.
@@ -70,6 +72,62 @@ public class GearItemList {
      */
     public void removeGearItem(GearItem item) {
         gearItems.remove(item);
+    }
+
+    /**
+     *
+     * @return a List of all the Weapons in this GearItemList
+     */
+    public List<Weapon> getWeapons() {
+        List<Weapon> output = new ArrayList<>();
+        for(GearItem item : getGearItems()) {
+            if(item instanceof Weapon) {
+                output.add((Weapon)item);
+            }
+        }
+        return output;
+    }
+
+    /**
+     *
+     * @return a List of all the Armor in this GearItemList
+     */
+    public List<Armor> getArmor() {
+        List<Armor> output = new ArrayList<>();
+        for(GearItem item : getGearItems()) {
+            if(item instanceof Armor) {
+                output.add((Armor) item);
+            }
+        }
+        return output;
+    }
+
+    /**
+     *
+     * @return a List of all the Spells in this GearItemList
+     */
+    public List<Spell> getSpells() {
+        List<Spell> output = new ArrayList<>();
+        for(GearItem item : getGearItems()) {
+            if(item instanceof Spell) {
+                output.add((Spell) item);
+            }
+        }
+        return output;
+    }
+
+    /**
+     *
+     * @return a List of all the Potions in this GearItemList
+     */
+    public List<Potion> getPotions() {
+        List<Potion> output = new ArrayList<>();
+        for(GearItem item : getGearItems()) {
+            if(item instanceof Potion) {
+                output.add((Potion) item);
+            }
+        }
+        return output;
     }
 
     /**
