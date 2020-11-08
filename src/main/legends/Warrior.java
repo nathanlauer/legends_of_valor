@@ -24,8 +24,8 @@ public class Warrior extends Hero {
         this(Warrior.defaultName, new Level(0), new UncappedHealthPower(0),
                 new Mana(0), new Coffer(0),
                 AbilityBuilder.baseStrengthAbility(),
-                AbilityBuilder.baseDexterityAbility(),
-                AbilityBuilder.baseAgilityAbility());
+                AbilityBuilder.baseAgilityAbility(),
+                AbilityBuilder.baseDexterityAbility());
     }
 
     /**
@@ -44,7 +44,7 @@ public class Warrior extends Hero {
      */
     public Warrior(String name, Level level, HealthPower healthPower, Mana mana, Coffer coffer,
                    Ability strength, Ability agility, Ability dexterity) {
-        super(name, level, healthPower, mana, coffer, strength, dexterity, agility);
+        super(name, level, healthPower, mana, coffer, strength, agility, dexterity);
     }
 
     /**

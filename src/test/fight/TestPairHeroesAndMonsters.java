@@ -16,8 +16,8 @@ import java.util.List;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public class TestPairHeroesAndMonsters {
-    private final List<Hero> heroes;
-    private final List<Monster> monsters;
+//    private final List<Hero> heroes;
+//    private final List<Monster> monsters;
 
 
     @Test

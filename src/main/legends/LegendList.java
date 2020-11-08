@@ -149,7 +149,7 @@ public class LegendList {
             readHeroFile(sorcerers, "Sorcerers");
             readHeroFile(warriors, "Warriors");
             readMonsterFile(dragons, "Dragons");
-            readMonsterFile(exoskeletons," Exoskeletons");
+            readMonsterFile(exoskeletons,"Exoskeletons");
             readMonsterFile(spirits, "Spirits");
         }
 
@@ -163,6 +163,10 @@ public class LegendList {
             for(String line : relevantLines) {
                 line = line.trim();
                 String[] items = line.split("\\s+"); // split by whitespace
+                if(items.length <= 1) {
+                    continue; // skip empty line
+                }
+
                 String name = items[0];
                 Mana mana = new Mana(Integer.parseInt(items[1]));
                 Ability strength = new Ability(AbilityType.STRENGTH, Integer.parseInt(items[2]));
@@ -203,7 +207,7 @@ public class LegendList {
             for(String line : relevantLines) {
                 line = line.trim();
                 String[] items = line.split("\\s+"); // split by whitespace
-                if(items.length == 0) {
+                if(items.length <= 1) {
                     continue; // No data on this line
                 }
 
@@ -229,7 +233,7 @@ public class LegendList {
                         monster = new Spirit(name, level, hp, strength, defense, agility);
                         break;
                     default:
-                        throw new IOException("Unknown hero file type");
+                        throw new IOException("Unknown Monster file type");
                 }
                 legends.add(monster);
             }

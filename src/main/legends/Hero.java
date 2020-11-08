@@ -47,7 +47,7 @@ public abstract class Hero extends Legend {
      * @param dexterity Dexterity Ability of this Hero
      */
     public Hero(String name, Level level, HealthPower healthPower,
-                Mana mana, Coffer coffer, Ability strength,Ability agility, Ability dexterity) {
+                Mana mana, Coffer coffer, Ability strength, Ability agility, Ability dexterity) {
         super(name, level, healthPower, strength, AbilityBuilder.baseDefenseAbility(), agility);
         this.mana = mana;
         this.coffer = coffer;
