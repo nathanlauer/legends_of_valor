@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 /**
  * Class TestPairHeroesAndMonsters
@@ -91,5 +92,39 @@ public class TestPairHeroesAndMonsters {
         List<Monster> monstersForSecondHero = pairing.getMonstersForHero(relevantHeroes.get(1));
         assertEquals(1, monstersForSecondHero.size());
         assertEquals(relevantMonsters.get(0), monstersForSecondHero.get(0));
+    }
+
+    @Test
+    public void checkHeroes() {
+        // Setup a fight between three heroes and three Monsters
+        // Then, "kill" one of the Monsters, and run the check method on each of the Heroes.
+        String input = "0";
+        Scanner scanner = new Scanner(input);
+
+        // Select 3 heroes, and 3 monsters
+        List<Hero> relevantHeroes = heroes.subList(0, 3);
+        List<Monster> relevantMonsters = monsters.subList(0, 3);
+
+        PairHeroesAndMonsters pairing = new PairHeroesAndMonsters(scanner, relevantHeroes, relevantMonsters);
+        pairing.initialPairing();
+
+        // Now, "kill" one of the Monsters.
+        relevantMonsters.get(0).getHealthPower().setHealthPower(0);
+
+        // Check the first Hero: the first Monster should not be there, and the other two should be
+        pairing.checkValidityForHero(relevantHeroes.get(0));
+        List<Monster> monstersForFirstHero = pairing.getMonstersForHero(relevantHeroes.get(0));
+        assertEquals(2, monstersForFirstHero.size());
+        assertFalse(monstersForFirstHero.contains(relevantMonsters.get(0)));
+        assertEquals(relevantMonsters.subList(1, 3), monstersForFirstHero);
+
+        // Check the other two heroes, nothing should have changed
+        for(int i = 1; i < 3; i++) {
+            Hero hero = relevantHeroes.get(i);
+            pairing.checkValidityForHero(hero);
+            List<Monster> monstersForHero = pairing.getMonstersForHero(hero);
+            assertEquals(1, monstersForHero.size());
+            assertEquals(relevantMonsters.get(i), monstersForHero.get(0));
+        }
     }
 }
