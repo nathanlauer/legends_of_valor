@@ -15,7 +15,7 @@ import main.utils.Validations;
  */
 public class Armor extends GearItem {
     public static final String defaultName = "Armor";
-    private int defense;
+    private double defense;
 
     /**
      * Empty constructor for an Armor. Sets name to "Armor" and
@@ -33,7 +33,7 @@ public class Armor extends GearItem {
      * @param minLevel min Level for this GearItem
      * @param defense defense value of this Armor.
      */
-    public Armor(String name, int price, Level minLevel, int defense) {
+    public Armor(String name, int price, Level minLevel, double defense) {
         super(name, price, minLevel);
 
         Validations.nonNegative(defense, "defense");
@@ -44,7 +44,7 @@ public class Armor extends GearItem {
      *
      * @return the defense value for this Armor
      */
-    public int getDefense() {
+    public double getDefense() {
         return defense;
     }
 
@@ -52,7 +52,7 @@ public class Armor extends GearItem {
      * Sets the defense value for this Armor to the passed in value.
      * @param newDefense the new value for the defense of this Armor.
      */
-    public void setDefense(int newDefense) {
+    public void setDefense(double newDefense) {
         Validations.nonNegative(newDefense, "newDefense");
         defense = newDefense;
     }

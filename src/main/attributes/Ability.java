@@ -7,11 +7,11 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Class Ability is a wrapper around a integer, which represents some ability that a Monster
+ * Class Ability is a wrapper around a double, which represents some ability that a Monster
  * or a Hero have. There are two key points here:
  * 1) These are extracted out to a class, to clearly represent the concept of an ability.
- * Even though this class is just a wrapper around a int, the naming convention makes
- * it clear to clients precisely what this int represents.
+ * Even though this class is just a wrapper around a double, the naming convention makes
+ * it clear to clients precisely what this double represents.
  * 2) Abilities cannot be negative.
  *
  * @author: Nathan Lauer
@@ -22,14 +22,14 @@ import java.util.List;
  */
 public class Ability implements Cloneable {
     private final AbilityType type;
-    private int abilityValue;
+    private double abilityValue;
     public static final AbilityType defaultType = AbilityType.ABILITY;
 
     /**
      * Empty constructor for an Ability. Name is set to "Ability" and value is 0.
      */
     public Ability() {
-        this(Ability.defaultType, 0);
+        this(Ability.defaultType, 0.0);
     }
 
     /**
@@ -37,7 +37,7 @@ public class Ability implements Cloneable {
      * Throws IllegalArgumentException if abilityValue is negative
      * @param abilityValue initial value for abilityValue.
      */
-    public Ability(int abilityValue) {
+    public Ability(double abilityValue) {
         this(Ability.defaultType, abilityValue);
     }
 
@@ -47,7 +47,7 @@ public class Ability implements Cloneable {
      * @param type type of this Ability.
      * @param abilityValue the value for this ability
      */
-    public Ability(AbilityType type, int abilityValue) {
+    public Ability(AbilityType type, double abilityValue) {
         Validations.nonNegative(abilityValue, "abilityValue");
         this.type = type;
         this.abilityValue = abilityValue;
@@ -74,7 +74,7 @@ public class Ability implements Cloneable {
      *
      * @return the abilityValue of this Ability
      */
-    public int getAbilityValue() {
+    public double getAbilityValue() {
         return abilityValue;
     }
 
@@ -83,7 +83,7 @@ public class Ability implements Cloneable {
      * Throws an IllegalArgumentException if newAbilityValue is negative.
      * @param newAbilityValue new value for this Ability.
      */
-    public void setAbilityValue(int newAbilityValue) {
+    public void setAbilityValue(double newAbilityValue) {
         Validations.nonNegative(newAbilityValue, "newAbilityValue");
         abilityValue = newAbilityValue;
     }
@@ -93,7 +93,7 @@ public class Ability implements Cloneable {
      * Throws an IllegalArgumentException if amount is negative.
      * @param amount amount to increase abilityValue by
      */
-    public void increaseAbilityBy(int amount) {
+    public void increaseAbilityBy(double amount) {
         Validations.nonNegative(amount, "amount");
         this.setAbilityValue(this.getAbilityValue() + amount);
     }
@@ -105,13 +105,23 @@ public class Ability implements Cloneable {
      * Throws an IllegalArgumentException if amount is negative.
      * @param amount amount to decrease this ability by.
      */
-    public void decreaseAbilityBy(int amount) {
+    public void decreaseAbilityBy(double amount) {
         Validations.nonNegative(amount, "amount");
         if(amount > this.getAbilityValue()) {
             this.setAbilityValue(0);
         } else {
             this.setAbilityValue(this.getAbilityValue() - amount);
         }
+    }
+
+    /**
+     * Decreases this Ability by the passed in percentage
+     * @param percentage Percentage to decrease, on scale [0,100]
+     */
+    public void decreaseAbilityByPercentage(double percentage) {
+        Validations.nonNegative(percentage, "percentage");
+        double amountToDecrease = percentage/100.0 * this.getAbilityValue();
+        this.setAbilityValue(Math.max((this.getAbilityValue() - amountToDecrease), 0));
     }
 
     /**

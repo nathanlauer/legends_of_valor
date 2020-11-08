@@ -29,7 +29,7 @@ public class Mana extends Ability implements Cloneable {
      * Throws an IllegalArgumentException if mana is negative
      * @param mana amount of mana as initial value.
      */
-    public Mana(int mana) {
+    public Mana(double mana) {
         super(AbilityType.MANA, mana);
         Validations.nonNegative(mana, "mana");
     }
@@ -38,7 +38,7 @@ public class Mana extends Ability implements Cloneable {
      *
      * @return the amount of Mana
      */
-    public int getManaAmount() {
+    public double getManaAmount() {
         return this.getAbilityValue();
     }
 
@@ -47,7 +47,7 @@ public class Mana extends Ability implements Cloneable {
      * Throws an IllegalArgumentException is amount is negative
      * @param amount new amount of Mana
      */
-    public void setMana(int amount) {
+    public void setMana(double amount) {
         Validations.nonNegative(amount, "amount");
         this.setAbilityValue(amount);
     }
@@ -57,7 +57,7 @@ public class Mana extends Ability implements Cloneable {
      * Throws an IllegalArgumentException if amount is negative
      * @param amount amount to increase
      */
-    public void increaseManaBy(int amount) {
+    public void increaseManaBy(double amount) {
         Validations.nonNegative(amount, "amount");
         this.setMana(this.getManaAmount() + amount);
     }
@@ -71,9 +71,9 @@ public class Mana extends Ability implements Cloneable {
      * Throws an IllegalArgumentException if percentage is negative.
      * @param percentage the percentage to increase, on a scale of 0-100
      */
-    public void increaseByPercentage(int percentage) {
+    public void increaseByPercentage(double percentage) {
         Validations.nonNegative(percentage, "percentage");
-        int amountToIncrease = (int)Math.ceil(percentage/100.0 * this.getManaAmount());
+        double amountToIncrease = percentage/100.0 * this.getManaAmount();
         this.increaseManaBy(amountToIncrease);
     }
 
@@ -85,7 +85,7 @@ public class Mana extends Ability implements Cloneable {
      * Throws an IllegalArgumentException if amount is negative
      * @param amount amount to decrease
      */
-    public void decreaseManaBy(int amount) {
+    public void decreaseManaBy(double amount) {
         Validations.nonNegative(amount, "amount");
         if(amount > this.getManaAmount()) {
             this.setMana(0);

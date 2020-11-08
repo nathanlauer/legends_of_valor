@@ -47,7 +47,7 @@ public abstract class Monster extends Legend {
      * @return the amount of Damage in an attack
      */
     @Override
-    public int getDamageAmount() {
+    public double getDamageAmount() {
         return this.getStrength().getAbilityValue();
     }
 
@@ -60,7 +60,7 @@ public abstract class Monster extends Legend {
      * @return the Defense amount
      */
     @Override
-    public int getDefenseAmount() {
+    public double getDefenseAmount() {
         return this.getDefense().getAbilityValue();
     }
 

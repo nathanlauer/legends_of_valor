@@ -1,7 +1,6 @@
 package main.legends;
 
 import main.attributes.*;
-import main.market_and_gear.Weapon;
 import main.utils.Coffer;
 
 /**
@@ -128,8 +127,8 @@ public abstract class Hero extends Legend {
      * For a Hero, the amount of damage is the Strength ability plus a possible Weapon
      * @return the amount of Damage in an attack
      */
-    public int getDamageAmount() {
-        int baseDamage = this.getStrength().getAbilityValue();
+    public double getDamageAmount() {
+        double baseDamage = this.getStrength().getAbilityValue();
         if(this.getActiveGearItems().hasActiveWeapon()) {
             baseDamage += this.getActiveGearItems().getWeapon().getDamage();
         }
@@ -144,7 +143,7 @@ public abstract class Hero extends Legend {
      * A Hero's defense comes entirely from Armor being worn
      * @return the Defense amount
      */
-    public int getDefenseAmount() {
+    public double getDefenseAmount() {
         if(!this.getActiveGearItems().hasActiveArmor()) {
             return 0;
         }

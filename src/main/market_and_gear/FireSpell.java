@@ -32,7 +32,7 @@ public class FireSpell extends Spell {
      * @param mana Mana required to use this Spell.
      * @param damage amount of damage caused by this Spell.
      */
-    public FireSpell(String name, int price, Level minLevel, Mana mana, int damage) {
+    public FireSpell(String name, int price, Level minLevel, Mana mana, double damage) {
         super(name, price, minLevel, damage, mana, AbilityBuilder.baseDefenseAbility());
     }
 

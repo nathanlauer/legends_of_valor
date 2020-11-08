@@ -24,7 +24,16 @@ public class Validations {
      * @param name variable name that wraps value
      */
     public static void nonNegative(int value, String name) {
-        if(value < 0) {
+        Validations.nonNegative((double)value, name);
+    }
+
+    /**
+     * Throws an IllegalArgumentException if value is negative.
+     * @param value the value in question
+     * @param name variable name that wraps value
+     */
+    public static void nonNegative(double value, String name) {
+        if(value < 0.0) {
             throw new IllegalArgumentException(name + " can't be negative!");
         }
     }

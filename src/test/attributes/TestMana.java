@@ -73,6 +73,6 @@ public class TestMana {
         mana.increaseByPercentage(31);
         assertEquals(131, mana.getManaAmount());
         mana.increaseByPercentage(10);
-        assertEquals(145, mana.getManaAmount()); // round up to ceiling
+        assertEquals(144.1, mana.getManaAmount());
     }
 }

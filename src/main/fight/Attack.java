@@ -36,13 +36,21 @@ public class Attack extends ExternalMove {
             Validations.legendIsAlive(legend);
         }
 
-        // The amount of damage done differs depending on the type of Legend
-        int damage = this.getExecutor().getDamageAmount();
-
-        // Split that damage equally towards each of the receivers
-        int damagePerReceiver = damage / this.getReceivers().size();
+        // The amount of damage done differs depending on the type of Legend. Split
+        // it amongst each of the receivers
+        double damagePerReceiver = this.getDamagePerReceiver();
         for(Legend legend : this.getReceivers()) {
             legend.wasAttacked(damagePerReceiver);
         }
+    }
+
+    /**
+     *
+     * @return the amount of damage this Attack move deals (not including receiver's defense)
+     * per each receiver.
+     */
+    public double getDamagePerReceiver() {
+        double damage = this.getExecutor().getDamageAmount();
+        return damage / this.getReceivers().size();
     }
 }

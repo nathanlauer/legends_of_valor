@@ -161,7 +161,7 @@ public class MarketInventory {
                 String name = items[0];
                 int price = Integer.parseInt(items[1]);
                 int minLevel = Integer.parseInt(items[2]);
-                int damage = Integer.parseInt(items[3]);
+                double damage = Integer.parseInt(items[3]);
                 int numHands = Integer.parseInt(items[4]);
                 GearItem weapon = new Weapon(name, price, new Level(minLevel), damage, numHands);
                 gearItems.add(weapon);
@@ -180,7 +180,7 @@ public class MarketInventory {
                 String name = items[0];
                 int price = Integer.parseInt(items[1]);
                 int minLevel = Integer.parseInt(items[2]);
-                int defense = Integer.parseInt(items[3]);
+                double defense = Integer.parseInt(items[3]);
 
                 GearItem armor = new Armor(name, price, new Level(minLevel), defense);
                 gearItems.add(armor);
@@ -199,7 +199,7 @@ public class MarketInventory {
                 String name = items[0];
                 int price = Integer.parseInt(items[1]);
                 int minLevel = Integer.parseInt(items[2]);
-                int incrementAmount = Integer.parseInt(items[3]);
+                double incrementAmount = Integer.parseInt(items[3]);
                 // Abilities: this part is trickier, as there may be a single ability,
                 // multiple abilities, or a format "All ability/ability/...", where
                 // there is an extra space!
@@ -232,8 +232,8 @@ public class MarketInventory {
                 String name = items[0];
                 int price = Integer.parseInt(items[1]);
                 int minLevel = Integer.parseInt(items[2]);
-                int damage = Integer.parseInt(items[3]);
-                int mana = Integer.parseInt(items[4]);
+                double damage = Integer.parseInt(items[3]);
+                double mana = Integer.parseInt(items[4]);
 
                 GearItem spell = new IceSpell(name, price, new Level(minLevel), new Mana(mana), damage);
                 gearItems.add(spell);
@@ -252,8 +252,8 @@ public class MarketInventory {
                 String name = items[0];
                 int price = Integer.parseInt(items[1]);
                 int minLevel = Integer.parseInt(items[2]);
-                int damage = Integer.parseInt(items[3]);
-                int mana = Integer.parseInt(items[4]);
+                double damage = Integer.parseInt(items[3]);
+                double mana = Integer.parseInt(items[4]);
 
                 GearItem spell = new FireSpell(name, price, new Level(minLevel), new Mana(mana), damage);
                 gearItems.add(spell);
@@ -272,8 +272,8 @@ public class MarketInventory {
                 String name = items[0];
                 int price = Integer.parseInt(items[1]);
                 int minLevel = Integer.parseInt(items[2]);
-                int damage = Integer.parseInt(items[3]);
-                int mana = Integer.parseInt(items[4]);
+                double damage = Integer.parseInt(items[3]);
+                double mana = Integer.parseInt(items[4]);
 
                 GearItem spell = new LightningSpell(name, price, new Level(minLevel), new Mana(mana), damage);
                 gearItems.add(spell);

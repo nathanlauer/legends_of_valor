@@ -20,7 +20,7 @@ public class TestWeapon {
     private final String name = "Sword";
     private final Level minLevel = new Level(10);
     private final int price = 250;
-    private final int damage = 500;
+    private final double damage = 500;
     private final int numHands = 2;
     private final Weapon weapon;
 

@@ -31,7 +31,7 @@ public abstract class HealthPower extends Ability {
      * Throws an IllegalArgumentException if healthPower is negative
      * @param healthPower the amount of HealthPower
      */
-    public HealthPower(int healthPower) {
+    public HealthPower(double healthPower) {
         super(AbilityType.HEALTH, healthPower);
         Validations.nonNegative(healthPower, "healthPower");
     }
@@ -44,7 +44,7 @@ public abstract class HealthPower extends Ability {
      * throw an IllegalArgumentException
      * @param newHealthPower new healthPower
      */
-    public void setHealthPower(int newHealthPower) {
+    public void setHealthPower(double newHealthPower) {
         Validations.nonNegative(newHealthPower, "newHealthPower");
         this.setAbilityValue(newHealthPower);
     }
@@ -58,10 +58,10 @@ public abstract class HealthPower extends Ability {
      * Throws an IllegalArgumentException if amount is less than 0.
      * @param amount the amount to reduce health power by
      */
-    public void reduceHealthPowerBy(int amount) {
+    public void reduceHealthPowerBy(double amount) {
         Validations.nonNegative(amount, "amount");
 
-        int currentHealthPower = this.getHealthPower();
+        double currentHealthPower = this.getHealthPower();
         if((currentHealthPower - amount) <= 0) {
             this.setHealthPower(0);
         } else {
@@ -75,7 +75,7 @@ public abstract class HealthPower extends Ability {
      *
      * @param amount the amount to increase healthPower.
      */
-    public void increaseHealthPowerBy(int amount) {
+    public void increaseHealthPowerBy(double amount) {
         Validations.nonNegative(amount, "amount");
         this.setHealthPower(this.getHealthPower() + amount);
     }
@@ -89,9 +89,9 @@ public abstract class HealthPower extends Ability {
      * Throws an IllegalArgumentException if percentage is negative.
      * @param percentage the percentage to increase, on a scale of 0-100
      */
-    public void increaseByPercentage(int percentage) {
+    public void increaseByPercentage(double percentage) {
         Validations.nonNegative(percentage, "percentage");
-        int amountToIncrease = (int)Math.ceil(percentage/100.0 * this.getHealthPower());
+        double amountToIncrease = percentage/100.0 * this.getHealthPower();
         this.increaseHealthPowerBy(amountToIncrease);
     }
 
@@ -99,7 +99,7 @@ public abstract class HealthPower extends Ability {
      *
      * @return the healthPower of this Legend
      */
-    public int getHealthPower() {
+    public double getHealthPower() {
         return this.getAbilityValue();
     }
 

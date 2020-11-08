@@ -125,7 +125,7 @@ public abstract class Legend {
      * other GearItem which increases their damage amount.
      * @return the amount of Damage in an attack
      */
-    public abstract int getDamageAmount();
+    public abstract double getDamageAmount();
 
     /**
      * Calculates the amount of Defense this Legend has if it were attacked.
@@ -133,7 +133,7 @@ public abstract class Legend {
      * GearItem which increases their defense amount.
      * @return the Defense amount
      */
-    public abstract int getDefenseAmount();
+    public abstract double getDefenseAmount();
 
     /**
      * Calculates the chance of dodging an attack for this Legend.
@@ -176,17 +176,17 @@ public abstract class Legend {
      *
      * @param damage total damage the attacker is inflicting
      */
-    public void wasAttacked(int damage) {
-        int defense = this.getDefenseAmount();
-        int totalDamage = damage - defense;
+    public void wasAttacked(double damage) {
+        double defense = this.getDefenseAmount();
+        double totalDamage = damage - defense;
         if(totalDamage <= 0) {
             return;
         }
 
-        int inflictedDamage = (int)Math.ceil(totalDamage * 0.05);
+        double inflictedDamage = totalDamage * 0.05;
         double dodgeChance = this.getDodgeChance();
-        int rand = new Random().nextInt(101);
-        if(rand > (int)dodgeChance*100) {
+        int rand = new Random().nextInt(100) + 1;
+        if(rand > dodgeChance * 100.0) {
             this.getHealthPower().reduceHealthPowerBy(inflictedDamage);
         }
     }

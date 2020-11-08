@@ -1,9 +1,10 @@
-package main.legends;
+package main.fight;
 
 import main.attributes.Ability;
 import main.attributes.Mana;
-import main.fight.ExternalMove;
-import main.fight.InvalidFightMoveException;
+import main.legends.Hero;
+import main.legends.Monster;
+import main.legends.NonOwnedGearItemException;
 import main.market_and_gear.Spell;
 import main.utils.Validations;
 
@@ -50,13 +51,13 @@ public class CastSpell extends ExternalMove {
         Validations.heroOwnsGearItem(hero, this.spell);
 
         // The amount of damage includes the Dexterity Ability of the Hero
-        int damage = spell.getDamage() + (hero.getDexterity().getAbilityValue()/10000)*spell.getDamage();
+        double damage = spell.getDamage() + spell.getDamage() * (hero.getDexterity().getAbilityValue() / 10000.0);
         monster.wasAttacked(damage);
 
         // Deduct Monster's relevant Ability by 10%
         Ability toReduce = monster.matchAbility(spell.getAbility());
         if(Validations.notNull(toReduce)) {
-            toReduce.decreaseAbilityBy(10);
+            toReduce.decreaseAbilityByPercentage(10);
         }
 
         // Deduct Hero's Mana
