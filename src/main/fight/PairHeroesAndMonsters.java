@@ -5,10 +5,8 @@ import main.legends.Monster;
 import main.utils.GetUserListNumericalInput;
 import main.utils.GetUserNumericInput;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.io.InputStream;
+import java.util.*;
 import java.util.stream.Stream;
 
 /**
@@ -58,6 +56,7 @@ public class PairHeroesAndMonsters {
     private final HashMap<Monster, List<Hero>> monstersHeroes;
     private final List<Hero> heroes;
     private final List<Monster> monsters;
+    private final Scanner scanner;
 
     /**
      * Standard constructor, initializing this class with all relevant Monsters and Heroes.
@@ -67,7 +66,8 @@ public class PairHeroesAndMonsters {
      * @param heroes the Heroes involved in this fight
      * @param monsters the Monsters involved in this fight
      */
-    public PairHeroesAndMonsters(List<Hero> heroes, List<Monster> monsters) {
+    public PairHeroesAndMonsters(Scanner scanner, List<Hero> heroes, List<Monster> monsters) {
+        this.scanner = scanner;
         this.heroes = heroes;
         this.monsters = monsters;
         this.heroesMonsters = new HashMap<>();
@@ -91,7 +91,7 @@ public class PairHeroesAndMonsters {
         List<String> options = new ArrayList<>();
         options.add("I don't want to do the pairing - just pick a random pairing and let's go!");
         options.add("I'll do the pairing myself.");
-        GetUserNumericInput userNumericInput = new GetUserNumericInput(prompt, options);
+        GetUserNumericInput userNumericInput = new GetUserNumericInput(scanner, prompt, options);
         int chosen = userNumericInput.run();
         if(chosen == 0) {
             // Generate a pairing here
@@ -193,21 +193,20 @@ public class PairHeroesAndMonsters {
     private void userPairMonstersForHero(Hero hero) {
         String prompt = "Which Monsters do you want " + hero.getName() + " to fight?";
         List<String> options = new ArrayList<>();
-        if(monsters.size() > 1) {
-            options.add("All"); // for user convenience, will be option 1
-        }
+        options.add("All"); // for user convenience, will be option 1
 
         for(Monster monster : this.monsters) {
             options.add(monster.getName()); // TODO: think about outputting some more information
         }
 
-        List<Integer> selected = new GetUserListNumericalInput(prompt, options).run();
-        if(monsters.size() > 1 && selected.contains(1)) { // pair all Monsters with this Hero
+        List<Integer> selected = new GetUserListNumericalInput(scanner, prompt, options).run();
+        if(selected.contains(1)) { // pair all Monsters with this Hero
             for(Monster monster : monsters) {
                 addMonsterToHero(hero, monster);
             }
         } else {
             for(Integer chosen : selected) { // pair only the selected Monsters with this Hero
+                chosen -= 2; // account for "All" option and that the list is 1-indexed!
                 Monster monster = monsters.get(chosen);
                 addMonsterToHero(hero, monster);
             }

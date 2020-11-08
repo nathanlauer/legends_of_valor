@@ -1,5 +1,6 @@
 package main.utils;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -19,12 +20,13 @@ import java.util.regex.Pattern;
 public class GetUserListNumericalInput {
     private String prompt;
     private List<String> options;
+    private final Scanner scanner;
 
     /**
      * Empty constructor
      */
-    public GetUserListNumericalInput() {
-        this("", new ArrayList<>());
+    public GetUserListNumericalInput(Scanner scanner) {
+        this(scanner, "", new ArrayList<>());
 
         // Primarily for testing purposes
         String prompt = "Which Monsters should be paired with your Hero?";
@@ -43,7 +45,8 @@ public class GetUserListNumericalInput {
      * Standard constructor
      * @param options the List of options to present to the user
      */
-    public GetUserListNumericalInput(String prompt, List<String> options) {
+    public GetUserListNumericalInput(Scanner scanner, String prompt, List<String> options) {
+        this.scanner = scanner;
         this.prompt = prompt;
         this.options = options;
     }
@@ -89,13 +92,13 @@ public class GetUserListNumericalInput {
     public List<Integer> run() {
         boolean enteredValidSequence = false;
         List<Integer> selected = new ArrayList<>();
-        Scanner scanner = ScannerInstance.getInstance().getScanner();
         while(!enteredValidSequence) {
             // Output the prompt, and the available options
             System.out.println(prompt);
             for(int i = 0; i < this.options.size(); i++) {
                 int outputNum = i + 1; // don't prompt the user with a 0!
                 String message = outputNum + ") " + this.options.get(i); // get a copy of the option so we don't accidentally change it
+                System.out.println(message);
             }
             System.out.println("Please enter a comma separated list of numbers. For example: 2,3");
 

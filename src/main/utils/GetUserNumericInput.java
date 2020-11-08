@@ -1,5 +1,7 @@
 package main.utils;
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -27,12 +29,13 @@ import java.util.Scanner;
 public class GetUserNumericInput {
     private String prompt;
     private List<String> options;
+    private final Scanner scanner;
 
     /**
      * Empty constructor
      */
-    public GetUserNumericInput() {
-        this("", new ArrayList<>());
+    public GetUserNumericInput(Scanner scanner) {
+        this(scanner, "", new ArrayList<>());
 
         // Primarily for testing purposes
         String prompt = "What fight move would you like to make?";
@@ -51,7 +54,8 @@ public class GetUserNumericInput {
      * Standard constructor
      * @param options the List of options to present to the user
      */
-    public GetUserNumericInput(String prompt, List<String> options) {
+    public GetUserNumericInput(Scanner scanner, String prompt, List<String> options) {
+        this.scanner = scanner;
         this.prompt = prompt;
         this.options = options;
     }
@@ -97,7 +101,6 @@ public class GetUserNumericInput {
     public int run() {
         boolean enteredValidNum = false;
         int selected = 0;
-        Scanner scanner = ScannerInstance.getInstance().getScanner();
         while(!enteredValidNum) {
             // Output the prompt, and the available options
             System.out.println(prompt);
@@ -109,9 +112,10 @@ public class GetUserNumericInput {
 
             // Now, get their input
             try {
-                selected = scanner.nextInt();
+                String input = scanner.nextLine();
+                selected = Integer.parseInt(input);
                 enteredValidNum = true;
-            } catch (InputMismatchException e) {
+            } catch (InputMismatchException | NumberFormatException e) {
                 System.out.println("Invalid option. Please try again");
             }
         }
