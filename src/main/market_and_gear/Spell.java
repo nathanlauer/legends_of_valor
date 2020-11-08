@@ -3,6 +3,7 @@ package main.market_and_gear;
 import main.attributes.Ability;
 import main.attributes.Level;
 import main.attributes.Mana;
+import main.legends.Hero;
 import main.utils.Validations;
 
 /**
@@ -89,6 +90,15 @@ public abstract class Spell extends GearItem {
      */
     public void setAbility(Ability ability) {
         this.ability = ability;
+    }
+
+    /**
+     * Indicates whether or not the passed in Hero has enough Mana to cast this spell.
+     * @param hero the Hero in question
+     * @return true if this Hero has enough Mana, false otherwise.
+     */
+    public boolean heroHasEnoughMana(Hero hero) {
+        return hero.getMana().hasEnoughMana(this.getMana().getManaAmount());
     }
 
     /**

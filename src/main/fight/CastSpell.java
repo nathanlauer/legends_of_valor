@@ -50,6 +50,11 @@ public class CastSpell extends ExternalMove {
         Validations.legendIsAlive(monster);
         Validations.heroOwnsGearItem(hero, this.spell);
 
+        // Hero needs to have enough Mana
+        if(!spell.heroHasEnoughMana(hero)) {
+            throw new InvalidFightMoveException("Hero does not have enough Mana to cast this spell!");
+        }
+
         // The amount of damage includes the Dexterity Ability of the Hero
         double damage = spell.getDamage() + spell.getDamage() * (hero.getDexterity().getAbilityValue() / 10000.0);
         monster.wasAttacked(damage);

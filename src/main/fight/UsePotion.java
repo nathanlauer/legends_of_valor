@@ -42,7 +42,8 @@ public class UsePotion extends InternalMove {
 
         // Boost Hero's abilities
         for(Ability ability : potion.getAbilities()) {
-
+            Ability relevantAbility = hero.matchAbility(ability);
+            relevantAbility.increaseAbilityBy(potion.getIncrementAmount());
         }
 
         potion.markUsed();

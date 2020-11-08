@@ -28,7 +28,7 @@ public class LegendBuilder {
         Ability dexterity = new Ability(AbilityType.DEXTERITY, 700);
         Ability strength = new Ability(AbilityType.STRENGTH, 750);
         Coffer coffer = new Coffer(3000);
-        Mana mana = new Mana(300);
+        Mana mana = new Mana(500);
         Level level = new Level(50); // For testing purposes
         HealthPower healthPower = new UncappedHealthPower(100);
         String name = "Solonor_Thelandira";

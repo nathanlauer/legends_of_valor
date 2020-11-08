@@ -53,6 +53,16 @@ public class Mana extends Ability implements Cloneable {
     }
 
     /**
+     * Checks to see if this Mana has enough, as relative to the amount passed in
+     * @param amount the amount in question
+     * @return true if Mana >= amount, false otherwise
+     */
+    public boolean hasEnoughMana(double amount) {
+        Validations.nonNegative(amount, "amount");
+        return this.getManaAmount() >= amount;
+    }
+
+    /**
      * Increases the amount of Mana by the passed in value
      * Throws an IllegalArgumentException if amount is negative
      * @param amount amount to increase

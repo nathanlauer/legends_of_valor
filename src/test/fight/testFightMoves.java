@@ -13,6 +13,7 @@ import test.utils.LegendBuilder;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -183,5 +184,76 @@ public class testFightMoves {
         double expectedMana = initialMana - spell.getMana().getManaAmount();
         if(expectedMana < 0) { expectedMana = 0.0; }
         assertEquals(expectedMana, hero.getMana().getManaAmount());
+    }
+
+    @Test
+    public void testSpellNotEnoughMana() {
+        Hero hero = LegendBuilder.exampleHero();
+        Monster monster = LegendBuilder.exampleMonster();
+        Market market = new Market();
+        Spell spell = (Spell)market.getSpells().get(0);
+
+        // Purchase the spell
+        try {
+            spell.buy(market, hero);
+        } catch (NotEnoughCoinsException | BeneathLevelException e) {
+            e.printStackTrace();
+            fail();
+        }
+
+        // Increase the spell's required Mana
+        spell.getMana().setMana(hero.getMana().getManaAmount() + 1000);
+
+        FightMove castSpell = new CastSpell(spell, hero, monster);
+        try {
+            castSpell.execute();
+            fail();
+        } catch (InvalidFightMoveException e) {
+            // passed
+        }
+    }
+
+    @Test
+    public void testPotions() {
+        Hero hero = LegendBuilder.exampleHero();
+        Market market = new Market();
+        Potion potion = (Potion)market.getPotions().get(0);
+
+        // Copy the original Abilities
+        List<Ability> originalAbilities = new ArrayList<>();
+        for(Ability ability : hero.getAbilities()) {
+            try {
+                originalAbilities.add((Ability)ability.clone());
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+                fail();
+            }
+        }
+
+        try {
+            potion.buy(market, hero);
+        } catch (NotEnoughCoinsException | BeneathLevelException e) {
+            e.printStackTrace();
+            fail();
+        }
+
+        FightMove usePotion = new UsePotion(hero, potion);
+        try {
+            usePotion.execute();
+        } catch (InvalidFightMoveException e) {
+            e.printStackTrace();
+            fail();
+        }
+
+        // Should have increased each of the abilities by the specified amount.
+        for(Ability ability : potion.getAbilities()) {
+            Ability heroAbility = hero.matchAbility(ability);
+            for(Ability original : originalAbilities) {
+                if(original.getType().equals(ability.getType())) {
+                    double expected = original.getAbilityValue() + potion.getIncrementAmount();
+                    assertEquals(expected, heroAbility.getAbilityValue());
+                }
+            }
+        }
     }
 }
