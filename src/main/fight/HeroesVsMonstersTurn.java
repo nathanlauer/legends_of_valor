@@ -8,6 +8,7 @@ import main.legends.Monster;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Class HeroesVsMonstersTurn is similar to the HeroesVsMonstersRound, except that
@@ -30,14 +31,12 @@ import java.util.List;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public class HeroesVsMonstersTurn implements TurnExecutor  {
-//    private final List<Hero> heroes;
-//    private final List<Monster> monsters;
     private Legend current;
     private boolean firstTurn;
     private final Iterator<Hero> heroIterator;
     private final Iterator<Monster> monsterIterator;
     private boolean finished;
-    // TODO: add PairHeroesAndMonsters to this class
+    private final PairHeroesAndMonsters pairing;
 
     /**
      * Standard constructor for a HeroesVsMonstersTurn instance
@@ -45,12 +44,11 @@ public class HeroesVsMonstersTurn implements TurnExecutor  {
      * @param monsters List of Monsters participating
      */
     public HeroesVsMonstersTurn(List<Hero> heroes, List<Monster> monsters) {
-//        this.heroes = heroes;
-//        this.monsters = monsters;
         heroIterator = heroes.iterator();
         monsterIterator = monsters.iterator();
         firstTurn = true;
         finished = false;
+        pairing = new PairHeroesAndMonsters(new Scanner(System.in), heroes, monsters);
     }
 
     /**
@@ -83,6 +81,9 @@ public class HeroesVsMonstersTurn implements TurnExecutor  {
             throw new InvalidNextTurnException("No valid Hero for the first move!");
         }
         firstTurn = false;
+
+        // Prompt the user to setup a pairing between Heroes and Monsters
+        pairing.initialPairing();
     }
 
     /**
@@ -99,6 +100,7 @@ public class HeroesVsMonstersTurn implements TurnExecutor  {
                 Monster monster = monsterIterator.next();
                 if(monster.getHealthPower().hasSomeHealth()) {
                     current = monster;
+                    pairing.checkValidityForMonster(monster);
                     found = true;
                 }
             }
@@ -110,6 +112,7 @@ public class HeroesVsMonstersTurn implements TurnExecutor  {
                 Hero hero = heroIterator.next();
                 if(!hero.hasFainted()) {
                     current = hero;
+                    pairing.checkValidityForHero(hero);
                     found = true;
                 }
             }
