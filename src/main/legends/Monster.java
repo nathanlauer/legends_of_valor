@@ -76,6 +76,22 @@ public abstract class Monster extends Legend {
     }
 
     /**
+     * Indicates whether or not this Monster is still alive.
+     * @return true if this Monster has some HealthPower, false otherwise
+     */
+    public boolean isAlive() {
+        return this.getHealthPower().hasSomeHealth();
+    }
+
+    /**
+     * Indicates whether or not this Monster is dead.
+     * @return true if this Monster has no remaining HealthPower, false otherwise.
+     */
+    public boolean hasDied() {
+        return !isAlive();
+    }
+
+    /**
      * @return String representation of this Monster object.
      */
     @Override

@@ -37,6 +37,7 @@ public class HeroesVsMonstersTurn implements TurnExecutor  {
     private final Iterator<Hero> heroIterator;
     private final Iterator<Monster> monsterIterator;
     private boolean finished;
+    // TODO: add PairHeroesAndMonsters to this class
 
     /**
      * Standard constructor for a HeroesVsMonstersTurn instance

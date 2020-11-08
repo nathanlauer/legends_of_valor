@@ -2,11 +2,14 @@ package main.fight;
 
 import main.legends.Hero;
 import main.legends.Monster;
+import main.utils.GetUserListNumericalInput;
 import main.utils.GetUserNumericInput;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * Class PairHeroesAndMonsters is a class which encapsulates the responsibility of
@@ -92,18 +95,76 @@ public class PairHeroesAndMonsters {
         int chosen = userNumericInput.run();
         if(chosen == 0) {
             // Generate a pairing here
-            // TODO
+            initialHeroesToMonstersPairing();
         } else {
             // Walk the user through the process of pairing Heroes vs Monsters.
-            // TODO
+            for(Hero hero : heroes) {
+                userPairMonstersForHero(hero);
+            }
         }
 
         // In either case, generate an internal pairing of Monsters to Heroes.
-        // TODO
+        initialMonstersToHeroesPairing();
     }
 
+    /**
+     * Helper method which checks to see if this Hero is paired with at least one Monster.
+     * If so, does nothing. If not, and there are remaining Monsters that are still alive,
+     * then auto re-pairs the Hero against each of the remaining Monsters.
+     *
+     * Additionally, this method filters out any Monsters that have died, so that the
+     * passed in Hero is not paired with dead Monsters.
+     * @param hero the Hero to check
+     *
+     * This method is analogous to the checkValidityForMonster() method
+     */
     public void checkValidityForHero(Hero hero) {
+        // Filter out dead Monsters
+        heroesMonsters.get(hero).removeIf(Monster::hasDied);
 
+        // Check if there is at least one Monster that this Hero is facing that is still alive
+        for(Monster monster : this.heroesMonsters.get(hero)) {
+            if(monster.isAlive()) {
+                return; // no re-pairing required
+            }
+        }
+
+        // No more living Monsters. Clear the previous List of Monsters this Hero faced
+        heroesMonsters.get(hero).clear();
+
+        // Otherwise, check if there are remaining Monsters still alive
+        Stream<Monster> livingMonsters = monsters.stream().filter(Monster::isAlive);
+        livingMonsters.forEach(monster -> addMonsterToHero(hero, monster));
+    }
+
+    /**
+     * Helper method which checks to see if this Monster is paired with at least one
+     * Hero. If so, does nothing. If not, and there are remaining Heroes that are still
+     * alive, then auto re-pairs this Monster with the remaining Heroes.
+     *
+     * Additionally, this method filters out fainted Heroes, so that the passed in
+     * Monster does not face any fainted Heroes.
+     * @param monster the Monster to check
+     *
+     * This method is analogous to the checkValidityForHero() method
+     */
+    public void checkValidityForMonster(Monster monster) {
+        // Filter out fainted Heroes
+        monstersHeroes.get(monster).removeIf(Hero::hasFainted);
+
+        // Check if there is at least one Hero that this Monster is facing that is still alive
+        for(Hero hero : monstersHeroes.get(monster)) {
+            if(!hero.hasFainted()) {
+                return; // no re-pairing required
+            }
+        }
+
+        // No more living Heroes. Clear the previous List of Heroes this Monster faced
+        monstersHeroes.get(monster).clear();;
+
+        // Otherwise, check if there are remaining Heroes still alive
+        Stream<Hero> livingHeroes = heroes.stream().filter(Hero::hasFainted);
+        livingHeroes.forEach(hero -> addHeroToMonster(monster, hero));
     }
 
     /**
@@ -122,5 +183,115 @@ public class PairHeroesAndMonsters {
      */
     public List<Hero> getHeroesForMonster(Monster monster) {
         return monstersHeroes.get(monster);
+    }
+
+    /**
+     * For the given Hero, prompts the user to pair said Hero with
+     * a list of Monsters
+     * @param hero the Hero in question
+     */
+    private void userPairMonstersForHero(Hero hero) {
+        String prompt = "Which Monsters do you want " + hero.getName() + " to fight?";
+        List<String> options = new ArrayList<>();
+        if(monsters.size() > 1) {
+            options.add("All"); // for user convenience, will be option 1
+        }
+
+        for(Monster monster : this.monsters) {
+            options.add(monster.getName()); // TODO: think about outputting some more information
+        }
+
+        List<Integer> selected = new GetUserListNumericalInput(prompt, options).run();
+        if(monsters.size() > 1 && selected.contains(1)) { // pair all Monsters with this Hero
+            for(Monster monster : monsters) {
+                addMonsterToHero(hero, monster);
+            }
+        } else {
+            for(Integer chosen : selected) { // pair only the selected Monsters with this Hero
+                Monster monster = monsters.get(chosen);
+                addMonsterToHero(hero, monster);
+            }
+        }
+    }
+
+
+    /**
+     * Private helper method that pairs Monsters and Heroes initially.
+     * That is, it performs the following steps:
+     * 1) For each Monster, clears the List of Heroes
+     * 2) For each Monster, assigns the index-corresponding Hero to said Monster
+     * 3) For any surplus Monsters, assigns all Heroes to that Monster.
+     *
+     * This method is analogous to the initialHeroesToMonstersPairing() method
+     */
+    private void initialMonstersToHeroesPairing() {
+        // Ensure previous Heroes List is clear
+        monstersHeroes.forEach((monsters, heroesList) -> heroesList.clear());
+
+        // Now assign Heroes to Monster, starting with a 1v1 strategy, and
+        // switching to a 1vMany strategy once appropriate
+        for(int i = 0; i < monsters.size(); i++) {
+            if(i >= heroes.size()) { // surpassed number of Heroes, assign 1vMany
+                monstersHeroes.put(monsters.get(i), heroes);
+            } else { // 1v1 for this Monster/Hero pair
+                addHeroToMonster(monsters.get(i), heroes.get(i));
+            }
+        }
+    }
+
+    /**
+     * Private helper method that pairs Heroes and Monsters initially.
+     * That is, it performs the following steps:
+     * 1) For each Hero, clears the List of Monsters
+     * 2) For each Hero, assigns the index-corresponding Monster to said Hero
+     * 3) For any surplus Heroes, assigns all Monsters to that Hero
+     *
+     * This method is analogous to the initialMonstersToHeroesPairing() method
+     */
+    private void initialHeroesToMonstersPairing() {
+        // Ensure previous Monster List is clear
+        heroesMonsters.forEach((hero, monsterList) -> monsterList.clear());
+
+        // Now assign Monsters to Heroes, starting with a 1v1 strategy, and
+        // switching to a 1vMany strategy once appropriate
+        for(int i = 0; i < heroes.size(); i++) {
+            if(i >= monsters.size()) { // surpassed number of Monsters, assign 1vMany
+                heroesMonsters.put(heroes.get(i), monsters);
+            } else { // 1v1 for this Hero/Monster pair
+                addMonsterToHero(heroes.get(i), monsters.get(i));
+            }
+        }
+    }
+
+    /**
+     * Adds the passed in Monster to the List of Monsters that the
+     * passed in Hero is paired with.
+     * @param hero the Hero in question
+     * @param monster the Monster to add as a pairing with this Hero
+     */
+    private void addMonsterToHero(Hero hero, Monster monster) {
+        if(heroesMonsters.containsKey(hero)) {
+            List<Monster> pairedMonsters = heroesMonsters.get(hero);
+            pairedMonsters.add(monster);
+        } else {
+            List<Monster> pairedMonsters = new ArrayList<>(Collections.singletonList(monster));
+            heroesMonsters.put(hero, pairedMonsters);
+        }
+    }
+
+    /**
+     * Adds the passed in Hero to the List of Heroes that the passed
+     * in Monster is paired with.
+     * @param monster The Monster in question
+     * @param hero the Hero to add as a pairing with this Monster
+     */
+    private void addHeroToMonster(Monster monster, Hero hero) {
+        if(monstersHeroes.containsKey(monster)) {
+            List<Hero> pairedHeroes = monstersHeroes.get(monster);
+            pairedHeroes.add(hero);
+        } else {
+            List<Hero> pairedHeroes = new ArrayList<>(Collections.singletonList(hero));
+            monstersHeroes.put(monster, pairedHeroes);
+        }
     }
 }
