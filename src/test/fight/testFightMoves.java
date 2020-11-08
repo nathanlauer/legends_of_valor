@@ -138,6 +138,7 @@ public class testFightMoves {
         Monster monster = LegendBuilder.exampleMonster();
         Market market = new Market();
         Spell spell = (Spell)market.getSpells().get(0);
+        double initialMana = hero.getMana().getManaAmount();
 
         // Set the Monster's dodge chance to zero, for a deterministic test
         monster.getAgility().setAbilityValue(0);
@@ -157,20 +158,18 @@ public class testFightMoves {
         }
 
         FightMove castSpell = new CastSpell(spell, hero, monster);
+
+        // after the spell, damage should have been done
+        double expectedDamage = spell.getDamage() + (hero.getDexterity().getAbilityValue() / 10000.0) * spell.getDamage() - monster.getDefenseAmount();
+        expectedDamage = expectedDamage * 0.05;
+
         try {
-//            String name = spell.getName();
-//            if(name.equals("Heat_Wave") || name.equals("Lava_Comet") || name.equals("Breath_of_Fire")) {
-//                System.out.println("A");
-//            }
             castSpell.execute();
         } catch (InvalidFightMoveException e) {
             e.printStackTrace();
             fail();
         }
 
-        // after the spell, damage should have been done
-        double expectedDamage = spell.getDamage() + (hero.getDexterity().getAbilityValue() / 10000.0) * spell.getDamage() - monster.getDefenseAmount();
-        expectedDamage = expectedDamage * 0.05;
         double currentMonsterHp = monster.getHealthPower().getHealthPower();
         if(currentMonsterHp != (prevMonsterHp - expectedDamage)) {
             System.out.println(spell.getName());
@@ -179,5 +178,10 @@ public class testFightMoves {
 
         // The spell should also have reduced some Ability value
         assertEquals(expectedNewValue, toReduce.getAbilityValue());
+
+        // And the Hero should have lost some Mana
+        double expectedMana = initialMana - spell.getMana().getManaAmount();
+        if(expectedMana < 0) { expectedMana = 0.0; }
+        assertEquals(expectedMana, hero.getMana().getManaAmount());
     }
 }
