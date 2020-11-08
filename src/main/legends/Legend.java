@@ -7,6 +7,7 @@ import main.attributes.Level;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Abstract Class Legend sits at the top of the inheritance hierarchy for all heroes and monsters.
@@ -140,6 +141,55 @@ public abstract class Legend {
      * @return the likelihood of dodging an attack.
      */
     public abstract double getDodgeChance();
+
+    /**
+     * Given the passed in Ability, find the Ability of this Legend that
+     * matches the same type. For example, if ability is Defense, then
+     * this method returns the Defense Ability of this Legend.
+     *
+     * If the relevant Ability is not found, null is returned.
+     *
+     * @param abilityToMatch the Ability to match
+     * @return the matching Ability type of this Legend.
+     */
+    public Ability matchAbility(Ability abilityToMatch) {
+        for(Ability ability : this.getAbilities()) {
+            if(ability.getType().equals(abilityToMatch.getType())) {
+                return ability;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Handles the logic for when a Legend is attacked. The value passed in is
+     * the total amount of damage theoretically caused. Ignoring other semantics
+     * for a second, the passed in damage times 0.05 is deducted from this
+     * Legend's HealthPower.
+     *
+     * There are two caveats:
+     * 1) A Legend has some defense amount - that defense is subtracted from the
+     * total amount, before multiplying be 0.05.
+     * 2) A Legend has a certain dodge chance, based on their Agility Ability.
+     * If the Legend successfully dodges the attack, then no HealthPower is
+     * removed.
+     *
+     * @param damage total damage the attacker is inflicting
+     */
+    public void wasAttacked(int damage) {
+        int defense = this.getDefenseAmount();
+        int totalDamage = damage - defense;
+        if(totalDamage <= 0) {
+            return;
+        }
+
+        int inflictedDamage = (int)Math.ceil(totalDamage * 0.05);
+        double dodgeChance = this.getDodgeChance();
+        int rand = new Random().nextInt(101);
+        if(rand > (int)dodgeChance*100) {
+            this.getHealthPower().reduceHealthPowerBy(inflictedDamage);
+        }
+    }
 
     /**
      *

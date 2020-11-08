@@ -8,9 +8,6 @@ import java.util.List;
  * Class ExternalMove extends FightMove, and represents a type of
  * Move that the executor is performing on at least one other Legend.
  *
- * In this game, every one of these types of Moves deals some amount
- * of damage to the relevant parties.
- *
  * @author: Nathan Lauer
  * @email: lauern@bu.edu
  * Creation Date: 11/5/20
@@ -18,13 +15,11 @@ import java.util.List;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public abstract class ExternalMove extends FightMove {
-    private final int damage;
     private final List<Legend> receivers;
 
-    public ExternalMove(Legend executor, List<Legend> receivers, int damage) {
+    public ExternalMove(Legend executor, List<Legend> receivers) {
         super(executor);
         this.receivers = receivers;
-        this.damage = damage;
     }
 
     /**
@@ -33,13 +28,5 @@ public abstract class ExternalMove extends FightMove {
      */
     public List<Legend> getReceivers() {
         return receivers;
-    }
-
-    /**
-     *
-     * @return the amount of damage done by this Move
-     */
-    public int getDamage() {
-        return damage;
     }
 }

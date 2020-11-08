@@ -56,6 +56,10 @@ public abstract class Hero extends Legend {
         this.fainted = Hero.defaultFainted;
         this.gearItemList = new GearItemList();
         this.activeGearItems = new ActiveGearItems(this);
+
+        // Add the Hero-unique Abilities to this Legend.
+        this.addAbility(this.dexterity);
+        this.addAbility(mana);
     }
 
     /**
@@ -121,7 +125,7 @@ public abstract class Hero extends Legend {
      * Note: this is not just the Strength ability - a Legend may wield some
      * other GearItem which increases their damage amount.
      *
-     * For a Hero, the amount of damage is (Strength + Weapon) * 0.05;
+     * For a Hero, the amount of damage is the Strength ability plus a possible Weapon
      * @return the amount of Damage in an attack
      */
     public int getDamageAmount() {
@@ -129,8 +133,7 @@ public abstract class Hero extends Legend {
         if(this.getActiveGearItems().hasActiveWeapon()) {
             baseDamage += this.getActiveGearItems().getWeapon().getDamage();
         }
-        double damageAmount = baseDamage * 0.05;
-        return (int)Math.ceil(damageAmount); // favor the Hero
+        return baseDamage;
     }
 
     /**
