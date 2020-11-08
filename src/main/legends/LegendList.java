@@ -1,0 +1,238 @@
+package main.legends;
+
+import main.attributes.*;
+import main.utils.Coffer;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+/**
+ * Class LegendList contains a List of all Legends available in the game.
+ * It is a singleton class, and upon first call, reads in all Monsters
+ * and Heroes from disk.
+ *
+ * @author: Nathan Lauer
+ * @email: lauern@bu.edu
+ * Creation Date: 11/8/20
+ * <p>
+ * Please feel free to ask me any questions. I hope you're having a nice day!
+ */
+public class LegendList {
+    private static LegendList instance = null;
+    private final List<Legend> legends;
+
+    /**
+     *
+     * @return the static instance of this class
+     */
+    public static LegendList getInstance() {
+        if(instance == null) {
+            instance = new LegendList();
+        }
+        return instance;
+    }
+
+    /**
+     * Private constructor
+     */
+    private LegendList() {
+        legends = new ArrayList<>();
+        try {
+            new ReadLegendsFromDisk().run();
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Shouldn't happen
+        }
+        Collections.shuffle(legends); // so we don't have the same order every time
+    }
+
+    /**
+     *
+     * @return a List of all Legends
+     */
+    public List<Legend> getLegends() {
+        return legends;
+    }
+
+    /**
+     *
+     * @return a List of every Hero
+     */
+    public List<Hero> getHeroes() {
+        List<Hero> heroes = new ArrayList<>();
+        for(Legend legend : legends) {
+            if(legend instanceof Hero) {
+                heroes.add((Hero)legend);
+            }
+        }
+        return heroes;
+    }
+
+    /**
+     * Looks for a Hero with the passed in name.
+     * @param name Name of the requested Hero
+     * @return Hero with the passed in name, or null if not found
+     */
+    public Hero findHeroByName(String name) {
+        return getHeroes().stream()
+                .filter(aHero -> aHero.getName().equals(name))
+                .findAny()
+                .orElse(null);
+    }
+
+    /**
+     *
+     * @return a List of every Monster.
+     */
+    public List<Monster> getMonsters() {
+        List<Monster> monsters = new ArrayList<>();
+        for(Legend legend : legends) {
+            if(legend instanceof Monster) {
+                monsters.add((Monster)legend);
+            }
+        }
+        return monsters;
+    }
+
+    /**
+     * Finds the Monster with the passed in name
+     * @param name Name of the desired Monster
+     * @return the Monster that has the passed in name, or null if not found
+     */
+    public Monster findMonsterByName(String name) {
+        return getMonsters().stream()
+                .filter(monster -> monster.getName().equals(name))
+                .findAny()
+                .orElse(null);
+    }
+
+    /**
+     * Private class which is responsible for reading Monsters and Heroes from disk.
+     */
+    private class ReadLegendsFromDisk {
+        private final File dragons;
+        private final File exoskeletons;
+        private final File spirits;
+        private final File paladins;
+        private final File sorcerers;
+        private final File warriors;
+
+        /**
+         * Standard constructor - will throw an error if the expected files don't exist
+         */
+        public ReadLegendsFromDisk() {
+            dragons = new File("data/dragons.txt");
+            exoskeletons = new File("data/exoskeletons.txt");
+            spirits = new File("data/spirits.txt");
+            paladins = new File("data/paladins.txt");
+            sorcerers = new File("data/sorcerers.txt");
+            warriors = new File("data/warriors.txt");
+
+            // Make sure that all the required files are in place!
+            assert dragons.exists();
+            assert exoskeletons.exists();
+            assert spirits.exists();
+            assert paladins.exists();
+            assert sorcerers.exists();
+            assert warriors.exists();
+        }
+
+        /**
+         * Reads each of the Hero and Monster files from disk, and adds the results to the Legends list.
+         */
+        public void run() throws IOException {
+            readHeroFile(paladins, "Paladins");
+            readHeroFile(sorcerers, "Sorcerers");
+            readHeroFile(warriors, "Warriors");
+            readMonsterFile(dragons, "Dragons");
+            readMonsterFile(exoskeletons," Exoskeletons");
+            readMonsterFile(spirits, "Spirits");
+        }
+
+        /**
+         * Reads a List of Heroes from the passed in file
+         * @param file the relevant Hero file
+         */
+        private void readHeroFile(File file, String heroType) throws IOException {
+            List<String> lines = Files.readAllLines(file.toPath());
+            List<String> relevantLines = lines.subList(1, lines.size()); // Ignore header line
+            for(String line : relevantLines) {
+                line = line.trim();
+                String[] items = line.split("\\s+"); // split by whitespace
+                String name = items[0];
+                Mana mana = new Mana(Integer.parseInt(items[1]));
+                Ability strength = new Ability(AbilityType.STRENGTH, Integer.parseInt(items[2]));
+                Ability agility = new Ability(AbilityType.AGILITY, Integer.parseInt(items[3]));
+                Ability dexterity = new Ability(AbilityType.DEXTERITY, Integer.parseInt(items[4]));
+                Coffer coffer = new Coffer(Integer.parseInt(items[5]));
+                Level level = new Level(Integer.parseInt(items[6]));
+
+                // Both Monsters and Heroes start with hp = 100 * level
+                HealthPower hp = new UncappedHealthPower(100 * level.getLevel());
+
+                // Create a hero, depending on file type
+                Hero hero;
+                switch (heroType) {
+                    case "Paladins":
+                        hero = new Paladin(name, level, hp, mana, coffer, strength, agility, dexterity);
+                        break;
+                    case "Sorcerers":
+                        hero = new Sorcerer(name, level, hp, mana, coffer, strength, agility, dexterity);
+                        break;
+                    case "Warriors":
+                        hero = new Warrior(name, level, hp, mana, coffer, strength, agility, dexterity);
+                        break;
+                    default:
+                        throw new IOException("Unknown hero file type");
+                }
+                legends.add(hero);
+            }
+        }
+
+        /**
+         * Reads a List of Monsters from the passed in file
+         * @param file the relevant Monster file
+         */
+        private void readMonsterFile(File file, String monsterType) throws IOException {
+            List<String> lines = Files.readAllLines(file.toPath());
+            List<String> relevantLines = lines.subList(1, lines.size()); // Ignore header line
+            for(String line : relevantLines) {
+                line = line.trim();
+                String[] items = line.split("\\s+"); // split by whitespace
+                if(items.length == 0) {
+                    continue; // No data on this line
+                }
+
+                String name = items[0];
+                Level level = new Level(Integer.parseInt(items[1]));
+                Ability strength = new Ability(AbilityType.STRENGTH, Integer.parseInt(items[2]));
+                Ability defense = new Ability(AbilityType.DEFENSE, Integer.parseInt(items[3]));
+                Ability agility = new Ability(AbilityType.AGILITY, Integer.parseInt(items[4]));
+
+                // Both Monsters and Heroes start with hp = 100 * level
+                HealthPower hp = new UncappedHealthPower(100 * level.getLevel());
+
+                // Create a hero, depending on file type
+                Monster monster;
+                switch (monsterType) {
+                    case "Dragons":
+                        monster = new Dragon(name, level, hp, strength, defense, agility);
+                        break;
+                    case "Exoskeletons":
+                        monster = new Exoskeleton(name, level, hp, strength, defense, agility);
+                        break;
+                    case "Spirits":
+                        monster = new Spirit(name, level, hp, strength, defense, agility);
+                        break;
+                    default:
+                        throw new IOException("Unknown hero file type");
+                }
+                legends.add(monster);
+            }
+        }
+    }
+}
