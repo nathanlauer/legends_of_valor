@@ -2,13 +2,10 @@ package test.fight;
 
 import main.fight.PairHeroesAndMonsters;
 import main.legends.Hero;
-import main.legends.Legend;
 import main.legends.LegendList;
 import main.legends.Monster;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.util.List;
 import java.util.Scanner;
 
