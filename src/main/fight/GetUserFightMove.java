@@ -1,7 +1,6 @@
 package main.fight;
 
 import main.legends.Hero;
-import main.legends.Legend;
 import main.legends.Monster;
 import main.market_and_gear.*;
 import main.utils.GetUserNumericInput;
@@ -64,6 +63,7 @@ public class GetUserFightMove {
                         move = new CastSpell(spell, hero, chooseMonsterForSpell());
                         selectedPossibleMove = true;
                     }
+                    break;
                 case 2:
                     // use a potion
                     Potion potion = choosePotionsToUse();
@@ -71,6 +71,7 @@ public class GetUserFightMove {
                         move = new UsePotion(hero, potion);
                         selectedPossibleMove = true;
                     }
+                    break;
                 case 3:
                     // switch weapons
                     Weapon weapon = chooseWeaponToSwitch();
@@ -78,6 +79,7 @@ public class GetUserFightMove {
                         move = new SwitchWeapon(hero, weapon);
                         selectedPossibleMove = true;
                     }
+                    break;
                 case 4:
                     // switch armor
                     Armor armor = chooseArmorToSwitch();
@@ -85,8 +87,10 @@ public class GetUserFightMove {
                         move = new SwitchArmor(hero, armor);
                         selectedPossibleMove = true;
                     }
+                    break;
                 default:
                     System.out.println("Unknown option selected. Please try again.");
+                    break;
             }
         }
         return move;

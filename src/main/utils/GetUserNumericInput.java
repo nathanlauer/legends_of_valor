@@ -121,6 +121,6 @@ public class GetUserNumericInput {
             }
         }
 
-        return selected;
+        return selected - 1;
     }
 }

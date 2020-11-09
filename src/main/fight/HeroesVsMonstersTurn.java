@@ -38,7 +38,7 @@ public class HeroesVsMonstersTurn implements TurnExecutor  {
     private final Iterator<Monster> monsterIterator;
     private boolean finished;
     private final PairHeroesAndMonsters pairing;
-    private int selectedOption;
+    private FightMove move;
 
     /**
      * Standard constructor for a HeroesVsMonstersTurn instance
@@ -51,7 +51,7 @@ public class HeroesVsMonstersTurn implements TurnExecutor  {
         firstTurn = true;
         finished = false;
         pairing = new PairHeroesAndMonsters(new Scanner(System.in), heroes, monsters);
-        selectedOption = 0;
+        move = null;
     }
 
     /**
@@ -126,30 +126,6 @@ public class HeroesVsMonstersTurn implements TurnExecutor  {
     }
 
     /**
-     * Helper method which prompts the user for their desired move
-     */
-    private void getUserMove() {
-        // Display the status
-        Hero hero = (Hero)current;
-        System.out.println("It's " + hero.getName() + " turn.");
-        System.out.println("Faced Monsters:");
-        List<Monster> relevantMonsters = pairing.getMonstersForHero(hero);
-        for(Monster monster : relevantMonsters) {
-            System.out.println(monster.getName() + ", hp: " + monster.getHealthPower().getHealthPower());
-        }
-        String prompt = "What would you like to do?";
-        List<String> options = new ArrayList<>();
-        if(relevantMonsters.size() == 1) {
-            options.add("Attack!");
-        } else { // Assumes greater than 1
-            options.add("Attack! (Your attack will be divided equally amongst the " + relevantMonsters.size() + " monsters.");
-        }
-        options.add("Use a potion");
-        options.add("Cast a spell");
-
-    }
-
-    /**
      * Plays the next turn
      */
     @Override
@@ -170,9 +146,20 @@ public class HeroesVsMonstersTurn implements TurnExecutor  {
                 e.printStackTrace();
                 // Shouldn't happen
             }
+        } else {
+            // If current is a Hero, prompt the user for their desired move, then execute it.
+            List<Monster> facedMonsters = pairing.getMonstersForHero((Hero)current);
+            boolean madeSuccessfulMove = false;
+            while(!madeSuccessfulMove) {
+                move = new GetUserFightMove((Hero)current, facedMonsters).run();
+                try {
+                    move.execute();
+                    madeSuccessfulMove = true;
+                } catch (InvalidFightMoveException e) {
+                    System.out.println("Error! Something went wrong with the previous move. Please try again");
+                }
+            }
         }
-
-        // If current is a Hero, prompt the user for their desired move, then execute it.
     }
 
     /**
@@ -180,7 +167,7 @@ public class HeroesVsMonstersTurn implements TurnExecutor  {
      */
     @Override
     public void processEndOfTurn() {
-
+        // nothing to do
     }
 
     /**
