@@ -4,13 +4,10 @@ import main.legends.Hero;
 import main.utils.BeneathLevelException;
 import main.utils.GetUserNumericInput;
 import main.utils.NotEnoughCoinsException;
-import org.omg.PortableServer.LIFESPAN_POLICY_ID;
 import test.utils.Output;
 
 import java.util.*;
-import java.util.function.DoubleToIntFunction;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Class MarketInteraction is a class that handles the interaction between users and a Market.
@@ -72,10 +69,10 @@ public class MarketInteraction {
      * Prints out all the available GearItems in the Market.
      */
     private void printAllGearItems() {
-        Output.printWeapons(market.getWeapons());
-        Output.printArmor(market.getArmor());
-        Output.printSpells(market.getSpells());
-        Output.printPotions(market.getPotions());
+        Output.printOutputables(market.getWeapons());
+        Output.printOutputables(market.getArmor());
+        Output.printOutputables(market.getSpells());
+        Output.printOutputables(market.getPotions());
     }
 
     /**
@@ -124,7 +121,7 @@ public class MarketInteraction {
         if(heroes.size() == 1) {
             return heroes.get(0);
         }
-        List<String> options = Output.printHeroListAsStrings(heroes);
+        List<String> options = Output.outputablesAsString(heroes);
         List<Integer> linesToSkip = new ArrayList<>(Collections.singletonList(0)); // skip header line
         GetUserNumericInput getUserNumericInput = new GetUserNumericInput(new Scanner(System.in), prompt, options);
         getUserNumericInput.setLinesToSkip(linesToSkip);
@@ -153,7 +150,7 @@ public class MarketInteraction {
         List<GearItem> items = market.getWeapons();
         List<GearItem> weapons = items.stream().filter(gearItem -> gearItem.heroCanBuy(hero)).collect(Collectors.toList());
         if(weapons.size() > 0) {
-            List<String> weaponsOut = Output.printWeaponsAsStrings(weapons);
+            List<String> weaponsOut = Output.outputablesAsString(weapons);
             options.addAll(weaponsOut);
             availableItems.addAll(weapons);
 
@@ -169,7 +166,7 @@ public class MarketInteraction {
         items = market.getArmor();
         List<GearItem> armors = items.stream().filter(gearItem -> gearItem.heroCanBuy(hero)).collect(Collectors.toList());
         if(armors.size() > 0) {
-            List<String> armorOut = Output.printArmorAsStrings(armors);
+            List<String> armorOut = Output.outputablesAsString(armors);
             options.addAll(armorOut);
             availableItems.addAll(armors);
 
@@ -185,7 +182,7 @@ public class MarketInteraction {
         items = market.getSpells();
         List<GearItem> spells = items.stream().filter(gearItem -> gearItem.heroCanBuy(hero)).collect(Collectors.toList());
         if(spells.size() > 0) {
-            List<String> spellsOut = Output.printSpellsAsStrings(spells);
+            List<String> spellsOut = Output.outputablesAsString(spells);
             options.addAll(spellsOut);
             availableItems.addAll(spells);
 
@@ -201,7 +198,7 @@ public class MarketInteraction {
         items = market.getPotions();
         List<GearItem> potions = items.stream().filter(gearItem -> gearItem.heroCanBuy(hero)).collect(Collectors.toList());
         if(potions.size() > 0) {
-            List<String> potionsOut = Output.printPotionsAsStrings(potions);
+            List<String> potionsOut = Output.outputablesAsString(potions);
             options.addAll(potionsOut);
             availableItems.addAll(potions);
 

@@ -71,7 +71,7 @@ public class CastSpell extends ExternalMove {
 
         System.out.println(this.getExecutor().getName() + " cast the " + spell.getName() + " spell. Result: ");
         System.out.println("Attack: " + result);
-        System.out.println(monster.getName() + "'s " + toReduce.getType().getName() + " has been reduced by 10%!");
+        System.out.println(monster.getName() + "'s " + toReduce.getType() + " has been reduced by 10%!");
         System.out.println(hero.getName() + "'s mana has been reduced by " + spell.getMana().getManaAmount());
     }
 }

@@ -14,6 +14,7 @@ import main.utils.Validations;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public class Armor extends GearItem {
+    public static final String outputFormat = "%-4s%-21s%-6s%-5s";
     public static final String defaultName = "Armor";
     private double defense;
 
@@ -70,7 +71,7 @@ public class Armor extends GearItem {
      */
     @Override
     public String toString() {
-        return super.toString() + ". Armor! defense: " + this.getDefense();
+        return String.format(getOutputFormat(), getMinLevel(), getName(), getPrice(), getDefense());
     }
 
     /**
@@ -92,5 +93,21 @@ public class Armor extends GearItem {
         Armor other = (Armor) o;
         return this.getDefense() == other.getDefense() &&
                 super.equals(o);
+    }
+
+    /**
+     * @return the format string which can be used to output all GearItems of this type
+     */
+    @Override
+    public String getOutputFormat() {
+        return Armor.outputFormat;
+    }
+
+    /**
+     * @return the Header string that can be used to print out the relevant GearItems.
+     */
+    @Override
+    public String getHeaderString() {
+        return String.format(getOutputFormat(), "Lvl", "Name", "Price", "Def");
     }
 }

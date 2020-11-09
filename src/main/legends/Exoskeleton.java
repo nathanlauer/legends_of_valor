@@ -40,14 +40,6 @@ public class Exoskeleton extends Monster {
     }
 
     /**
-     * @return String representation of this Exoskeleton object.
-     */
-    @Override
-    public String toString() {
-        return super.toString() + ". Exoskeleton Monster! Clunk!";
-    }
-
-    /**
      * Defines equality for two Exoskeleton objects.
      *
      * @param o Other object in consideration for equality

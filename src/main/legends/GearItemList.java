@@ -78,8 +78,8 @@ public class GearItemList {
      *
      * @return a List of all the Weapons in this GearItemList
      */
-    public List<Weapon> getWeapons() {
-        List<Weapon> output = new ArrayList<>();
+    public List<GearItem> getWeapons() {
+        List<GearItem> output = new ArrayList<>();
         for(GearItem item : getGearItems()) {
             if(item instanceof Weapon) {
                 output.add((Weapon)item);
@@ -92,8 +92,8 @@ public class GearItemList {
      *
      * @return a List of all the Armor in this GearItemList
      */
-    public List<Armor> getArmor() {
-        List<Armor> output = new ArrayList<>();
+    public List<GearItem> getArmor() {
+        List<GearItem> output = new ArrayList<>();
         for(GearItem item : getGearItems()) {
             if(item instanceof Armor) {
                 output.add((Armor) item);
@@ -106,11 +106,28 @@ public class GearItemList {
      *
      * @return a List of all the Spells in this GearItemList
      */
-    public List<Spell> getSpells() {
-        List<Spell> output = new ArrayList<>();
+    public List<GearItem> getSpells() {
+        List<GearItem> output = new ArrayList<>();
         for(GearItem item : getGearItems()) {
             if(item instanceof Spell) {
-                output.add((Spell) item);
+                output.add(item);
+            }
+        }
+        return output;
+    }
+
+    /**
+     * @param hero the relevant Hero
+     * @return a List of spells that the passed in Hero has enough Mana to use
+     */
+    public List<GearItem> getUsableSpells(Hero hero) {
+        List<GearItem> output = new ArrayList<>();
+        for(GearItem item : getGearItems()) {
+            if(item instanceof Spell) {
+                Spell spell = (Spell)item;
+                if(spell.heroHasEnoughMana(hero)) {
+                    output.add(item);
+                }
             }
         }
         return output;
@@ -118,13 +135,44 @@ public class GearItemList {
 
     /**
      *
+     * @param hero the relevant Hero
+     * @return a List of spells that the passed in Hero does not have enough Mana to use
+     */
+    public List<GearItem> getNonUsableSpells(Hero hero) {
+        List<GearItem> allSpells = this.getSpells();
+        List<GearItem> usableSpells = this.getUsableSpells(hero);
+        for(GearItem item : usableSpells) {
+            allSpells.remove(item);
+        }
+        return allSpells;
+    }
+
+    /**
+     *
      * @return a List of all the Potions in this GearItemList
      */
-    public List<Potion> getPotions() {
-        List<Potion> output = new ArrayList<>();
+    public List<GearItem> getPotions() {
+        List<GearItem> output = new ArrayList<>();
         for(GearItem item : getGearItems()) {
             if(item instanceof Potion) {
-                output.add((Potion) item);
+                output.add(item);
+            }
+        }
+        return output;
+    }
+
+    /**
+     *
+     * @return a List of all the Potions in this GearItemList, that have not been used
+     */
+    public List<GearItem> getUsablePotions() {
+        List<GearItem> output = new ArrayList<>();
+        for(GearItem item : getGearItems()) {
+            if(item instanceof Potion) {
+                Potion potion = (Potion)item;
+                if(!potion.wasUsed()) {
+                    output.add((Potion) item);
+                }
             }
         }
         return output;

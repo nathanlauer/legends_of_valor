@@ -92,9 +92,9 @@ public class HeroesVsMonstersRound implements RoundExecutor {
         System.out.println("Start of round " + roundNum);
         System.out.println("Legend Status");
         System.out.println();
-        Output.printHeroList(heroes);
+        Output.printOutputables(heroes);
         System.out.println();
-        Output.printMonsters(monsters);
+        Output.printOutputables(monsters);
         Output.printSeparator();
     }
 

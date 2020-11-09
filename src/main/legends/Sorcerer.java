@@ -48,14 +48,6 @@ public class Sorcerer extends Hero {
     }
 
     /**
-     * @return String representation of this Sorcerer object.
-     */
-    @Override
-    public String toString() {
-        return super.toString() + " Sorcerer Hero! A spell to save the day!";
-    }
-
-    /**
      * Defines equality for two Sorcerer objects.
      *
      * @param o Other object in consideration for equality

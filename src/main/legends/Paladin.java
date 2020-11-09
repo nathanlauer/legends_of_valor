@@ -48,14 +48,6 @@ public class Paladin extends Hero {
     }
 
     /**
-     * @return String representation of this Paladin object.
-     */
-    @Override
-    public String toString() {
-        return super.toString() + " Paladin Hero! Your knight in shining armor has arrived!";
-    }
-
-    /**
      * Defines equality for two Paladin objects.
      *
      * @param o Other object in consideration for equality

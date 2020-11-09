@@ -19,6 +19,7 @@ import java.util.List;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public class Potion extends GearItem {
+    public static final String outputFormat = "%-4s%-21s%-6s%-5s%-8s%-12s";
     public static final String defaultName = "Potion";
     private List<Ability> abilities;
     private double incrementAmount;
@@ -142,7 +143,7 @@ public class Potion extends GearItem {
         StringBuilder abilities = new StringBuilder();
         for(int i = 0; i < this.getAbilities().size(); i++) {
             Ability ability = this.getAbilities().get(i);
-            abilities.append(ability.getType().getName());
+            abilities.append(ability.getType());
             if(i < this.getAbilities().size() - 1) {
                 abilities.append("/");
             }
@@ -159,11 +160,29 @@ public class Potion extends GearItem {
     }
 
     /**
+     * @return the format string which can be used to output all GearItems of this type
+     */
+    @Override
+    public String getOutputFormat() {
+        return Potion.outputFormat;
+    }
+
+    /**
+     * @return the Header string that can be used to print out the relevant GearItems.
+     */
+    @Override
+    public String getHeaderString() {
+        return String.format(getOutputFormat(), "Lvl", "Name", "Price", "Used", "IncAmt", "Ablts");
+    }
+
+    /**
      * @return String representation of this Potion object.
      */
     @Override
     public String toString() {
-        return super.toString() + ". Potion! Abilities: " + this.getAbilities() + ", increment amount: " + this.getIncrementAmount() + ", used: " + this.wasUsed();
+        String used = wasUsed() ? "Yes" : "No";
+        String abilities = getAbilitiesAsString();
+        return String.format(getOutputFormat(), getMinLevel(), getName(), getPrice(), used, getIncrementAmount(), abilities);
     }
 
     /**

@@ -1,7 +1,11 @@
 package main.legends;
 
 import main.attributes.*;
+import main.market_and_gear.Armor;
+import main.market_and_gear.Weapon;
 import main.utils.Coffer;
+
+import java.text.DecimalFormat;
 
 /**
  * Class Hero extends Legends, and represents a "good guy" in this game. There are a number
@@ -24,6 +28,7 @@ import main.utils.Coffer;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public abstract class Hero extends Legend {
+    public static final String outputFormat = "%-4s%-21s%-15s%-15s%-6s%-8s%-8s%-8s%-14s%-14s%-5s%-5s";
     public static final boolean defaultFainted = false;
 
     private boolean fainted;
@@ -165,13 +170,45 @@ public abstract class Hero extends Legend {
         return Math.min((this.getAgility().getAbilityValue() / 2.0) * 0.002, 1);
     }
 
+    /**
+     *
+     * @return the format string which can be used to output all GearItems of this type
+     */
+    public String getOutputFormat() {
+        return Hero.outputFormat;
+    }
+
+    /**
+     *
+     * @return the Header string that can be used to print out the relevant GearItems.
+     */
+    public String getHeaderString() {
+        return String.format(getOutputFormat(), "Lvl", "Hero Name", "HP", "Mana", "Coins", "Str", "Agl", "Dxt", "Weapon", "Armor", "#Spl", "#Ptn");
+    }
 
     /**
      * @return String representation of this Hero object.
      */
     @Override
     public String toString() {
-        return "Hero! " + super.toString();
+        DecimalFormat df = new DecimalFormat("0.0");
+        String hp = df.format(getHealthPower().getHealthPower()) + "/" + df.format(getHealthPower().getFullAmount());
+        String mana = df.format(getMana().getManaAmount()) + "/" + df.format(getMana().getFullAmount());
+        String weapon = "None";
+        if(getActiveGearItems().hasActiveWeapon()) {
+            Weapon wielded = getActiveGearItems().getWeapon();
+            weapon = wielded.getName() + ":" + wielded.getDamage();
+        }
+        String armor = "None";
+        if(getActiveGearItems().hasActiveArmor()) {
+            Armor worn = getActiveGearItems().getArmor();
+            armor = worn.getName() + ":" + worn.getDefense();
+        }
+        int numSpells = getGearItemList().getSpells().size();
+        int numPotions = getGearItemList().getUsablePotions().size();
+        return String.format(getOutputFormat(), getLevel(), getName(), hp, mana, getCoffer().getNumCoins(),
+                getStrength().getAbilityValue(), getAgility().getAbilityValue(), getDexterity().getAbilityValue(),
+                weapon, armor, numSpells, numPotions);
     }
 
     /**

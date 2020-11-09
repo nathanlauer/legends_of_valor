@@ -3,6 +3,7 @@ package main.legends;
 import main.attributes.Ability;
 import main.attributes.HealthPower;
 import main.attributes.Level;
+import main.utils.Outputable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,7 +26,7 @@ import java.util.Random;
  * <p>
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
-public abstract class Legend {
+public abstract class Legend extends Outputable {
     private String name;
     private final Level level;
     private final HealthPower healthPower;

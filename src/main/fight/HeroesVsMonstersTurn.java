@@ -5,6 +5,9 @@ import main.games.TurnExecutor;
 import main.legends.Hero;
 import main.legends.Legend;
 import main.legends.Monster;
+import main.market_and_gear.GearItem;
+import main.market_and_gear.Potion;
+import main.market_and_gear.Spell;
 import sun.jvm.hotspot.oops.OopUtilities;
 import test.utils.Output;
 
@@ -187,14 +190,18 @@ public class HeroesVsMonstersTurn implements TurnExecutor  {
         Hero hero = (Hero)current;
         System.out.println(hero.getName() + " it's your turn. Status:");
         Output.newLine();
-        Output.printHeroList(new ArrayList<>(Collections.singletonList(hero)));
+        Output.printOutputables(new ArrayList<>(Collections.singletonList(hero)));
 
         // Print out the GearItems available to this Hero
+        List<GearItem> spells = hero.getGearItemList().getSpells();
+        List<GearItem> potions = hero.getGearItemList().getUsablePotions();
+        Output.printOutputables(spells);
+        Output.printOutputables(potions);
 
         // and the Monsters this Hero is facing
         Output.newLine();
         System.out.println("Monsters " + hero.getName() + " is facing:");
-        Output.printMonsters(pairing.getMonstersForHero(hero));
+        Output.printOutputables(pairing.getMonstersForHero(hero));
         Output.newLine();
     }
 
@@ -207,10 +214,10 @@ public class HeroesVsMonstersTurn implements TurnExecutor  {
         Monster monster = (Monster)current;
         System.out.println(monster.getName() + " is attacking! Status:");
         Output.newLine();
-        Output.printMonsters(new ArrayList<>(Collections.singletonList(monster)));
+        Output.printOutputables(new ArrayList<>(Collections.singletonList(monster)));
         Output.newLine();
         System.out.println("Heroes " + monster.getName() + " is facing:");
-        Output.printHeroList(pairing.getHeroesForMonster(monster));
+        Output.printOutputables(pairing.getHeroesForMonster(monster));
         Output.newLine();
         System.out.println(monster.getName() + " attacks!");
     }

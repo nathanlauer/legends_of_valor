@@ -5,6 +5,7 @@ import main.legends.Monster;
 import main.market_and_gear.*;
 import main.utils.GetUserNumericInput;
 import main.utils.Validations;
+import test.utils.Output;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -131,28 +132,24 @@ public class GetUserFightMove {
      * @return the Spell chosen, or null if none are available
      */
     private Spell chooseSpellToCast() {
-        List<Spell> spells = hero.getGearItemList().getSpells();
-
-        // Filter out spells that require too much Mana
-        Stream<Spell> spellStream = spells.stream().filter(spell -> spell.heroHasEnoughMana(hero));
-        List<Spell> availableSpells = spellStream.collect(Collectors.toList());
+        List<GearItem> spells = hero.getGearItemList().getUsableSpells(hero);
 
         // Display spells that the Hero has, but doesn't have enough Mana to use
-        List<Spell> tooMuchMana = spells.stream().filter(spell -> !spell.heroHasEnoughMana(hero)).collect(Collectors.toList());
+        List<GearItem> tooMuchMana = hero.getGearItemList().getNonUsableSpells(hero);
         if(tooMuchMana.size() > 0) {
             System.out.println("Spells that require too much Mana:");
-            tooMuchMana.forEach(System.out::println);
+            Output.printOutputables(tooMuchMana);
         }
 
         // There must be at least one spell available
-        if(availableSpells.size() < 1) {
+        if(spells.size() < 1) {
             System.out.println("There are no available spells to cast! Please choose another option");
             return null;
         }
 
         // Get the desired spell from the user
         String prompt = "Which spell would you like to cast?";
-        return (Spell)promptUserForChoice(availableSpells, prompt);
+        return (Spell)promptUserForChoice(spells, prompt);
     }
 
     /**
@@ -178,11 +175,7 @@ public class GetUserFightMove {
      * @return the Potion chosen, or null if none are available.
      */
     private Potion choosePotionsToUse() {
-        List<Potion> potions = hero.getGearItemList().getPotions();
-
-        // Filter out used potions
-        Stream<Potion> potionStream = potions.stream().filter(Potion::canBeUsed);
-        List<Potion> availablePotions = potionStream.collect(Collectors.toList());
+        List<GearItem> availablePotions = hero.getGearItemList().getUsablePotions();
 
         // There must be at least one available Potion
         if(availablePotions.size() < 1) {
@@ -199,12 +192,12 @@ public class GetUserFightMove {
      * @return The desired Weapon, or null if none are available
      */
     private Weapon chooseWeaponToSwitch() {
-        List<Weapon> weapons = hero.getGearItemList().getWeapons();
+        List<GearItem> weapons = hero.getGearItemList().getWeapons();
 
         // Filter out the Weapon that the Hero is currently using
         Weapon active = hero.getActiveGearItems().getWeapon();
-        Stream<Weapon> otherWeaponsStream = weapons.stream().filter(weapon -> !weapon.equals(active));
-        List<Weapon> otherWeapons = otherWeaponsStream.collect(Collectors.toList());
+        Stream<GearItem> otherWeaponsStream = weapons.stream().filter(weapon -> !weapon.equals(active));
+        List<GearItem> otherWeapons = otherWeaponsStream.collect(Collectors.toList());
 
         // There must be at least one other Weapon
         if(otherWeapons.size() < 1) {
@@ -222,12 +215,12 @@ public class GetUserFightMove {
      * @return the desired Armor, or null if none are available.
      */
     private Armor chooseArmorToSwitch() {
-        List<Armor> armors = hero.getGearItemList().getArmor();
+        List<GearItem> armors = hero.getGearItemList().getArmor();
 
         // Filter out the Armor that the Hero is currently wearing
         Armor active = hero.getActiveGearItems().getArmor();
-        Stream<Armor> otherArmorStream = armors.stream().filter(armor -> !armor.equals(active));
-        List<Armor> otherArmor = otherArmorStream.collect(Collectors.toList());
+        Stream<GearItem> otherArmorStream = armors.stream().filter(armor -> !armor.equals(active));
+        List<GearItem> otherArmor = otherArmorStream.collect(Collectors.toList());
 
         // There must be at least one other Armor
         if(otherArmor.size() < 1) {
@@ -247,6 +240,7 @@ public class GetUserFightMove {
      * @return GearItem that the user selected
      */
     private GearItem promptUserForChoice(List<? extends GearItem> items, String prompt) {
+        // TODO: abstract method to string with format for each GearItem. Update Output methods accordingly
         List<String> options = new ArrayList<>();
         items.forEach(gearItem -> options.add(gearItem.toString()));
         int chosen = new GetUserNumericInput(new Scanner(System.in), prompt, options).run();

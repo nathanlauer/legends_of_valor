@@ -6,7 +6,9 @@ import main.legends.Hero;
 import main.legends.NonOwnedGearItemException;
 import main.utils.BeneathLevelException;
 import main.utils.NotEnoughCoinsException;
+import main.utils.Outputable;
 import main.utils.Validations;
+import test.utils.Output;
 
 /**
  * Class GearItem is an abstract class that sits at the top of the Gear hierarchy.
@@ -24,7 +26,7 @@ import main.utils.Validations;
  * <p>
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
-public abstract class GearItem implements Cloneable, Buyable, Sellable {
+public abstract class GearItem extends Outputable implements Cloneable, Buyable, Sellable {
     public static final int mostExpensiveGearItem = 1400; // TSwords are 1400
     private String name;
     private int price;

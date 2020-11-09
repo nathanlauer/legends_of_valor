@@ -83,7 +83,7 @@ public class Level implements Comparable<Level>, Cloneable{
      */
     @Override
     public String toString() {
-        return "Level: " + getLevel();
+        return String.valueOf(getLevel());
     }
 
     /**
