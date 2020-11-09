@@ -40,10 +40,6 @@ public class GetUserFightMove {
      * @return a FightMove encapsulating the user's desired action
      */
     public FightMove run() {
-        // Start by giving the user a sense of what is going on.
-        System.out.println(hero.getName() + " it's your turn.");
-        displayFacedMonsters();
-
         // There are five possible moves: attack, use a spell, cast a potion, switch weapons, and switch armor.
         // We output each of these as a possibility, and then check to see if the selected option
         // is valid.
@@ -94,15 +90,6 @@ public class GetUserFightMove {
             }
         }
         return move;
-    }
-
-    /**
-     * Helper function which displays the status of the Monsters that this Hero is facing.
-     */
-    private void displayFacedMonsters() {
-        for(Monster monster : facedMonsters) {
-            System.out.println(monster.getName() + ", hp: " + monster.getHealthPower().getHealthPower());
-        }
     }
 
     /**

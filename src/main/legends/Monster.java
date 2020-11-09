@@ -69,10 +69,13 @@ public abstract class Monster extends Legend {
      * This is a probability, so it is normalized to range [0,1]
      *
      * For a Monster, the chance of dodging an attack is agility * .01
+     *
+     * DodgeChance is normalized to a range of 0 - 200. That is, a Monster
+     * with Agility 200 will have a dodge chance of 100%
      * @return the likelihood of dodging an attack.
      */
     public double getDodgeChance() {
-        return Math.min(this.getAgility().getAbilityValue() * 0.01, 1);
+        return Math.min((this.getAgility().getAbilityValue() / 2.0) * 0.01, 1);
     }
 
     /**

@@ -108,6 +108,10 @@ public class GetUserListNumericalInput {
                 String[] values = input.split(",\\s*");
                 for(String value : values) {
                     try {
+                        int num = Integer.parseInt(value);
+                        if(num <= 0 || num > options.size()) {
+                            throw new NumberFormatException("Can't enter negative or a number too high!");
+                        }
                         selected.add(Integer.parseInt(value));
                     } catch (NumberFormatException e) {
                         throw new InputMismatchException(e.getMessage());

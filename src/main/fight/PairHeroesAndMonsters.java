@@ -96,11 +96,14 @@ public class PairHeroesAndMonsters {
         if(chosen == 0) {
             // Generate a pairing here
             initialHeroesToMonstersPairing();
+            System.out.println("Alright, Heroes and Monsters have been matched up randomly. Let's fight!");
         } else {
             // Walk the user through the process of pairing Heroes vs Monsters.
+            System.out.println("Ok, let's match each of your Heroes against the Monsters.");
             for(Hero hero : heroes) {
                 userPairMonstersForHero(hero);
             }
+            System.out.println("Finished. Let's fight!");
         }
 
         // In either case, generate an internal pairing of Monsters to Heroes.

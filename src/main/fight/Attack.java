@@ -40,7 +40,8 @@ public class Attack extends ExternalMove {
         // it amongst each of the receivers
         double damagePerReceiver = this.getDamagePerReceiver();
         for(Legend legend : this.getReceivers()) {
-            legend.wasAttacked(damagePerReceiver);
+            String result = legend.wasAttacked(damagePerReceiver);
+            System.out.println(result);
         }
     }
 

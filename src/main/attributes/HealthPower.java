@@ -25,15 +25,19 @@ import main.utils.Validations;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public abstract class HealthPower extends Ability {
+    private double fullAmount;
 
     /**
      * Standard constructor
      * Throws an IllegalArgumentException if healthPower is negative
      * @param healthPower the amount of HealthPower
+     * @param fullAmount the amount of HealthPower that would be considered full
      */
-    public HealthPower(double healthPower) {
+    public HealthPower(double healthPower, double fullAmount) {
         super(AbilityType.HEALTH, healthPower);
         Validations.nonNegative(healthPower, "healthPower");
+        Validations.nonNegative(fullAmount, "fullAmount");
+        this.fullAmount = fullAmount;
     }
 
     /**
@@ -47,6 +51,22 @@ public abstract class HealthPower extends Ability {
     public void setHealthPower(double newHealthPower) {
         Validations.nonNegative(newHealthPower, "newHealthPower");
         this.setAbilityValue(newHealthPower);
+    }
+
+    /**
+     *
+     * @return the amount of HealthPower that would be considered full
+     */
+    public double getFullAmount() {
+        return fullAmount;
+    }
+
+    /**
+     * Sets the full amount of HealthPower to the passed in value
+     * @param fullAmount the full amount of HealthPower
+     */
+    public void setFullAmount(double fullAmount) {
+        this.fullAmount = fullAmount;
     }
 
     /**
@@ -116,7 +136,15 @@ public abstract class HealthPower extends Ability {
      * Increase the HealthPower by a percentage of the original amount.
      * Throws an IllegalArgumentException if percentage is negative.
      */
-    public abstract void increaseByPercentageOfOriginal(double percentage);
+    public abstract void increaseByPercentageOfFull(double percentage);
+
+    /**
+     * Indicates whether or not this HealthPower is full
+     * @return true if this HealthPower is full, false otherwise
+     */
+    public boolean isFull() {
+        return Double.compare(this.getFullAmount(), this.getHealthPower()) == 0;
+    }
 
     /**
      *

@@ -5,11 +5,10 @@ import main.games.TurnExecutor;
 import main.legends.Hero;
 import main.legends.Legend;
 import main.legends.Monster;
+import sun.jvm.hotspot.oops.OopUtilities;
+import test.utils.Output;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Class HeroesVsMonstersTurn is similar to the HeroesVsMonstersRound, except that
@@ -45,12 +44,12 @@ public class HeroesVsMonstersTurn implements TurnExecutor  {
      * @param heroes List of Heroes participating
      * @param monsters List of Monsters participating
      */
-    public HeroesVsMonstersTurn(List<Hero> heroes, List<Monster> monsters) {
+    public HeroesVsMonstersTurn(List<Hero> heroes, List<Monster> monsters, PairHeroesAndMonsters pairing) {
         heroIterator = heroes.iterator();
         monsterIterator = monsters.iterator();
         firstTurn = true;
         finished = false;
-        pairing = new PairHeroesAndMonsters(new Scanner(System.in), heroes, monsters);
+        this.pairing = pairing;
         move = null;
     }
 
@@ -84,9 +83,6 @@ public class HeroesVsMonstersTurn implements TurnExecutor  {
             throw new InvalidNextTurnException("No valid Hero for the first move!");
         }
         firstTurn = false;
-
-        // Prompt the user to setup a pairing between Heroes and Monsters
-        pairing.initialPairing();
     }
 
     /**
@@ -141,6 +137,7 @@ public class HeroesVsMonstersTurn implements TurnExecutor  {
             List<Legend> asLegends = new ArrayList<>(attackedHeroes);
             FightMove attack = new Attack(current, asLegends);
             try {
+                displayMonstersStatus();
                 attack.execute();
             } catch (InvalidFightMoveException e) {
                 e.printStackTrace();
@@ -151,6 +148,7 @@ public class HeroesVsMonstersTurn implements TurnExecutor  {
             List<Monster> facedMonsters = pairing.getMonstersForHero((Hero)current);
             boolean madeSuccessfulMove = false;
             while(!madeSuccessfulMove) {
+                displayHeroStatus();
                 move = new GetUserFightMove((Hero)current, facedMonsters).run();
                 try {
                     move.execute();
@@ -160,6 +158,43 @@ public class HeroesVsMonstersTurn implements TurnExecutor  {
                 }
             }
         }
+    }
+
+    /**
+     * When current is a Hero, this function prints out helpful information to the user
+     * about the status of said Hero, and the Monsters they're facing.
+     */
+    private void displayHeroStatus() {
+        Output.printSeparator();
+        Hero hero = (Hero)current;
+        System.out.println(hero.getName() + " it's your turn. Status:");
+        Output.newLine();
+        Output.printHeroList(new ArrayList<>(Collections.singletonList(hero)));
+
+        // Print out the GearItems available to this Hero
+
+        // and the Monsters this Hero is facing
+        Output.newLine();
+        System.out.println("Monsters " + hero.getName() + " is facing:");
+        Output.printMonsters(pairing.getMonstersForHero(hero));
+        Output.newLine();
+    }
+
+    /**
+     * When current is a Monster, this function prints out helpful information to
+     * the user about the status of said Monster, and the Heroes it is facing
+     */
+    private void displayMonstersStatus() {
+        Output.printSeparator();
+        Monster monster = (Monster)current;
+        System.out.println(monster.getName() + " is attacking! Status:");
+        Output.newLine();
+        Output.printMonsters(new ArrayList<>(Collections.singletonList(monster)));
+        Output.newLine();
+        System.out.println("Heroes " + monster.getName() + " is facing:");
+        Output.printHeroList(pairing.getHeroesForMonster(monster));
+        Output.newLine();
+        System.out.println(monster.getName() + " attacks!");
     }
 
     /**

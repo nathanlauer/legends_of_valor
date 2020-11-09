@@ -155,11 +155,14 @@ public abstract class Hero extends Legend {
      * Calculates the chance of dodging an attack for this Legend.
      * This is a probability, so it is normalized to range [0,1]
      *
+     * DodgeChance is normalized to an Agility range of 0 - 1000. That is,
+     * and Agility of 1000 will mean a dodge chance of 100%.
+     *
      * For a Hero, this is calculated as agility * 0.002
      * @return the likelihood of dodging an attack.
      */
     public double getDodgeChance() {
-        return Math.min(this.getAgility().getAbilityValue() * 0.002, 1);
+        return Math.min((this.getAgility().getAbilityValue() / 2.0) * 0.002, 1);
     }
 
 

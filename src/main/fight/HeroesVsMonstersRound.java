@@ -1,12 +1,18 @@
 package main.fight;
 
+import main.attributes.HigherLevelComparator;
 import main.games.RoundExecutor;
 import main.games.TurnBasedGame;
 import main.games.TurnExecutor;
 import main.legends.Hero;
 import main.legends.Monster;
+import main.market_and_gear.Armor;
+import main.market_and_gear.Weapon;
+import test.utils.Output;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Class HeroesVsMonstersRound is a RoundExecutor, and contains the logic for progressing
@@ -36,6 +42,9 @@ public class HeroesVsMonstersRound implements RoundExecutor {
     private final List<Hero> heroes;
     private final List<Monster> monsters;
     private TurnBasedGame turnBasedGame;
+    private final PairHeroesAndMonsters pairing;
+    private boolean firstRound;
+    private int roundNum;
 
     /**
      * Standard constructor for a HeroVsMonsterRound
@@ -45,6 +54,9 @@ public class HeroesVsMonstersRound implements RoundExecutor {
     public HeroesVsMonstersRound(List<Hero> heroes, List<Monster> monsters) {
         this.heroes = heroes;
         this.monsters = monsters;
+        this.pairing = new PairHeroesAndMonsters(new Scanner(System.in), this.heroes, this.monsters);
+        this.firstRound = true;
+        roundNum = 1;
     }
 
     /**
@@ -53,8 +65,37 @@ public class HeroesVsMonstersRound implements RoundExecutor {
     @Override
     public void setupNextRound() {
         // Setup a Heroes vs Monsters turn based game for the next round.
-        TurnExecutor turnExecutor = new HeroesVsMonstersTurn(this.heroes, this.monsters);
+        TurnExecutor turnExecutor = new HeroesVsMonstersTurn(this.heroes, this.monsters, this.pairing);
         this.turnBasedGame = new TurnBasedGame(turnExecutor);
+        displayStatus();
+
+        if(firstRound) {
+            // Prompt the user to setup a pairing between Heroes and Monsters
+            System.out.println("Match up your Heroes vs these Monsters:");
+            pairing.initialPairing();
+            Output.printSeparator();
+
+            firstRound = false;
+        }
+    }
+
+    /**
+     * Outputs the status of the Heroes and Monsters left in this Fight
+     */
+    private void displayStatus() {
+        // Sort Heroes and Monsters so the ones with higher Level appear at the top
+        Collections.sort(heroes, new HigherLevelComparator());
+        Collections.sort(monsters, new HigherLevelComparator());
+
+        // Display the Heroes and the Monsters
+        Output.printSeparator();
+        System.out.println("Start of round " + roundNum);
+        System.out.println("Legend Status");
+        System.out.println();
+        Output.printHeroList(heroes);
+        System.out.println();
+        Output.printMonsters(monsters);
+        Output.printSeparator();
     }
 
     /**
@@ -72,13 +113,29 @@ public class HeroesVsMonstersRound implements RoundExecutor {
      */
     @Override
     public void processEndOfRound() {
+        Output.printSeparator();
+        System.out.println("End of round " + roundNum);
         for(Hero hero : this.heroes) {
             if(!hero.hasFainted()) {
-                // Surviving Heroes regain 10% of their health power and 10% of their Mana
-                hero.getHealthPower().increaseByPercentage(10);
-                hero.getMana().increaseByPercentage(10);
+                System.out.println(hero.getName() + " is still alive, and now regains 10% of their health power and Mana!");
+
+                // Surviving Heroes regain 10% of their health power
+                if(hero.getHealthPower().isFull()) {
+                    System.out.println(hero.getName() + "'s health power is full.");
+                } else {
+                    hero.getHealthPower().increaseByPercentageOfFull(10);
+                }
+
+                // And 10% of their Mana
+                if(hero.getMana().isFull()) {
+                    System.out.println(hero.getName() + "'s mana is full.");
+                } else {
+                    hero.getMana().increaseByPercentageOfFull(10);
+                }
             }
         }
+
+        roundNum++;
     }
 
     /**

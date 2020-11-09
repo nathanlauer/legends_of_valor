@@ -175,12 +175,13 @@ public abstract class Legend {
      * removed.
      *
      * @param damage total damage the attacker is inflicting
+     * @return a String indicating the result of what happened
      */
-    public void wasAttacked(double damage) {
+    public String wasAttacked(double damage) {
         double defense = this.getDefenseAmount();
         double totalDamage = damage - defense;
         if(totalDamage <= 0) {
-            return;
+            return "No damage done: " + this.getName() + "'s defense of " + this.getDefense().getAbilityValue() + " is greater than the " + damage + " inflicted damage.";
         }
 
         double inflictedDamage = totalDamage * 0.05;
@@ -188,6 +189,9 @@ public abstract class Legend {
         int rand = new Random().nextInt(100) + 1;
         if(rand > dodgeChance * 100.0) {
             this.getHealthPower().reduceHealthPowerBy(inflictedDamage);
+            return "Attack successful! " + this.getName() + " lost " + inflictedDamage + " health power.";
+        } else {
+            return this.getName() + " dodged the attack!";
         }
     }
 
