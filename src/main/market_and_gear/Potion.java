@@ -135,6 +135,22 @@ public class Potion extends GearItem {
     }
 
     /**
+     *
+     * @return the List of Abilities that this Potion affects as a String, separated by "/"
+     */
+    public String getAbilitiesAsString() {
+        StringBuilder abilities = new StringBuilder();
+        for(int i = 0; i < this.getAbilities().size(); i++) {
+            Ability ability = this.getAbilities().get(i);
+            abilities.append(ability.getType().getName());
+            if(i < this.getAbilities().size() - 1) {
+                abilities.append("/");
+            }
+        }
+        return abilities.toString();
+    }
+
+    /**
      * @return the Type of this Gear Item
      */
     @Override

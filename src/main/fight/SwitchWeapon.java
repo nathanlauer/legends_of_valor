@@ -42,6 +42,13 @@ public class SwitchWeapon extends InternalMove {
             throw new InvalidFightMoveException("Hero is already wielding this Weapon!");
         }
 
+        Weapon previous = hero.getActiveGearItems().getWeapon();
         hero.getActiveGearItems().activateWeapon(toWield);
+
+        if(previous == null) {
+            System.out.println(this.getExecutor().getName() + " is now wielding " + toWield.getName());
+        } else {
+            System.out.println(this.getExecutor().getName() + " has switched weapons from " + previous.getName() + " to " + toWield.getName());
+        }
     }
 }

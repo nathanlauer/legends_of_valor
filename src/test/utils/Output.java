@@ -203,16 +203,9 @@ public class Output {
         for(GearItem item : potions) {
             Potion potion = (Potion) item;
             String used = potion.wasUsed() ? "Yes" : "No";
-            StringBuilder abilities = new StringBuilder();
-            for(int i = 0; i < potion.getAbilities().size(); i++) {
-                Ability ability = potion.getAbilities().get(i);
-                abilities.append(ability.getType().getName());
-                if(i < potion.getAbilities().size() - 1) {
-                    abilities.append("/");
-                }
-            }
+            String abilities = potion.getAbilitiesAsString();
             String status = String.format(format, potion.getMinLevel().getLevel(), potion.getName(), potion.getPrice(),
-                    used, potion.getIncrementAmount(), abilities.toString());
+                    used, potion.getIncrementAmount(), abilities);
             output.add(status);
         }
         return output;
