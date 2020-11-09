@@ -8,7 +8,6 @@ import main.utils.BeneathLevelException;
 import main.utils.NotEnoughCoinsException;
 import main.utils.Outputable;
 import main.utils.Validations;
-import test.utils.Output;
 
 /**
  * Class GearItem is an abstract class that sits at the top of the Gear hierarchy.
@@ -230,6 +229,9 @@ public abstract class GearItem extends Outputable implements Cloneable, Buyable,
         if(this instanceof Potion) {
             ((Potion) this).setUsed(false);
         }
+
+        // 5) Transfer the item to the market
+        market.addGearItem(this);
     }
 
     /**
@@ -244,10 +246,6 @@ public abstract class GearItem extends Outputable implements Cloneable, Buyable,
             return false;
         }
 
-        if(hero.getLevel().isLessThan(this.getMinLevel())) {
-            return false;
-        }
-
-        return true;
+        return !hero.getLevel().isLessThan(this.getMinLevel());
     }
 }

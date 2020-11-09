@@ -23,6 +23,7 @@ public abstract class Outputable {
      */
     public abstract String getHeaderString();
 
+
     /**
      *
      * @return String representation of this Outputable

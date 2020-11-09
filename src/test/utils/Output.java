@@ -31,7 +31,7 @@ public class Output {
      * @param outputables the entities to be printed
      * @return List of Strings as represented by each outputable.
      */
-    public static List<String> outputablesAsString(List<? extends Outputable> outputables) {
+    public static List<String> outputablesAsStrings(List<? extends Outputable> outputables) {
         List<String> output = new ArrayList<>();
         if(outputables.isEmpty()) {
             return output;
@@ -50,7 +50,7 @@ public class Output {
      * @param outputables the List of entities to be printed.
      */
     public static void printOutputables(List<? extends Outputable> outputables) {
-        List<String> asStrings = Output.outputablesAsString(outputables);
+        List<String> asStrings = Output.outputablesAsStrings(outputables);
         asStrings.forEach(System.out::println);
     }
 
