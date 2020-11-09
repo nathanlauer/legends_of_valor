@@ -223,5 +223,29 @@ public abstract class GearItem implements Cloneable, Buyable, Sellable {
 
         // 3) remove this GearItem from the Hero's active list
         hero.getActiveGearItems().removeGearItem(this);
+
+        // 4) If this is Potion, reset its used value so that it can be used once bought.
+        if(this instanceof Potion) {
+            ((Potion) this).setUsed(false);
+        }
+    }
+
+    /**
+     * Indicates whether or not the passed in Hero can buy this item.
+     * A Hero can buy this item if the Hero has enough coins, and the Hero
+     * is of a high enough level.
+     * @param hero the Hero in question
+     * @return true if the Hero can buy this item, false otherwise.
+     */
+    public boolean heroCanBuy(Hero hero) {
+        if(!hero.getCoffer().hasEnoughCoins(this.price)) {
+            return false;
+        }
+
+        if(hero.getLevel().isLessThan(this.getMinLevel())) {
+            return false;
+        }
+
+        return true;
     }
 }

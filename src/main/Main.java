@@ -4,6 +4,8 @@ import main.fight.Fight;
 import main.legends.Hero;
 import main.legends.LegendList;
 import main.legends.Monster;
+import main.market_and_gear.Market;
+import main.market_and_gear.MarketInteraction;
 
 import java.util.List;
 
@@ -23,6 +25,10 @@ public class Main {
         List<Monster> allMonsters = LegendList.getInstance().getMonsters();
         List<Hero> heroes = allHeroes.subList(0, 3);
         List<Monster> monsters = allMonsters.subList(0, 3);
+
+        Market market = new Market();
+        MarketInteraction marketInteraction = new MarketInteraction(market, heroes);
+        marketInteraction.run();
 
         // Perform a fight
         Fight fight = new Fight(heroes, monsters);
