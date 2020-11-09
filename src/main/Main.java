@@ -2,7 +2,6 @@ package main;
 
 import main.fight.Fight;
 import main.legends.Hero;
-import main.legends.Legend;
 import main.legends.LegendList;
 import main.legends.Monster;
 
