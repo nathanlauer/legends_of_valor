@@ -95,6 +95,7 @@ public class MarketInteraction {
             List<String> options = buyableOptions(hero, linesToSkip, availableItems);
             if(options.size() == 0) {
                 System.out.println("Unfortunately, there are no item that " + hero.getName() + " can buy.");
+                return;
             }
 
             GetUserNumericInput getUserNumericInput = new GetUserNumericInput(new Scanner(System.in), prompt, options);
