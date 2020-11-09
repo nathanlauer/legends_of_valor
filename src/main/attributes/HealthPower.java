@@ -113,6 +113,12 @@ public abstract class HealthPower extends Ability {
     }
 
     /**
+     * Increase the HealthPower by a percentage of the original amount.
+     * Throws an IllegalArgumentException if percentage is negative.
+     */
+    public abstract void increaseByPercentageOfOriginal(double percentage);
+
+    /**
      *
      * @return String representation of this HealthPower
      */

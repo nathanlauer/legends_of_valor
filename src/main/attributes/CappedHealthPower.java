@@ -99,6 +99,19 @@ public class CappedHealthPower extends HealthPower {
     }
 
     /**
+     * Increase the HealthPower by a percentage of the original amount.
+     * Throws an IllegalArgumentException if percentage is negative.
+     *
+     * @param percentage
+     */
+    @Override
+    public void increaseByPercentageOfOriginal(double percentage) {
+        Validations.nonNegative(percentage, "percentage");
+        double amountToIncrease = (percentage / 100.0) * this.getMaxHealthValue();
+        this.increaseHealthPowerBy(amountToIncrease);
+    }
+
+    /**
      * Sets the maximum value that healthPower can have
      * Throws an illegal argument exception if max is negative.
      * @param newMax the new maximum value.

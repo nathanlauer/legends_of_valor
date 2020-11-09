@@ -16,6 +16,7 @@ import main.utils.Validations;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public class Mana extends Ability implements Cloneable {
+    private double originalAmount;
 
     /**
      * Empty constructor, sets mana to zero.
@@ -32,6 +33,7 @@ public class Mana extends Ability implements Cloneable {
     public Mana(double mana) {
         super(AbilityType.MANA, mana);
         Validations.nonNegative(mana, "mana");
+        originalAmount = mana;
     }
 
     /**
@@ -40,6 +42,22 @@ public class Mana extends Ability implements Cloneable {
      */
     public double getManaAmount() {
         return this.getAbilityValue();
+    }
+
+    /**
+     *
+     * @return the original amount of Mana
+     */
+    public double getOriginalAmount() {
+        return this.originalAmount;
+    }
+
+    /**
+     * Sets the original amount of Mana to the passed in value
+     * @param originalAmount new original amount of Mana
+     */
+    public void setOriginalAmount(double originalAmount) {
+        this.originalAmount = originalAmount;
     }
 
     /**
@@ -84,6 +102,19 @@ public class Mana extends Ability implements Cloneable {
     public void increaseByPercentage(double percentage) {
         Validations.nonNegative(percentage, "percentage");
         double amountToIncrease = percentage/100.0 * this.getManaAmount();
+        this.increaseManaBy(amountToIncrease);
+    }
+
+    /**
+     * Increases the Mana by a percentage of the original amount.
+     * For example: gains 10% of their original Mana.
+     *
+     * Throws an IllegalArgumentException if percentage is negative.s
+     * @param percentage the percentage to increase, on a scale of 0-100
+     */
+    public void increaseByPercentageOfOriginal(double percentage) {
+        Validations.nonNegative(percentage, "percentage");
+        double amountToIncrease = percentage / 100.0 * this.getOriginalAmount();
         this.increaseManaBy(amountToIncrease);
     }
 
