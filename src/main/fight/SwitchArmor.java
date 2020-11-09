@@ -44,6 +44,13 @@ public class SwitchArmor extends InternalMove {
             throw new InvalidFightMoveException("Hero is already wearing this Armor!");
         }
 
+        Armor previous = hero.getActiveGearItems().getArmor();
         hero.getActiveGearItems().putOnArmor(toPutOn);
+
+        if(previous == null) {
+            System.out.println(this.getExecutor().getName() + " is now wearing the " + toPutOn.getName() + " armor");
+        } else {
+            System.out.println(this.getExecutor().getName() + " has switched armor from " + previous.getName() + " to " + toPutOn.getName());
+        }
     }
 }

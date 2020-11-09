@@ -40,14 +40,6 @@ public class Spirit extends Monster {
     }
 
     /**
-     * @return String representation of this Spirit object.
-     */
-    @Override
-    public String toString() {
-        return super.toString() + ". Spirit Monster! Ooooooo";
-    }
-
-    /**
      * Defines equality for two Spirit objects.
      *
      * @param o Other object in consideration for equality

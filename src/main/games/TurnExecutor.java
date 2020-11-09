@@ -14,6 +14,11 @@ package main.games;
  */
 public interface TurnExecutor {
     /**
+     * Resets this TurnExecutor to the beginning
+     */
+    void reset();
+
+    /**
      * Performs any required setup for the next turn.
      */
     void setupNextTurn() throws InvalidNextTurnException;

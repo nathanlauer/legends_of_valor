@@ -48,14 +48,6 @@ public class Warrior extends Hero {
     }
 
     /**
-     * @return String representation of this Warrior object.
-     */
-    @Override
-    public String toString() {
-        return super.toString() + " Paladin Hero! Warriors are strong!";
-    }
-
-    /**
      * Defines equality for two Warrior objects.
      *
      * @param o Other object in consideration for equality

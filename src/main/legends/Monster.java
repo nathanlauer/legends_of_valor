@@ -3,6 +3,10 @@ package main.legends;
 import main.attributes.Ability;
 import main.attributes.HealthPower;
 import main.attributes.Level;
+import main.market_and_gear.Armor;
+import main.market_and_gear.Weapon;
+
+import java.text.DecimalFormat;
 
 /**
  * Abstract Class Monster extends Legend, and represents a Monster. There are
@@ -22,7 +26,7 @@ import main.attributes.Level;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public abstract class Monster extends Legend {
-
+    public static final String outputFormat = "%-4s%-21s%-15s%-8s%-8s%-8s";
 
     /**
      * Standard constructor for a Monster
@@ -70,12 +74,12 @@ public abstract class Monster extends Legend {
      *
      * For a Monster, the chance of dodging an attack is agility * .01
      *
-     * DodgeChance is normalized to a range of 0 - 200. That is, a Monster
-     * with Agility 200 will have a dodge chance of 100%
+     * DodgeChance is normalized to a range of 0 - 400. That is, a Monster
+     * with Agility 400 will have a dodge chance of 100%
      * @return the likelihood of dodging an attack.
      */
     public double getDodgeChance() {
-        return Math.min((this.getAgility().getAbilityValue() / 2.0) * 0.01, 1);
+        return Math.min((this.getAgility().getAbilityValue() / 4.0) * 0.01, 1);
     }
 
     /**
@@ -95,12 +99,30 @@ public abstract class Monster extends Legend {
     }
 
     /**
-     * @return String representation of this Monster object.
+     *
+     * @return the format string which can be used to output all GearItems of this type
+     */
+    public String getOutputFormat() {
+        return Monster.outputFormat;
+    }
+
+    /**
+     *
+     * @return the Header string that can be used to print out the relevant GearItems.
+     */
+    public String getHeaderString() {
+        return String.format(getOutputFormat(), "Lvl", "Monster Name", "HP", "Str", "Def", "Agl");
+    }
+
+    /**
+     * @return String representation of this Hero object.
      */
     @Override
     public String toString() {
-        String legend = super.toString();
-        return "Monster! " + legend;
+        DecimalFormat df = new DecimalFormat("0.0");
+        String hp = df.format(getHealthPower().getHealthPower()) + "/" + df.format(getHealthPower().getFullAmount());
+        return String.format(outputFormat, getLevel(), getName(), hp,
+                getStrength().getAbilityValue(), getDefense().getAbilityValue(), getAgility().getAbilityValue());
     }
 
     /**

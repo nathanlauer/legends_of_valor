@@ -33,7 +33,7 @@ public class TestPairHeroesAndMonsters {
     @Test
     public void defaultInitialPairing() {
         // Select the default - system will do an automatic pairing
-        String input = "0";
+        String input = "1";
         Scanner scanner = new Scanner(input);
 
         // Select 4 heroes, and 3 monsters
@@ -69,7 +69,7 @@ public class TestPairHeroesAndMonsters {
     public void userDefinedPairing() {
         // In this test, we'll simulate the user pairing the first Hero with both Monsters,
         // and the second Hero with the first Monster.
-        String input = "1\n" + // select user defined pairing
+        String input = "2\n" + // select user defined pairing
                 "1\n" + // choose option "all"
                 "2\n"; // choose first Monster ("1" is option All)
         Scanner scanner = new Scanner(input);
@@ -80,7 +80,7 @@ public class TestPairHeroesAndMonsters {
         PairHeroesAndMonsters pairing = new PairHeroesAndMonsters(scanner, relevantHeroes, relevantMonsters);
         pairing.initialPairing();
 
-        // After the pairing, the first Hero should be paired with both Monster
+        // After the pairing, the first Hero should be paired with both Monsters
         List<Monster> monstersForFirstHero = pairing.getMonstersForHero(relevantHeroes.get(0));
         assertEquals(2, monstersForFirstHero.size());
         assertEquals(relevantMonsters, monstersForFirstHero);
@@ -95,7 +95,7 @@ public class TestPairHeroesAndMonsters {
     public void checkHeroes() {
         // Setup a fight between three heroes and three Monsters
         // Then, "kill" one of the Monsters, and run the check method on each of the Heroes.
-        String input = "0";
+        String input = "1";
         Scanner scanner = new Scanner(input);
 
         // Select 3 heroes, and 3 monsters

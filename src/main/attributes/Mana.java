@@ -115,7 +115,11 @@ public class Mana extends Ability implements Cloneable {
     public void increaseByPercentageOfFull(double percentage) {
         Validations.nonNegative(percentage, "percentage");
         double amountToIncrease = percentage / 100.0 * this.getFullAmount();
-        this.increaseManaBy(amountToIncrease);
+        if(this.getManaAmount() + amountToIncrease > this.getFullAmount()) {
+            this.setMana(this.getFullAmount());
+        } else {
+            this.increaseManaBy(amountToIncrease);
+        }
     }
 
     /**

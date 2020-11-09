@@ -1,7 +1,5 @@
 package main.utils;
 
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -30,6 +28,7 @@ public class GetUserNumericInput {
     private String prompt;
     private List<String> options;
     private final Scanner scanner;
+    private List<Integer> linesToSkip;
 
     /**
      * Empty constructor
@@ -58,6 +57,7 @@ public class GetUserNumericInput {
         this.scanner = scanner;
         this.prompt = prompt;
         this.options = options;
+        this.linesToSkip = new ArrayList<>();
     }
 
     /**
@@ -93,6 +93,15 @@ public class GetUserNumericInput {
     }
 
     /**
+     * Sets the lines that should be "skipped" - that is, lines that are output
+     * but are not considered a valid option.
+     * @param linesToSkip List of lines to skip
+     */
+    public void setLinesToSkip(List<Integer> linesToSkip) {
+        this.linesToSkip = linesToSkip;
+    }
+
+    /**
      * "Main" method which prompts the user with the encapsulated options, and
      * gets their numeric input. Will continue to prompt the user until a valid
      * number if input.
@@ -104,17 +113,31 @@ public class GetUserNumericInput {
         while(!enteredValidNum) {
             // Output the prompt, and the available options
             System.out.println(prompt);
+            int outputNum = 1;
             for(int i = 0; i < this.options.size(); i++) {
-                int outputNum = i + 1; // don't prompt the user with a 0!
-                String message = outputNum + ") " + this.options.get(i); // get a copy of the option so we don't accidentally change it
+                String message = this.options.get(i); // get a copy of the option so we don't accidentally change it
+                if(this.linesToSkip.contains(i)) {
+                    // One space for the would be number (e.g. 5), one for the missing ), and one for the final following space
+                    message = "   " + message;
+                    if(outputNum >= 10) {
+                        // An additional spot for the number. Assuming we won't have more than 99 options.
+                        message = " " + message;
+                    }
+                } else {
+                    message = outputNum + ") " + message;
+                    outputNum++;
+                }
                 System.out.println(message);
             }
-            System.out.println("Please enter a number between 1 and " + options.size());
+            System.out.println("Please enter a number between 1 and " + (outputNum - 1));
 
             // Now, get their input
             try {
                 String input = scanner.nextLine();
                 selected = Integer.parseInt(input);
+                if(selected <= 0 || selected >= outputNum) {
+                    throw new NumberFormatException();
+                }
                 enteredValidNum = true;
             } catch (InputMismatchException | NumberFormatException e) {
                 System.out.println("Invalid option. Please try again");

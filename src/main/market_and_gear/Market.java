@@ -1,5 +1,6 @@
 package main.market_and_gear;
 
+import main.legends.GearItemList;
 import main.utils.Coffer;
 
 import java.util.List;
@@ -72,6 +73,22 @@ public class Market {
      */
     public List<GearItem> getGearItems() {
         return gearItems;
+    }
+
+    /**
+     *
+     * @return the list of GearItems in this market wrapped in a GearItemList object.
+     */
+    public GearItemList getGearItemList() {
+        return new GearItemList(getGearItems());
+    }
+
+    /**
+     * Adds the passed in gearItem to this Market.
+     * @param gearItem the GearItem to be added
+     */
+    public void addGearItem(GearItem gearItem) {
+        gearItems.add(gearItem);
     }
 
     /**

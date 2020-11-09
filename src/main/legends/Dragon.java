@@ -40,14 +40,6 @@ public class Dragon extends Monster {
     }
 
     /**
-     * @return String representation of this Dragon object.
-     */
-    @Override
-    public String toString() {
-        return super.toString() + ". Dragon Monster! Roar! Fire!";
-    }
-
-    /**
      * Defines equality for two Dragon objects.
      *
      * @param o Other object in consideration for equality

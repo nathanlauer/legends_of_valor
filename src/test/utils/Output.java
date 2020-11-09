@@ -1,12 +1,12 @@
 package test.utils;
 
-import main.legends.Hero;
-import main.legends.Monster;
-import main.market_and_gear.Armor;
-import main.market_and_gear.Weapon;
+import main.utils.GetUserNumericInput;
+import main.utils.Outputable;
 
-import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Class Output
@@ -26,49 +26,32 @@ public class Output {
     }
 
     /**
-     * Given a list heroes, prints them out to the user in a standard format
-     * @param heroes the List of Heroes to print
+     * Given a list of entities that can be printed to stdout, construct a list of Strings,
+     * where each entry corresponds to the output of each outputable.
+     * @param outputables the entities to be printed
+     * @return List of Strings as represented by each outputable.
      */
-    public static void printHeroList(List<Hero> heroes) {
-        String format = "%-4s%-21s%-15s%-15s%-8s%-8s%-8s%-20s%-20s";
-        String header = String.format(format, "Lvl", "Hero Name", "HP", "Mana", "Str", "Agl", "Dxt", "Weapon", "Armor");
-        DecimalFormat df = new DecimalFormat("0.0");
-        System.out.println(header);
-        for(Hero hero : heroes) {
-            String hp = df.format(hero.getHealthPower().getHealthPower()) + "/" + df.format(hero.getHealthPower().getFullAmount());
-            String mana = df.format(hero.getMana().getManaAmount()) + "/" + df.format(hero.getMana().getFullAmount());
-            String weapon = "None";
-            if(hero.getActiveGearItems().hasActiveWeapon()) {
-                Weapon wielded = hero.getActiveGearItems().getWeapon();
-                weapon = wielded.getName() + ":" + wielded.getDamage();
-            }
-            String armor = "None";
-            if(hero.getActiveGearItems().hasActiveArmor()) {
-                Armor worn = hero.getActiveGearItems().getArmor();
-                armor = worn.getName() + ":" + worn.getDefense();
-            }
-            String status = String.format(format, hero.getLevel().getLevel(), hero.getName(), hp, mana,
-                    hero.getStrength().getAbilityValue(), hero.getAgility().getAbilityValue(), hero.getDexterity().getAbilityValue(),
-                    weapon, armor);
-            System.out.println(status);
+    public static List<String> outputablesAsStrings(List<? extends Outputable> outputables) {
+        List<String> output = new ArrayList<>();
+        if(outputables.isEmpty()) {
+            return output;
         }
+
+        String header = outputables.get(0).getHeaderString();
+        output.add(header);
+        for(Outputable outputable : outputables) {
+            output.add(outputable.toString());
+        }
+        return output;
     }
 
     /**
-     * Given a list of Monsters, prints the Monsters to the user in a standard format.
-     * @param monsters the List of Monsters to print.
+     * Prints the passed in list of outputables to stdout.
+     * @param outputables the List of entities to be printed.
      */
-    public static void printMonsters(List<Monster> monsters) {
-        DecimalFormat df = new DecimalFormat("0.0");
-        String format = "%-4s%-21s%-15s%-8s%-8s%-8s";
-        String header = String.format(format, "Lvl", "Monster Name", "HP", "Str", "Def", "Agl");
-        System.out.println(header);
-        for(Monster monster : monsters) {
-            String hp = df.format(monster.getHealthPower().getHealthPower()) + "/" + df.format(monster.getHealthPower().getFullAmount());
-            String status = String.format(format, monster.getLevel().getLevel(), monster.getName(), hp,
-                    monster.getStrength().getAbilityValue(), monster.getDefense().getAbilityValue(), monster.getAgility().getAbilityValue());
-            System.out.println(status);
-        }
+    public static void printOutputables(List<? extends Outputable> outputables) {
+        List<String> asStrings = Output.outputablesAsStrings(outputables);
+        asStrings.forEach(System.out::println);
     }
 
     /**
@@ -76,5 +59,26 @@ public class Output {
      */
     public static void newLine() {
         System.out.println();
+    }
+
+    /**
+     * Given the list of outputables, prompts the user to select one of them.
+     * @param items the outputables that the user should choose from
+     * @param prompt the prompt
+     * @param header the header row describing the output
+     * @return the outputable chosen by the user
+     */
+    public static Outputable promptUserForChoice(List<? extends Outputable> items, String prompt, String header) {
+        List<String> options = new ArrayList<>();
+        options.add(header);
+        items.forEach(outputable -> options.add(outputable.toString()));
+
+        List<Integer> linesToSkip = new ArrayList<>(Collections.singletonList(0)); // skip the header line
+
+        GetUserNumericInput getUserNumericInput = new GetUserNumericInput(new Scanner(System.in), prompt, options);
+        getUserNumericInput.setLinesToSkip(linesToSkip);
+        int chosen = getUserNumericInput.run();
+
+        return items.get(chosen);
     }
 }

@@ -23,8 +23,8 @@ import java.util.List;
 public class ActiveGearItems {
     private Weapon weapon; // for now, only one Weapon can be active
     private Armor armor; // for now, only one set of Armor can be worn
-    private final List<Potion> potions;
-    private final List<Spell> spells;
+    private final List<GearItem> potions;
+    private final List<GearItem> spells;
     private final Hero hero;
 
     /**
@@ -42,7 +42,7 @@ public class ActiveGearItems {
      * @param potions List of active Potions
      * @param spells List of active Spells
      */
-    public ActiveGearItems(Hero hero, Weapon weapon, Armor armor, List<Potion> potions, List<Spell> spells) {
+    public ActiveGearItems(Hero hero, Weapon weapon, Armor armor, List<GearItem> potions, List<GearItem> spells) {
         this.hero = hero;
         this.weapon = weapon;
         this.armor = armor;
@@ -70,7 +70,7 @@ public class ActiveGearItems {
      *
      * @return List of active Potions
      */
-    public List<Potion> getPotions() {
+    public List<GearItem> getPotions() {
         return potions;
     }
 
@@ -78,7 +78,7 @@ public class ActiveGearItems {
      *
      * @return List of active Spells.
      */
-    public List<Spell> getSpells() {
+    public List<GearItem> getSpells() {
         return spells;
     }
 

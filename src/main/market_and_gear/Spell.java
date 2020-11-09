@@ -19,6 +19,7 @@ import main.utils.Validations;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public abstract class Spell extends GearItem {
+    public static final String outputFormat = "%-4s%-21s%-6s%-8s%-8s%-12s";
     private double damage;
     private Mana mana;
     private Ability ability;
@@ -111,11 +112,28 @@ public abstract class Spell extends GearItem {
     }
 
     /**
+     * @return the format string which can be used to output all GearItems of this type
+     */
+    @Override
+    public String getOutputFormat() {
+        return Spell.outputFormat;
+    }
+
+    /**
+     * @return the Header string that can be used to print out the relevant GearItems.
+     */
+    @Override
+    public String getHeaderString() {
+        return String.format(getOutputFormat(), "Lvl", "Name", "Price", "Mana", "Dmg", "Ablt");
+    }
+
+    /**
      * @return String representation of this Spell object.
      */
     @Override
     public String toString() {
-        return super.toString() + ". Spell! Damage: " + this.getDamage() + ", Mana: " + this.getMana() + ", Ability: " + this.getAbility();
+        return String.format(getOutputFormat(), getMinLevel(), getName(), getPrice(),
+                getMana().getManaAmount(), getDamage(), getAbility().getType());
     }
 
     /**

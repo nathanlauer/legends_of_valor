@@ -47,5 +47,8 @@ public class UsePotion extends InternalMove {
         }
 
         potion.markUsed();
+
+        System.out.println(potion.getName() + " has now been used.");
+        System.out.println("The following abilities have been increased by " + potion.getIncrementAmount() + " for " + getExecutor().getName() + ": " + potion.getAbilitiesAsString());
     }
 }

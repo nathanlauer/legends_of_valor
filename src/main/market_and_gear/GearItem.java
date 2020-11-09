@@ -6,6 +6,7 @@ import main.legends.Hero;
 import main.legends.NonOwnedGearItemException;
 import main.utils.BeneathLevelException;
 import main.utils.NotEnoughCoinsException;
+import main.utils.Outputable;
 import main.utils.Validations;
 
 /**
@@ -24,7 +25,7 @@ import main.utils.Validations;
  * <p>
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
-public abstract class GearItem implements Cloneable, Buyable, Sellable {
+public abstract class GearItem extends Outputable implements Cloneable, Buyable, Sellable {
     public static final int mostExpensiveGearItem = 1400; // TSwords are 1400
     private String name;
     private int price;
@@ -223,5 +224,28 @@ public abstract class GearItem implements Cloneable, Buyable, Sellable {
 
         // 3) remove this GearItem from the Hero's active list
         hero.getActiveGearItems().removeGearItem(this);
+
+        // 4) If this is Potion, reset its used value so that it can be used once bought.
+        if(this instanceof Potion) {
+            ((Potion) this).setUsed(false);
+        }
+
+        // 5) Transfer the item to the market
+        market.addGearItem(this);
+    }
+
+    /**
+     * Indicates whether or not the passed in Hero can buy this item.
+     * A Hero can buy this item if the Hero has enough coins, and the Hero
+     * is of a high enough level.
+     * @param hero the Hero in question
+     * @return true if the Hero can buy this item, false otherwise.
+     */
+    public boolean heroCanBuy(Hero hero) {
+        if(!hero.getCoffer().hasEnoughCoins(this.price)) {
+            return false;
+        }
+
+        return !hero.getLevel().isLessThan(this.getMinLevel());
     }
 }

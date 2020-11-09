@@ -52,4 +52,13 @@ public enum AbilityType {
         return AbilityType.ABILITY;
     }
 
+    /**
+     *
+     * @return a String representation of this Type
+     */
+    @Override
+    public String toString() {
+        return getName();
+    }
+
 }
