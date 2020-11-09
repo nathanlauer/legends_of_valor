@@ -117,12 +117,13 @@ public class HeroesVsMonstersRound implements RoundExecutor {
         System.out.println("End of round " + roundNum);
         for(Hero hero : this.heroes) {
             if(!hero.hasFainted()) {
-                System.out.println(hero.getName() + " is still alive, and now regains 10% of their health power and Mana!");
+                System.out.println(hero.getName() + " is still alive!");
 
                 // Surviving Heroes regain 10% of their health power
                 if(hero.getHealthPower().isFull()) {
                     System.out.println(hero.getName() + "'s health power is full.");
                 } else {
+                    System.out.println(hero.getName() + " has regained 10% of their health power.");
                     hero.getHealthPower().increaseByPercentageOfFull(10);
                 }
 
@@ -130,6 +131,7 @@ public class HeroesVsMonstersRound implements RoundExecutor {
                 if(hero.getMana().isFull()) {
                     System.out.println(hero.getName() + "'s mana is full.");
                 } else {
+                    System.out.println(hero.getName() + " has regained 10% of their mana.");
                     hero.getMana().increaseByPercentageOfFull(10);
                 }
             }
