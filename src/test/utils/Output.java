@@ -1,9 +1,12 @@
 package test.utils;
 
+import main.utils.GetUserNumericInput;
 import main.utils.Outputable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Class Output
@@ -58,4 +61,24 @@ public class Output {
         System.out.println();
     }
 
+    /**
+     * Given the list of outputables, prompts the user to select one of them.
+     * @param items the outputables that the user should choose from
+     * @param prompt the prompt
+     * @param header the header row describing the output
+     * @return the outputable chosen by the user
+     */
+    public static Outputable promptUserForChoice(List<? extends Outputable> items, String prompt, String header) {
+        List<String> options = new ArrayList<>();
+        options.add(header);
+        items.forEach(outputable -> options.add(outputable.toString()));
+
+        List<Integer> linesToSkip = new ArrayList<>(Collections.singletonList(0)); // skip the header line
+
+        GetUserNumericInput getUserNumericInput = new GetUserNumericInput(new Scanner(System.in), prompt, options);
+        getUserNumericInput.setLinesToSkip(linesToSkip);
+        int chosen = getUserNumericInput.run();
+
+        return items.get(chosen);
+    }
 }

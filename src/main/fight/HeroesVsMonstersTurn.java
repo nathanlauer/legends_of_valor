@@ -192,7 +192,13 @@ public class HeroesVsMonstersTurn implements TurnExecutor  {
         // Print out the GearItems available to this Hero
         List<GearItem> spells = hero.getGearItemList().getSpells();
         List<GearItem> potions = hero.getGearItemList().getUsablePotions();
+
+        Output.newLine();
+        System.out.println("Spells:");
         Output.printOutputables(spells);
+
+        Output.newLine();
+        System.out.println("Potions");
         Output.printOutputables(potions);
 
         // and the Monsters this Hero is facing
@@ -207,7 +213,6 @@ public class HeroesVsMonstersTurn implements TurnExecutor  {
      * the user about the status of said Monster, and the Heroes it is facing
      */
     private void displayMonstersStatus() {
-        Output.printSeparator();
         Monster monster = (Monster)current;
         System.out.println(monster.getName() + " is attacking! Status:");
         Output.newLine();

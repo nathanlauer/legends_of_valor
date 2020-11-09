@@ -4,10 +4,12 @@ import main.legends.Hero;
 import main.legends.Monster;
 import main.market_and_gear.*;
 import main.utils.GetUserNumericInput;
+import main.utils.Outputable;
 import main.utils.Validations;
 import test.utils.Output;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -149,7 +151,8 @@ public class GetUserFightMove {
 
         // Get the desired spell from the user
         String prompt = "Which spell would you like to cast?";
-        return (Spell)promptUserForChoice(spells, prompt);
+        String header = spells.get(0).getHeaderString();
+        return (Spell)Output.promptUserForChoice(spells, prompt, header);
     }
 
     /**
@@ -161,12 +164,8 @@ public class GetUserFightMove {
         }
 
         String prompt = "Which Monster do you want to cast your spell against?";
-        List<String> options = new ArrayList<>();
-        for(Monster monster : facedMonsters) {
-            options.add(monster.getName());
-        }
-        int chosen = new GetUserNumericInput(new Scanner(System.in), prompt, options).run();
-        return facedMonsters.get(chosen);
+        String header = facedMonsters.get(0).getHeaderString();
+        return (Monster)Output.promptUserForChoice(facedMonsters, prompt, header);
     }
 
     /**
@@ -184,7 +183,8 @@ public class GetUserFightMove {
         }
 
         String prompt = "Which Potion would you like to use?";
-        return (Potion)promptUserForChoice(availablePotions, prompt);
+        String header = availablePotions.get(0).getHeaderString();
+        return (Potion)Output.promptUserForChoice(availablePotions, prompt, header);
     }
 
     /**
@@ -207,7 +207,8 @@ public class GetUserFightMove {
 
         // Display each of the Weapons
         String prompt = "Please choose a Weapon to switch to:";
-        return (Weapon)promptUserForChoice(otherWeapons, prompt);
+        String header = weapons.get(0).getHeaderString();
+        return (Weapon)Output.promptUserForChoice(otherWeapons, prompt, header);
     }
 
     /**
@@ -230,21 +231,7 @@ public class GetUserFightMove {
 
         // Display each of the Armor
         String prompt = "Please choose a new Armor to switch to:";
-        return (Armor)promptUserForChoice(otherArmor, prompt);
-    }
-
-    /**
-     * Helper function which prompts the user to select one of the available GearItems
-     * @param items List of Gear Items to be displayed to the user
-     * @param prompt Prompt the user
-     * @return GearItem that the user selected
-     */
-    private GearItem promptUserForChoice(List<? extends GearItem> items, String prompt) {
-        // TODO: abstract method to string with format for each GearItem. Update Output methods accordingly
-        List<String> options = new ArrayList<>();
-        items.forEach(gearItem -> options.add(gearItem.toString()));
-        int chosen = new GetUserNumericInput(new Scanner(System.in), prompt, options).run();
-
-        return items.get(chosen);
+        String header = otherArmor.get(0).getHeaderString();
+        return (Armor)Output.promptUserForChoice(otherArmor, prompt, header);
     }
 }

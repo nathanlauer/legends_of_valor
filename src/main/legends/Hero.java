@@ -28,7 +28,7 @@ import java.text.DecimalFormat;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public abstract class Hero extends Legend {
-    public static final String outputFormat = "%-4s%-21s%-15s%-15s%-6s%-8s%-8s%-8s%-14s%-14s%-5s%-5s";
+    public static final String outputFormat = "%-4s%-21s%-15s%-15s%-6s%-8s%-8s%-8s%-21s%-21s%-5s%-5s";
     public static final boolean defaultFainted = false;
 
     private boolean fainted;
