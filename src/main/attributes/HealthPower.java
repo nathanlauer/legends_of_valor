@@ -112,11 +112,7 @@ public abstract class HealthPower extends Ability {
     public void increaseByPercentage(double percentage) {
         Validations.nonNegative(percentage, "percentage");
         double amountToIncrease = percentage/100.0 * this.getHealthPower();
-        if(this.getHealthPower() + amountToIncrease > this.getFullAmount()) {
-            this.setHealthPower(this.getFullAmount());
-        } else {
-            this.increaseHealthPowerBy(amountToIncrease);
-        }
+        this.increaseHealthPowerBy(amountToIncrease);
     }
 
     /**

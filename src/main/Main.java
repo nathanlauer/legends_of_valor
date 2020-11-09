@@ -23,8 +23,11 @@ public class Main {
         // Create some Heroes and Monsters
         List<Hero> allHeroes = LegendList.getInstance().getHeroes();
         List<Monster> allMonsters = LegendList.getInstance().getMonsters();
-        List<Hero> heroes = allHeroes.subList(0, 3);
-        List<Monster> monsters = allMonsters.subList(0, 3);
+        List<Hero> heroes = allHeroes.subList(0, 1);
+        List<Monster> monsters = allMonsters.subList(0, 1);
+
+        // For simplicity, add 1000 to the strength of the first hero
+        heroes.get(0).getStrength().increaseAbilityBy(1000);
 
         Market market = new Market();
         MarketInteraction marketInteraction = new MarketInteraction(market, heroes);

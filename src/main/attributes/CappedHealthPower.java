@@ -108,7 +108,11 @@ public class CappedHealthPower extends HealthPower {
     public void increaseByPercentageOfFull(double percentage) {
         Validations.nonNegative(percentage, "percentage");
         double amountToIncrease = (percentage / 100.0) * this.getMaxHealthValue();
-        this.increaseHealthPowerBy(amountToIncrease);
+        if(amountToIncrease + this.getHealthPower() > this.getFullAmount()) {
+            this.setHealthPower(this.getFullAmount());
+        } else {
+            this.increaseHealthPowerBy(amountToIncrease);
+        }
     }
 
     /**
