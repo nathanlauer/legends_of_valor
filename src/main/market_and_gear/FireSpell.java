@@ -5,7 +5,8 @@ import main.attributes.Level;
 import main.attributes.Mana;
 
 /**
- * Class FireSpell
+ * Class FireSpell is a type of Spell that reduces the enemy's Defense Ability in
+ * addition to the nominal damage that it causes.
  *
  * @author: Nathan Lauer
  * @email: lauern@bu.edu
@@ -31,7 +32,7 @@ public class FireSpell extends Spell {
      * @param mana Mana required to use this Spell.
      * @param damage amount of damage caused by this Spell.
      */
-    public FireSpell(String name, int price, Level minLevel, Mana mana, int damage) {
+    public FireSpell(String name, int price, Level minLevel, Mana mana, double damage) {
         super(name, price, minLevel, damage, mana, AbilityBuilder.baseDefenseAbility());
     }
 

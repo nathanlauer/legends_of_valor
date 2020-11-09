@@ -2,6 +2,8 @@ package test.attributes;
 
 import main.attributes.HigherLevelComparator;
 import main.attributes.Level;
+import main.legends.Legend;
+import main.legends.LegendList;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -71,9 +73,13 @@ public class TestLevel {
         assertTrue(lower.compareTo(higher) < 0);
 
         // Test higher level comparator
-        List<Level> levels = new ArrayList<>(Arrays.asList(lower, higher));
+        Legend first = LegendList.getInstance().getHeroes().get(0);
+        Legend second = LegendList.getInstance().getHeroes().get(1);
+        second.getLevel().setLevel(first.getLevel().getLevel() + 1); // second has higher level
+        List<Legend> levels = new ArrayList<>(Arrays.asList(first, second));
+
         Collections.sort(levels, new HigherLevelComparator());
-        assertEquals(levels.get(0), higher);
-        assertEquals(levels.get(1), lower);
+        assertEquals(levels.get(0), second);
+        assertEquals(levels.get(1), first);
     }
 }

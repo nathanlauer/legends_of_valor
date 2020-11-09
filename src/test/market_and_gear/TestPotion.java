@@ -1,6 +1,7 @@
 package test.market_and_gear;
 
 import main.attributes.Ability;
+import main.attributes.AbilityType;
 import main.attributes.Level;
 import main.market_and_gear.GearItemType;
 import main.market_and_gear.Potion;
@@ -36,7 +37,7 @@ public class TestPotion {
         minLevel = new Level(10);
         price = 250;
         incrementAmount = 100;
-        dexterity = new Ability("Dexterity", 300);
+        dexterity = new Ability(AbilityType.DEXTERITY, 300);
         abilities = new ArrayList<>(Collections.singletonList(dexterity));
         potion = new Potion(name, price, minLevel, abilities, incrementAmount);
     }
@@ -78,14 +79,14 @@ public class TestPotion {
             // passed
             potion.setIncrementAmount(400);
         }
-        potion.addAbility(new Ability("Agility", 10));
+        potion.addAbility(new Ability(AbilityType.AGILITY, 10));
 
         assertEquals("Felix Felicis", potion.getName());
         assertEquals(new Level(34), potion.getMinLevel());
         assertEquals(200, potion.getPrice());
         assertEquals(400, potion.getIncrementAmount());
         List<Ability> expected = new ArrayList<>(abilities);
-        expected.add(new Ability("Agility", 10));
+        expected.add(new Ability(AbilityType.AGILITY, 10));
         assertEquals(expected, potion.getAbilities());
     }
 

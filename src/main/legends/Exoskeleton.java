@@ -21,9 +21,9 @@ public class Exoskeleton extends Monster {
      */
     public Exoskeleton() {
         this(Exoskeleton.defaultName, new Level(0), new UncappedHealthPower(0),
-                AbilityBuilder.baseDamageAbility(),
+                AbilityBuilder.baseStrengthAbility(),
                 AbilityBuilder.baseDefenseAbility(),
-                AbilityBuilder.baseDodgeChanceAbility());
+                AbilityBuilder.baseAgilityAbility());
     }
 
     /**
@@ -31,12 +31,12 @@ public class Exoskeleton extends Monster {
      * @param name name of this Exoskeleton Monster
      * @param level the level of this Monster.
      * @param healthPower healthPower of this Monster.
-     * @param damage damage Ability for this Exoskeleton monster.
+     * @param strength damage Ability for this Exoskeleton monster.
      * @param defense defense Ability for this Exoskeleton monster.
-     * @param dodgeChance dodgeChance Ability for this Exoskeleton.
+     * @param agility dodgeChance Ability for this Exoskeleton.
      */
-    public Exoskeleton(String name, Level level, HealthPower healthPower, Ability damage, Ability defense, Ability dodgeChance) {
-        super(name, level, healthPower, damage, defense, dodgeChance);
+    public Exoskeleton(String name, Level level, HealthPower healthPower, Ability strength, Ability defense, Ability agility) {
+        super(name, level, healthPower, strength, defense, agility);
     }
 
     /**

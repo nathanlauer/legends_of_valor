@@ -1,5 +1,7 @@
 package main.attributes;
 
+import main.legends.Legend;
+
 import java.util.Comparator;
 
 /**
@@ -12,7 +14,7 @@ import java.util.Comparator;
  * <p>
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
-public class HigherLevelComparator implements Comparator<Level> {
+public class HigherLevelComparator implements Comparator<Legend> {
     /**
      * Compares its two arguments for order.  Returns a negative integer,
      * zero, or a positive integer as the first argument is less than, equal
@@ -29,7 +31,7 @@ public class HigherLevelComparator implements Comparator<Level> {
      *                              being compared by this comparator.
      */
     @Override
-    public int compare(Level o1, Level o2) {
-        return o2.compareTo(o1); // greater comes first
+    public int compare(Legend o1, Legend o2) {
+        return o2.getLevel().compareTo(o1.getLevel()); // greater comes first
     }
 }

@@ -23,23 +23,28 @@ public class Paladin extends Hero {
     public Paladin() {
         this(Paladin.defaultName, new Level(0), new UncappedHealthPower(0),
                 new Mana(0), new Coffer(0),
+                AbilityBuilder.baseStrengthAbility(),
                 AbilityBuilder.baseAgilityAbility(),
-                AbilityBuilder.baseDexterityAbility(),
-                AbilityBuilder.baseStrengthAbility());
+                AbilityBuilder.baseDexterityAbility());
     }
 
     /**
-     * Standard constructor for a Paladin.
-     * @param name name of this Hero
+     * Standard constructor for a Paladin. By default, a Hero is created without any GearItems.
+     * Heroes have a defense ability, but it starts at zero - that is, there is no natural
+     * defense ability, a Hero must wear some Armor in order to increase their defense.
+     *
+     * @param name Name of this Hero
      * @param level Level of this Hero
      * @param healthPower HealthPower of this Hero
-     * @param agility agility Ability of this Hero
-     * @param dexterity dexterity Ability of this Hero
-     * @param strength strength Ability of this Hero
+     * @param mana Mana of this Hero
+     * @param coffer Coffer for this Hero
+     * @param strength Strength Ability of this Hero
+     * @param agility Agility Ability of this Hero
+     * @param dexterity Dexterity Ability of this Hero
      */
     public Paladin(String name, Level level, HealthPower healthPower, Mana mana, Coffer coffer,
-                    Ability agility, Ability dexterity, Ability strength) {
-        super(name, level, healthPower, mana, coffer, agility, dexterity, strength);
+                   Ability strength, Ability agility, Ability dexterity) {
+        super(name, level, healthPower, mana, coffer, strength, agility, dexterity);
     }
 
     /**

@@ -3,6 +3,7 @@ package main.market_and_gear;
 import main.attributes.Ability;
 import main.attributes.Level;
 import main.attributes.Mana;
+import main.legends.Hero;
 import main.utils.Validations;
 
 /**
@@ -18,7 +19,7 @@ import main.utils.Validations;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public abstract class Spell extends GearItem {
-    private int damage;
+    private double damage;
     private Mana mana;
     private Ability ability;
 
@@ -32,7 +33,7 @@ public abstract class Spell extends GearItem {
      * @param damage the amount of damage this Spell will cause (and how much it reduces an opponent's Ability)
      * @param mana the required amount of Mana to use this Spell
      */
-    public Spell(String name, int price, Level minLevel, int damage, Mana mana, Ability ability) {
+    public Spell(String name, int price, Level minLevel, double damage, Mana mana, Ability ability) {
         super(name, price, minLevel);
 
         Validations.nonNegative(damage, "damage");
@@ -45,7 +46,7 @@ public abstract class Spell extends GearItem {
      *
      * @return the damage amount of this Spell
      */
-    public int getDamage() {
+    public double getDamage() {
         return damage;
     }
 
@@ -54,7 +55,7 @@ public abstract class Spell extends GearItem {
      * Throws an IllegalArgumentException if newDamage is negative
      * @param newDamage the new amount of damage this Spell will cause.
      */
-    public void setDamage(int newDamage) {
+    public void setDamage(double newDamage) {
         Validations.nonNegative(newDamage, "newDamage");
         damage = newDamage;
     }
@@ -89,6 +90,15 @@ public abstract class Spell extends GearItem {
      */
     public void setAbility(Ability ability) {
         this.ability = ability;
+    }
+
+    /**
+     * Indicates whether or not the passed in Hero has enough Mana to cast this spell.
+     * @param hero the Hero in question
+     * @return true if this Hero has enough Mana, false otherwise.
+     */
+    public boolean heroHasEnoughMana(Hero hero) {
+        return hero.getMana().hasEnoughMana(this.getMana().getManaAmount());
     }
 
     /**

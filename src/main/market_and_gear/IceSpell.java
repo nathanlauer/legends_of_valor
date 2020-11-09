@@ -5,7 +5,8 @@ import main.attributes.Level;
 import main.attributes.Mana;
 
 /**
- * Class IceSpell
+ * Class IceSpell is a type of spell that reduces the enemy's Strength Ability in addition
+ * to the nominal damage it causes.
  *
  * @author: Nathan Lauer
  * @email: lauern@bu.edu
@@ -24,15 +25,15 @@ public class IceSpell extends Spell {
     }
 
     /**
-     * Standard constructor for a IceSpell, which has Ability damage.
+     * Standard constructor for a IceSpell, which has Ability damage - that is, it reduces the strength of the enemy.
      * @param name name of this GearItem
      * @param price price of this GearItem
      * @param minLevel minLevel required to used this GearItem
      * @param mana Mana required to use this Spell.
      * @param damage amount of damage caused by this Spell.
      */
-    public IceSpell(String name, int price, Level minLevel, Mana mana, int damage) {
-        super(name, price, minLevel, damage, mana, AbilityBuilder.baseDamageAbility());
+    public IceSpell(String name, int price, Level minLevel, Mana mana, double damage) {
+        super(name, price, minLevel, damage, mana, AbilityBuilder.baseStrengthAbility());
     }
 
     /**

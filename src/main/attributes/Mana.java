@@ -15,8 +15,8 @@ import main.utils.Validations;
  * <p>
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
-public class Mana implements Cloneable {
-    private int mana;
+public class Mana extends Ability implements Cloneable {
+    private double fullAmount;
 
     /**
      * Empty constructor, sets mana to zero.
@@ -30,17 +30,34 @@ public class Mana implements Cloneable {
      * Throws an IllegalArgumentException if mana is negative
      * @param mana amount of mana as initial value.
      */
-    public Mana(int mana) {
+    public Mana(double mana) {
+        super(AbilityType.MANA, mana);
         Validations.nonNegative(mana, "mana");
-        this.mana = mana;
+        fullAmount = mana;
     }
 
     /**
      *
      * @return the amount of Mana
      */
-    public int getManaAmount() {
-        return mana;
+    public double getManaAmount() {
+        return this.getAbilityValue();
+    }
+
+    /**
+     *
+     * @return the amount of Mana that is considered full
+     */
+    public double getFullAmount() {
+        return this.fullAmount;
+    }
+
+    /**
+     * Sets the full amount of Mana to the passed in value
+     * @param fullAmount new full amount of Mana
+     */
+    public void setFullAmount(double fullAmount) {
+        this.fullAmount = fullAmount;
     }
 
     /**
@@ -48,9 +65,19 @@ public class Mana implements Cloneable {
      * Throws an IllegalArgumentException is amount is negative
      * @param amount new amount of Mana
      */
-    public void setMana(int amount) {
+    public void setMana(double amount) {
         Validations.nonNegative(amount, "amount");
-        mana = amount;
+        this.setAbilityValue(amount);
+    }
+
+    /**
+     * Checks to see if this Mana has enough, as relative to the amount passed in
+     * @param amount the amount in question
+     * @return true if Mana >= amount, false otherwise
+     */
+    public boolean hasEnoughMana(double amount) {
+        Validations.nonNegative(amount, "amount");
+        return this.getManaAmount() >= amount;
     }
 
     /**
@@ -58,9 +85,37 @@ public class Mana implements Cloneable {
      * Throws an IllegalArgumentException if amount is negative
      * @param amount amount to increase
      */
-    public void increaseManaBy(int amount) {
+    public void increaseManaBy(double amount) {
         Validations.nonNegative(amount, "amount");
         this.setMana(this.getManaAmount() + amount);
+    }
+
+    /**
+     * Increments the Mana by a the passed in percentage.
+     * For example, a client may choose to increase the Mana by 10%
+     * (which is different than increaseManaBy, which increase by a
+     * fixed amount)
+     *
+     * Throws an IllegalArgumentException if percentage is negative.
+     * @param percentage the percentage to increase, on a scale of 0-100
+     */
+    public void increaseByPercentage(double percentage) {
+        Validations.nonNegative(percentage, "percentage");
+        double amountToIncrease = percentage/100.0 * this.getManaAmount();
+        this.increaseManaBy(amountToIncrease);
+    }
+
+    /**
+     * Increases the Mana by a percentage of the full amount.
+     * For example: gains 10% of their original Mana.
+     *
+     * Throws an IllegalArgumentException if percentage is negative.s
+     * @param percentage the percentage to increase, on a scale of 0-100
+     */
+    public void increaseByPercentageOfFull(double percentage) {
+        Validations.nonNegative(percentage, "percentage");
+        double amountToIncrease = percentage / 100.0 * this.getFullAmount();
+        this.increaseManaBy(amountToIncrease);
     }
 
     /**
@@ -71,13 +126,21 @@ public class Mana implements Cloneable {
      * Throws an IllegalArgumentException if amount is negative
      * @param amount amount to decrease
      */
-    public void decreaseManaBy(int amount) {
+    public void decreaseManaBy(double amount) {
         Validations.nonNegative(amount, "amount");
-        if(amount > mana) {
+        if(amount > this.getManaAmount()) {
             this.setMana(0);
         } else {
             this.setMana(this.getManaAmount() - amount);
         }
+    }
+
+    /**
+     * Indicates whether or not this Mana is full
+     * @return true if this Mana is full, false otherwise
+     */
+    public boolean isFull() {
+        return Double.compare(this.getFullAmount(), this.getManaAmount()) == 0;
     }
 
     /**

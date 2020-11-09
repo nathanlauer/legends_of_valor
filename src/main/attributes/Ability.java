@@ -7,11 +7,11 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Class Ability is a wrapper around a integer, which represents some ability that a Monster
+ * Class Ability is a wrapper around a double, which represents some ability that a Monster
  * or a Hero have. There are two key points here:
  * 1) These are extracted out to a class, to clearly represent the concept of an ability.
- * Even though this class is just a wrapper around a int, the naming convention makes
- * it clear to clients precisely what this int represents.
+ * Even though this class is just a wrapper around a double, the naming convention makes
+ * it clear to clients precisely what this double represents.
  * 2) Abilities cannot be negative.
  *
  * @author: Nathan Lauer
@@ -21,15 +21,15 @@ import java.util.List;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public class Ability implements Cloneable {
-    private final String name;
-    private int abilityValue;
-    public static final String defaultName = "Ability";
+    private final AbilityType type;
+    private double abilityValue;
+    public static final AbilityType defaultType = AbilityType.ABILITY;
 
     /**
      * Empty constructor for an Ability. Name is set to "Ability" and value is 0.
      */
     public Ability() {
-        this(Ability.defaultName, 0);
+        this(Ability.defaultType, 0.0);
     }
 
     /**
@@ -37,31 +37,44 @@ public class Ability implements Cloneable {
      * Throws IllegalArgumentException if abilityValue is negative
      * @param abilityValue initial value for abilityValue.
      */
-    public Ability(int abilityValue) {
-        this(Ability.defaultName, abilityValue);
+    public Ability(double abilityValue) {
+        this(Ability.defaultType, abilityValue);
     }
 
     /**
      * Standard constructor for an Ability.
      * Throws IllegalArgumentException if abilityValue is negative
-     * @param name name of this Ability.
+     * @param type type of this Ability.
      * @param abilityValue the value for this ability
      */
-    public Ability(String name, int abilityValue) {
+    public Ability(AbilityType type, double abilityValue) {
         Validations.nonNegative(abilityValue, "abilityValue");
-        this.name = name;
+        this.type = type;
         this.abilityValue = abilityValue;
     }
 
-    public String getName() {
-        return name;
+    /**
+     *
+     * @return the AbilityType of this Ability
+     */
+    public AbilityType getType() {
+        return type;
+    }
+
+    /**
+     * Indicates whether or not this Ability has the passed in Ability Type.
+     * @param type the AbilityType in question
+     * @return true if this Ability has the specified type, false otherwise
+     */
+    public boolean hasType(AbilityType type) {
+        return this.type.equals(type);
     }
 
     /**
      *
      * @return the abilityValue of this Ability
      */
-    public int getAbilityValue() {
+    public double getAbilityValue() {
         return abilityValue;
     }
 
@@ -70,7 +83,7 @@ public class Ability implements Cloneable {
      * Throws an IllegalArgumentException if newAbilityValue is negative.
      * @param newAbilityValue new value for this Ability.
      */
-    public void setAbilityValue(int newAbilityValue) {
+    public void setAbilityValue(double newAbilityValue) {
         Validations.nonNegative(newAbilityValue, "newAbilityValue");
         abilityValue = newAbilityValue;
     }
@@ -80,7 +93,7 @@ public class Ability implements Cloneable {
      * Throws an IllegalArgumentException if amount is negative.
      * @param amount amount to increase abilityValue by
      */
-    public void increaseAbilityBy(int amount) {
+    public void increaseAbilityBy(double amount) {
         Validations.nonNegative(amount, "amount");
         this.setAbilityValue(this.getAbilityValue() + amount);
     }
@@ -92,7 +105,7 @@ public class Ability implements Cloneable {
      * Throws an IllegalArgumentException if amount is negative.
      * @param amount amount to decrease this ability by.
      */
-    public void decreaseAbilityBy(int amount) {
+    public void decreaseAbilityBy(double amount) {
         Validations.nonNegative(amount, "amount");
         if(amount > this.getAbilityValue()) {
             this.setAbilityValue(0);
@@ -102,11 +115,21 @@ public class Ability implements Cloneable {
     }
 
     /**
+     * Decreases this Ability by the passed in percentage
+     * @param percentage Percentage to decrease, on scale [0,100]
+     */
+    public void decreaseAbilityByPercentage(double percentage) {
+        Validations.nonNegative(percentage, "percentage");
+        double amountToDecrease = percentage/100.0 * this.getAbilityValue();
+        this.setAbilityValue(Math.max((this.getAbilityValue() - amountToDecrease), 0));
+    }
+
+    /**
      * @return String representation of this Ability object.
      */
     @Override
     public String toString() {
-        return "Ability " + name + ", value: " + this.getAbilityValue();
+        return type + ", value: " + this.getAbilityValue();
     }
 
     /**
@@ -126,7 +149,7 @@ public class Ability implements Cloneable {
         }
 
         Ability other = (Ability) o;
-        return this.getName().equals(other.getName()) &&
+        return this.getType().equals(other.getType()) &&
                 this.getAbilityValue() == other.getAbilityValue();
     }
 
@@ -142,7 +165,7 @@ public class Ability implements Cloneable {
     /**
      *
      * @return a List with a single Ability that is "empty" - meaning it has 0 value
-     * and no name.
+     * and the default AbilityType.
      */
     public static List<Ability> emptyAbilityList() {
         return new ArrayList<>(Collections.singletonList(new Ability()));

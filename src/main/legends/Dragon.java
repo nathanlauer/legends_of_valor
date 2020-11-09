@@ -21,9 +21,9 @@ public class Dragon extends Monster {
      */
     public Dragon() {
         this(Dragon.defaultName, new Level(0), new UncappedHealthPower(0),
-                AbilityBuilder.baseDamageAbility(),
+                AbilityBuilder.baseStrengthAbility(),
                 AbilityBuilder.baseDefenseAbility(),
-                AbilityBuilder.baseDodgeChanceAbility());
+                AbilityBuilder.baseAgilityAbility());
     }
 
     /**
@@ -31,12 +31,12 @@ public class Dragon extends Monster {
      * @param name name of this Dragon Monster
      * @param level the level of this Monster.
      * @param healthPower healthPower of this Monster.
-     * @param damage attack Ability for this Dragon monster.
+     * @param strength attack Ability for this Dragon monster.
      * @param defense defense Ability for this Dragon monster.
-     * @param dodgeChance dodgeChance Ability for this Dragon.
+     * @param agility dodgeChance Ability for this Dragon.
      */
-    public Dragon(String name, Level level, HealthPower healthPower, Ability damage, Ability defense, Ability dodgeChance) {
-        super(name, level, healthPower, damage, defense, dodgeChance);
+    public Dragon(String name, Level level, HealthPower healthPower, Ability strength, Ability defense, Ability agility) {
+        super(name, level, healthPower, strength, defense, agility);
     }
 
     /**

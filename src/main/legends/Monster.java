@@ -22,73 +22,76 @@ import main.attributes.Level;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public abstract class Monster extends Legend {
-    private Ability damage;
-    private Ability defense;
-    private Ability dodgeChance;
+
 
     /**
      * Standard constructor for a Monster
      * @param name Name of this Monster
      * @param level Level of this Monster
      * @param healthPower HealthPower of this Monster
-     * @param damage Damage of this Monster
+     * @param strength Strength (amount of Damage) of this Monster
      * @param defense Defense of this Monster
-     * @param dodgeChance DodgeChange of this Monster
+     * @param agility Agility (dodge change) of this Monster
      */
     public Monster(String name, Level level, HealthPower healthPower,
-                   Ability damage, Ability defense, Ability dodgeChance) {
-        super(name, level, healthPower);
-        this.damage = damage;
-        this.defense = defense;
-        this.dodgeChance = dodgeChance;
+                   Ability strength, Ability defense, Ability agility) {
+        super(name, level, healthPower, strength, defense, agility);
     }
 
     /**
-     * Sets the damage Ability for this Monster to the passed in value.
-     * @param newDamage new Ability for damage
-     */
-    public void setDamage(Ability newDamage) {
-        damage = newDamage;
-    }
-
-    /**
+     * Calculates the amount of Damage this Legend would cause if it attacked.
+     * Note: this is not just the Strength ability - a Legend may wield some
+     * other GearItem which increases their damage amount.
      *
-     * @return the damage Ability for this Monster
+     * For a Monster, the damage amount is the strength of the Monster.
+     * @return the amount of Damage in an attack
      */
-    public Ability getDamage() {
-        return damage;
+    @Override
+    public double getDamageAmount() {
+        return this.getStrength().getAbilityValue();
     }
 
     /**
-     * Sets the defense Ability for this Monster to the passed in value
-     * @param newDefense the new value for defense of this Monster
-     */
-    public void setDefense(Ability newDefense) {
-        defense = newDefense;
-    }
-
-    /**
+     * Calculates the amount of Defense this Legend has if it were attacked.
+     * Note: this is not just the Defense Ability - a legend may have some
+     * GearItem which increases their defense amount.
      *
-     * @return the defense Ability for this Monster
+     * For a Monster, the defense amount is just the defense ability
+     * @return the Defense amount
      */
-    public Ability getDefense() {
-        return defense;
+    @Override
+    public double getDefenseAmount() {
+        return this.getDefense().getAbilityValue();
     }
 
     /**
-     * Sets the dodgeChance Ability for this Monster.
-     * @param newDodgeChance the new Ability for dodgeChance of this Monster.
-     */
-    public void setDodgeChance(Ability newDodgeChance) {
-        dodgeChance = newDodgeChance;
-    }
-
-    /**
+     * Calculates the chance of dodging an attack for this Legend.
+     * This is a probability, so it is normalized to range [0,1]
      *
-     * @return the dodgeChance Ability for this Monster
+     * For a Monster, the chance of dodging an attack is agility * .01
+     *
+     * DodgeChance is normalized to a range of 0 - 200. That is, a Monster
+     * with Agility 200 will have a dodge chance of 100%
+     * @return the likelihood of dodging an attack.
      */
-    public Ability getDodgeChance() {
-        return dodgeChance;
+    public double getDodgeChance() {
+        return Math.min((this.getAgility().getAbilityValue() / 2.0) * 0.01, 1);
+    }
+
+    /**
+     * Indicates whether or not this Monster is still alive.
+     * @return true if this Monster has some HealthPower, false otherwise
+     */
+    public boolean isAlive() {
+        return this.getHealthPower().hasSomeHealth();
+    }
+
+    /**
+     * Indicates whether or not this Monster is dead.
+     * @return true if this Monster has no remaining HealthPower, false otherwise.
+     */
+    public boolean hasDied() {
+        return !isAlive();
     }
 
     /**
@@ -97,7 +100,7 @@ public abstract class Monster extends Legend {
     @Override
     public String toString() {
         String legend = super.toString();
-        return legend + ". Monster! Stats: Attack: " + damage.toString() + ", Defense: " + defense.toString() + ", dodge_chance: " + dodgeChance.toString();
+        return "Monster! " + legend;
     }
 
     /**
@@ -117,10 +120,6 @@ public abstract class Monster extends Legend {
             return false;
         }
 
-        Monster other = (Monster) o;
-        return this.getDefense().equals(other.getDefense()) &&
-                this.getDamage().equals(other.getDamage()) &&
-                this.getDodgeChance().equals(other.getDodgeChance()) &&
-                super.equals(o);
+        return super.equals(o);
     }
 }

@@ -6,7 +6,8 @@ import main.attributes.Mana;
 
 /**
  * Class LightningSpell is a concrete type of Spell, and hence also a GearItem.
- * When used, it reduces the dodge chance of the enemy.
+ * When used, it reduces the dodge chance of the enemy - that is, it decreases
+ * the Agility Ability of the enemy.
  *
  * @author: Nathan Lauer
  * @email: lauern@bu.edu
@@ -32,8 +33,8 @@ public class LightningSpell extends Spell {
      * @param mana Mana required to use this Spell.
      * @param damage amount of damage caused by this Spell.
      */
-    public LightningSpell(String name, int price, Level minLevel, Mana mana, int damage) {
-        super(name, price, minLevel, damage, mana, AbilityBuilder.baseDodgeChanceAbility());
+    public LightningSpell(String name, int price, Level minLevel, Mana mana, double damage) {
+        super(name, price, minLevel, damage, mana, AbilityBuilder.baseAgilityAbility());
     }
 
     /**

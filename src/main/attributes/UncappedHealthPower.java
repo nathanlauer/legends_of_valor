@@ -13,6 +13,7 @@ import main.utils.Validations;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public class UncappedHealthPower extends HealthPower {
+
     /**
      * Empty constructor for UncappedHealthPower, which initializes the
      * healthPower to zero.
@@ -28,9 +29,21 @@ public class UncappedHealthPower extends HealthPower {
      * Throws an IllegalArgumentException if healthPower is negative.
      * @param healthPower the initial value of healthPower
      */
-    public UncappedHealthPower(int healthPower) {
-        Validations.nonNegative(healthPower, "healthPower");
-        super.setHealthPower(healthPower);
+    public UncappedHealthPower(double healthPower) {
+        super(healthPower, healthPower);
+    }
+
+    /**
+     * Increase the HealthPower by a percentage of the original amount.
+     * Throws an IllegalArgumentException if percentage is negative.
+     *
+     * @param percentage Percentage to increase, on a scale of 0 to 100
+     */
+    @Override
+    public void increaseByPercentageOfFull(double percentage) {
+        Validations.nonNegative(percentage, "percentage");
+        double amountToIncrease = (percentage / 100.0) * getFullAmount();
+        this.increaseHealthPowerBy(amountToIncrease);
     }
 
     /**

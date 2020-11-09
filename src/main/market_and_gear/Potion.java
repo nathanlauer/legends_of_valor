@@ -21,7 +21,7 @@ import java.util.List;
 public class Potion extends GearItem {
     public static final String defaultName = "Potion";
     private List<Ability> abilities;
-    private int incrementAmount;
+    private double incrementAmount;
     private boolean used;
 
     /**
@@ -44,7 +44,7 @@ public class Potion extends GearItem {
      * @param abilities Abilities this Potion affects
      * @param incrementAmount amount to increment ability of this Potion
      */
-    public Potion(String name, int price, Level minLevel, List<Ability> abilities, int incrementAmount) {
+    public Potion(String name, int price, Level minLevel, List<Ability> abilities, double incrementAmount) {
         super(name, price, minLevel);
 
         Validations.nonNegative(incrementAmount, "incrementAmount");
@@ -89,7 +89,7 @@ public class Potion extends GearItem {
      *
      * @return the amount to increment the associated Ability by
      */
-    public int getIncrementAmount() {
+    public double getIncrementAmount() {
         return incrementAmount;
     }
 
@@ -98,7 +98,7 @@ public class Potion extends GearItem {
      * Throws an IllegalArgumentException if newAmount is negative
      * @param newAmount the new amount that this Potion will increase its Ability.
      */
-    public void setIncrementAmount(int newAmount) {
+    public void setIncrementAmount(double newAmount) {
         Validations.nonNegative(newAmount, "newAmount");
         incrementAmount = newAmount;
     }
@@ -117,6 +117,21 @@ public class Potion extends GearItem {
      */
     public void setUsed(boolean newUsed) {
         used = newUsed;
+    }
+
+    /**
+     * Convenient helper method which marks this Potion as having been used.
+     */
+    public void markUsed() {
+        this.setUsed(true);
+    }
+
+    /**
+     * Indicates whether or not this Potion can still be used.
+     * @return true if this Potion was not used yet, false otherwise
+     */
+    public boolean canBeUsed() {
+        return !wasUsed();
     }
 
     /**

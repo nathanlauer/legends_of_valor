@@ -1,6 +1,7 @@
 package test.attributes;
 
 import main.attributes.CappedHealthPower;
+import main.attributes.Mana;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -60,5 +61,14 @@ public class TestCappedHealthPower {
         chp.setMaxHealthValue(50);
         assertEquals(50, chp.getHealthPower());
         assertEquals(50, chp.getMaxHealthValue());
+    }
+
+    @Test
+    public void percentage() {
+        CappedHealthPower chp = new CappedHealthPower(50, 100);
+        chp.increaseByPercentage(10);
+        assertEquals(55, chp.getHealthPower());
+        chp.increaseByPercentage(20);
+        assertEquals(66, chp.getHealthPower()); // round up to ceiling
     }
 }

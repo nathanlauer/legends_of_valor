@@ -1,9 +1,6 @@
 package test.market_and_gear;
 
-import main.attributes.Ability;
-import main.attributes.Level;
-import main.attributes.Mana;
-import main.attributes.UncappedHealthPower;
+import main.attributes.*;
 import main.legends.Hero;
 import main.legends.NonOwnedGearItemException;
 import main.legends.Sorcerer;
@@ -30,9 +27,9 @@ public class TestBuyingGearItems {
     private final Hero hero;
 
     public TestBuyingGearItems() {
-        Ability agility = new Ability("Agility", 1000);
-        Ability dexterity = new Ability("Dexterity", 900);
-        Ability strength = new Ability("Strength", 200);
+        Ability agility = new Ability(AbilityType.AGILITY, 1000);
+        Ability dexterity = new Ability(AbilityType.DEXTERITY, 900);
+        Ability strength = new Ability(AbilityType.STRENGTH, 200);
         Coffer coffer = new Coffer(50);
         Mana mana = new Mana(300);
         hero = new Sorcerer("Gandalf", new Level(34), new UncappedHealthPower(100), mana, coffer, agility, dexterity, strength);

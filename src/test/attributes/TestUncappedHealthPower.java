@@ -69,4 +69,13 @@ public class TestUncappedHealthPower {
         assertNotEquals(first, capped);
         assertNotEquals(second, capped);
     }
+
+    @Test
+    public void percentage() {
+        UncappedHealthPower uhp = new UncappedHealthPower(50);
+        uhp.increaseByPercentage(10);
+        assertEquals(55, uhp.getHealthPower());
+        uhp.increaseByPercentage(20);
+        assertEquals(66, uhp.getHealthPower()); // round up to ceiling
+    }
 }

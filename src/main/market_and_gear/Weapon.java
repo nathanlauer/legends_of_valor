@@ -16,7 +16,7 @@ import main.utils.Validations;
  */
 public class Weapon extends GearItem {
     public static final String defaultName = "Weapon";
-    private int damage;
+    private double damage;
     private int numHands;
 
     /**
@@ -36,7 +36,7 @@ public class Weapon extends GearItem {
      * @param damage damage this Weapon causes
      * @param numHands required hands to hold this Weapon
      */
-    public Weapon(String name, int price, Level minLevel, int damage, int numHands) {
+    public Weapon(String name, int price, Level minLevel, double damage, int numHands) {
         super(name, price, minLevel);
 
         // Validate input
@@ -52,7 +52,7 @@ public class Weapon extends GearItem {
      *
      * @return the amount of damage this Weapon causes
      */
-    public int getDamage() {
+    public double getDamage() {
         return damage;
     }
 
@@ -61,7 +61,7 @@ public class Weapon extends GearItem {
      * Throws an IllegalArgumentException if newDamage is negative
      * @param newDamage the amount of damage this Weapon will now cause
      */
-    public void setDamage(int newDamage) {
+    public void setDamage(double newDamage) {
         Validations.nonNegative(newDamage, "newDamage");
         damage = newDamage;
     }

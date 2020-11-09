@@ -31,7 +31,7 @@ public class TestSpell {
     public void testIceSpell() {
         Spell iceSpell = new IceSpell(name, price, minLevel, mana, damage);
         testAttributes(iceSpell);
-        assertEquals(AbilityBuilder.baseDamageAbility(), iceSpell.getAbility());
+        assertEquals(AbilityBuilder.baseStrengthAbility(), iceSpell.getAbility());
     }
 
     @Test
@@ -45,7 +45,7 @@ public class TestSpell {
     public void testLightningSpell() {
         Spell lightningSpell = new LightningSpell(name, price, minLevel, mana, damage);
         testAttributes(lightningSpell);
-        assertEquals(AbilityBuilder.baseDodgeChanceAbility(), lightningSpell.getAbility());
+        assertEquals(AbilityBuilder.baseAgilityAbility(), lightningSpell.getAbility());
     }
 
     @Test
@@ -68,7 +68,7 @@ public class TestSpell {
             assertNotEquals(lightningSpell.getAbility(), other.getAbility());
             assertEquals(new Mana(manaNum - 10), other.getMana());
             assertEquals(new Level(minLevelNum + 1), other.getMinLevel());
-            Ability expected = AbilityBuilder.baseDodgeChanceAbility();
+            Ability expected = AbilityBuilder.baseAgilityAbility();
             expected.increaseAbilityBy(50);
             assertEquals(expected, other.getAbility());
 
@@ -91,8 +91,8 @@ public class TestSpell {
 
     @Test
     public void type() {
-        assertTrue(new FireSpell().getType().equals(GearItemType.SPELL));
-        assertTrue(new IceSpell().getType().equals(GearItemType.SPELL));
-        assertTrue(new LightningSpell().getType().equals(GearItemType.SPELL));
+        assertEquals(GearItemType.SPELL, new FireSpell().getType());
+        assertEquals(GearItemType.SPELL, new IceSpell().getType());
+        assertEquals(GearItemType.SPELL, new LightningSpell().getType());
     }
 }

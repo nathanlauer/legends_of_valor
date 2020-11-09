@@ -20,25 +20,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class TestMarketInventory {
-    private long initialReadTime;
-
     @BeforeAll
     public void init() {
         // This should read in all data from disk
-        long startTime = System.nanoTime();
         MarketInventory.getInstance();
-        long endTime = System.nanoTime();
-        initialReadTime = (endTime - startTime);
     }
 
     @Test
     public void allGearItems() {
-        long startTime = System.nanoTime();
         MarketInventory instance = MarketInventory.getInstance(); // at least second time calling getInstance
         List<GearItem> items = instance.getAllGearItems();
-        long endTime = System.nanoTime();
-        long executionTime = (endTime - startTime);
-        assert(executionTime < initialReadTime); // ensure that we only read from disk once.
 
         // There are 6 potions, 6 weapons, 6 armors, 5 fire spells, 4 ice spells,
         // and 4 lightning spells. That is a total of 31 GearItems

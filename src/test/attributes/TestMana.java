@@ -66,4 +66,13 @@ public class TestMana {
             assertEquals(50, mana.getManaAmount());
         }
     }
+
+    @Test
+    public void percentage() {
+        Mana mana = new Mana(100);
+        mana.increaseByPercentage(31);
+        assertEquals(131, mana.getManaAmount());
+        mana.increaseByPercentage(10);
+        assertEquals(144.1, mana.getManaAmount());
+    }
 }
