@@ -152,18 +152,23 @@ public class HeroesVsMonstersRound implements RoundExecutor {
     @Override
     public boolean finishedGame() {
         // The Game has finished if either all Heroes have fainted,
+        boolean heroesAlive = false;
         for(Hero hero : this.heroes) {
             if(!hero.hasFainted()) {
-                return false;
+                heroesAlive = true;
+                break;
             }
         }
 
         // or all Monsters have no HealthPower
+        boolean monstersAlive = false;
         for(Monster monster : this.monsters) {
             if(monster.getHealthPower().getHealthPower() > 0) {
-                return false;
+                monstersAlive = true;
+                break;
             }
         }
-        return true;
+
+        return heroesAlive || monstersAlive;
     }
 }

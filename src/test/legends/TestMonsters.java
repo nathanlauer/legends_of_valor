@@ -39,7 +39,7 @@ public class TestMonsters {
         assertEquals(new UncappedHealthPower(100), drogon.getHealthPower());
         assertEquals(damage, drogon.getStrength());
         assertEquals(defense, drogon.getDefense());
-        assertEquals(65 * 0.01, drogon.getDodgeChance());
+        assertEquals(65 / 4.0 * 0.01, drogon.getDodgeChance());
     }
 
     @Test
@@ -62,7 +62,7 @@ public class TestMonsters {
         assertEquals(new UncappedHealthPower(100), rancor.getHealthPower());
         assertEquals(damage, rancor.getStrength());
         assertEquals(defense, rancor.getDefense());
-        assertEquals(65 * 0.01, rancor.getDodgeChance());
+        assertEquals(65 / 4.0 * 0.01, rancor.getDodgeChance());
     }
 
     @Test
@@ -85,7 +85,7 @@ public class TestMonsters {
         assertEquals(new UncappedHealthPower(100), dementor.getHealthPower());
         assertEquals(damage, dementor.getStrength());
         assertEquals(defense, dementor.getDefense());
-        assertEquals(65 * 0.01, dementor.getDodgeChance());
+        assertEquals(65 / 4.0 * 0.01, dementor.getDodgeChance());
     }
 
     @Test
