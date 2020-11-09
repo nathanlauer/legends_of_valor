@@ -27,7 +27,7 @@ public class Main {
         List<Monster> monsters = allMonsters.subList(0, 1);
 
         // For simplicity, add 1000 to the strength of the first hero
-        heroes.get(0).getStrength().increaseAbilityBy(1000);
+        heroes.get(0).getStrength().increaseAbilityBy(4000);
 
         Market market = new Market();
         MarketInteraction marketInteraction = new MarketInteraction(market, heroes);

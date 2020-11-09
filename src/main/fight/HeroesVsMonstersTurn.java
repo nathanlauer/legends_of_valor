@@ -33,8 +33,8 @@ import java.util.*;
 public class HeroesVsMonstersTurn implements TurnExecutor  {
     private Legend current;
     private boolean firstTurn;
-    private final Iterator<Hero> heroIterator;
-    private final Iterator<Monster> monsterIterator;
+    private final ListIterator<Hero> heroIterator;
+    private final ListIterator<Monster> monsterIterator;
     private boolean finished;
     private final PairHeroesAndMonsters pairing;
     private FightMove move;
@@ -45,11 +45,29 @@ public class HeroesVsMonstersTurn implements TurnExecutor  {
      * @param monsters List of Monsters participating
      */
     public HeroesVsMonstersTurn(List<Hero> heroes, List<Monster> monsters, PairHeroesAndMonsters pairing) {
-        heroIterator = heroes.iterator();
-        monsterIterator = monsters.iterator();
+        heroIterator = heroes.listIterator();
+        monsterIterator = monsters.listIterator();
         firstTurn = true;
         finished = false;
         this.pairing = pairing;
+        move = null;
+    }
+
+    /**
+     * Resets this TurnExecutor to the beginning
+     */
+    @Override
+    public void reset() {
+        while(heroIterator.hasPrevious()) {
+            heroIterator.previous();
+        }
+
+        while(monsterIterator.hasPrevious()) {
+            monsterIterator.previous();
+        }
+
+        firstTurn = true;
+        finished = false;
         move = null;
     }
 
@@ -158,6 +176,7 @@ public class HeroesVsMonstersTurn implements TurnExecutor  {
                 }
             }
         }
+        Output.printSeparator();
     }
 
     /**
@@ -165,7 +184,6 @@ public class HeroesVsMonstersTurn implements TurnExecutor  {
      * about the status of said Hero, and the Monsters they're facing.
      */
     private void displayHeroStatus() {
-        Output.printSeparator();
         Hero hero = (Hero)current;
         System.out.println(hero.getName() + " it's your turn. Status:");
         Output.newLine();

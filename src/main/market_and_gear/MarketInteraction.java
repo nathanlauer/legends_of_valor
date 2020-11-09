@@ -121,6 +121,9 @@ public class MarketInteraction {
      * @return Hero selected by the user
      */
     private Hero getSelectedHero(String prompt) {
+        if(heroes.size() == 1) {
+            return heroes.get(0);
+        }
         List<String> options = Output.printHeroListAsStrings(heroes);
         List<Integer> linesToSkip = new ArrayList<>(Collections.singletonList(0)); // skip header line
         GetUserNumericInput getUserNumericInput = new GetUserNumericInput(new Scanner(System.in), prompt, options);

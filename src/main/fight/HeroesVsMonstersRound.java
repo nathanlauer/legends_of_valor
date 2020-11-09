@@ -6,11 +6,8 @@ import main.games.TurnBasedGame;
 import main.games.TurnExecutor;
 import main.legends.Hero;
 import main.legends.Monster;
-import main.market_and_gear.Armor;
-import main.market_and_gear.Weapon;
 import test.utils.Output;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -41,10 +38,11 @@ import java.util.Scanner;
 public class HeroesVsMonstersRound implements RoundExecutor {
     private final List<Hero> heroes;
     private final List<Monster> monsters;
-    private TurnBasedGame turnBasedGame;
+    private final TurnBasedGame turnBasedGame;
     private final PairHeroesAndMonsters pairing;
     private boolean firstRound;
     private int roundNum;
+    private final TurnExecutor turnExecutor;
 
     /**
      * Standard constructor for a HeroVsMonsterRound
@@ -57,6 +55,8 @@ public class HeroesVsMonstersRound implements RoundExecutor {
         this.pairing = new PairHeroesAndMonsters(new Scanner(System.in), this.heroes, this.monsters);
         this.firstRound = true;
         roundNum = 1;
+        turnExecutor = new HeroesVsMonstersTurn(this.heroes, this.monsters, this.pairing);
+        this.turnBasedGame = new TurnBasedGame(turnExecutor);
     }
 
     /**
@@ -65,8 +65,8 @@ public class HeroesVsMonstersRound implements RoundExecutor {
     @Override
     public void setupNextRound() {
         // Setup a Heroes vs Monsters turn based game for the next round.
-        TurnExecutor turnExecutor = new HeroesVsMonstersTurn(this.heroes, this.monsters, this.pairing);
-        this.turnBasedGame = new TurnBasedGame(turnExecutor);
+        turnExecutor.reset();
+
         displayStatus();
 
         if(firstRound) {
@@ -84,8 +84,8 @@ public class HeroesVsMonstersRound implements RoundExecutor {
      */
     private void displayStatus() {
         // Sort Heroes and Monsters so the ones with higher Level appear at the top
-        Collections.sort(heroes, new HigherLevelComparator());
-        Collections.sort(monsters, new HigherLevelComparator());
+        heroes.sort(new HigherLevelComparator());
+        monsters.sort(new HigherLevelComparator());
 
         // Display the Heroes and the Monsters
         Output.printSeparator();
@@ -113,7 +113,6 @@ public class HeroesVsMonstersRound implements RoundExecutor {
      */
     @Override
     public void processEndOfRound() {
-        Output.printSeparator();
         System.out.println("End of round " + roundNum);
         for(Hero hero : this.heroes) {
             if(!hero.hasFainted()) {
@@ -169,6 +168,6 @@ public class HeroesVsMonstersRound implements RoundExecutor {
             }
         }
 
-        return heroesAlive || monstersAlive;
+        return !heroesAlive || !monstersAlive;
     }
 }
