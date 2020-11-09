@@ -180,7 +180,11 @@ public class MarketInteraction {
 
         // And the same with Spells
         items = market.getSpells();
-        List<GearItem> spells = items.stream().filter(gearItem -> gearItem.heroCanBuy(hero)).collect(Collectors.toList());
+        List<GearItem> spells = items.stream()
+                .filter(gearItem -> gearItem.heroCanBuy(hero))
+                .filter(gearItem -> ((Spell)gearItem).heroHasEnoughMana(hero))
+                .collect(Collectors.toList());
+
         if(spells.size() > 0) {
             List<String> spellsOut = Output.outputablesAsString(spells);
             options.addAll(spellsOut);
@@ -205,9 +209,6 @@ public class MarketInteraction {
             // There are two lines to skip: the GearItem type line and the
             linesToSkip.add(counter);
             linesToSkip.add(counter + 1);
-
-            // Now, advance the counter past each of these lines
-            counter += potionsOut.size();
         }
 
         return options;

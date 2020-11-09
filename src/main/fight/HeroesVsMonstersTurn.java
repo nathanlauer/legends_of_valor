@@ -6,9 +6,6 @@ import main.legends.Hero;
 import main.legends.Legend;
 import main.legends.Monster;
 import main.market_and_gear.GearItem;
-import main.market_and_gear.Potion;
-import main.market_and_gear.Spell;
-import sun.jvm.hotspot.oops.OopUtilities;
 import test.utils.Output;
 
 import java.util.*;
