@@ -69,10 +69,21 @@ public class MarketInteraction {
      * Prints out all the available GearItems in the Market.
      */
     private void printAllGearItems() {
+        System.out.println("Weapons:");
         Output.printOutputables(market.getWeapons());
+        Output.newLine();
+
+        System.out.println("Armor:");
         Output.printOutputables(market.getArmor());
+        Output.newLine();
+
+        System.out.println("Spells:");
         Output.printOutputables(market.getSpells());
+        Output.newLine();
+
+        System.out.println("Potions:");
         Output.printOutputables(market.getPotions());
+        Output.newLine();
     }
 
     /**
@@ -150,32 +161,40 @@ public class MarketInteraction {
         List<GearItem> items = market.getWeapons();
         List<GearItem> weapons = items.stream().filter(gearItem -> gearItem.heroCanBuy(hero)).collect(Collectors.toList());
         if(weapons.size() > 0) {
+            options.add("Weapons:");
             List<String> weaponsOut = Output.outputablesAsString(weapons);
             options.addAll(weaponsOut);
             availableItems.addAll(weapons);
+            options.add(""); // will print a newline
 
-            // There are two lines to skip: the GearItem type line and the
+            // There are three lines to skip: two at the top, and one at the end
             linesToSkip.add(counter);
             linesToSkip.add(counter + 1);
 
             // Now, advance the counter past each of these lines
-            counter += weaponsOut.size();
+            counter += weaponsOut.size() + 1;
+            linesToSkip.add(counter); // account for the newline at the end
+            counter++;
         }
 
         // Do the same with Armor
         items = market.getArmor();
         List<GearItem> armors = items.stream().filter(gearItem -> gearItem.heroCanBuy(hero)).collect(Collectors.toList());
         if(armors.size() > 0) {
+            options.add("Armor:");
             List<String> armorOut = Output.outputablesAsString(armors);
             options.addAll(armorOut);
             availableItems.addAll(armors);
+            options.add(""); // will print a newline
 
             // There are two lines to skip: the GearItem type line and the
             linesToSkip.add(counter);
             linesToSkip.add(counter + 1);
 
             // Now, advance the counter past each of these lines
-            counter += armorOut.size();
+            counter += armorOut.size() + 1;
+            linesToSkip.add(counter); // account for the newline at the end
+            counter++;
         }
 
         // And the same with Spells
@@ -186,22 +205,27 @@ public class MarketInteraction {
                 .collect(Collectors.toList());
 
         if(spells.size() > 0) {
+            options.add("Spells:");
             List<String> spellsOut = Output.outputablesAsString(spells);
             options.addAll(spellsOut);
             availableItems.addAll(spells);
+            options.add(""); // will print a newline
 
             // There are two lines to skip: the GearItem type line and the
             linesToSkip.add(counter);
             linesToSkip.add(counter + 1);
 
             // Now, advance the counter past each of these lines
-            counter += spellsOut.size();
+            counter += spellsOut.size() + 1;
+            linesToSkip.add(counter); // account for the newline at the end
+            counter++;
         }
 
         // And finally, the same with Potions
         items = market.getPotions();
         List<GearItem> potions = items.stream().filter(gearItem -> gearItem.heroCanBuy(hero)).collect(Collectors.toList());
         if(potions.size() > 0) {
+            options.add("Potions:");
             List<String> potionsOut = Output.outputablesAsString(potions);
             options.addAll(potionsOut);
             availableItems.addAll(potions);

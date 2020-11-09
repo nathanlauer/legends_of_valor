@@ -119,7 +119,7 @@ public class GetUserNumericInput {
                 if(this.linesToSkip.contains(i)) {
                     // One space for the would be number (e.g. 5), one for the missing ), and one for the final following space
                     message = "   " + message;
-                    if(i >= 9) {
+                    if(outputNum >= 10) {
                         // An additional spot for the number. Assuming we won't have more than 99 options.
                         message = " " + message;
                     }
