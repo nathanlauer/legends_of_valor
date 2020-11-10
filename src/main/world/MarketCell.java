@@ -1,5 +1,8 @@
 package main.world;
 
+import main.legends.Hero;
+import main.market_and_gear.Market;
+import main.market_and_gear.MarketInteraction;
 import main.utils.Colors;
 
 import java.util.ArrayList;
@@ -39,7 +42,10 @@ public class MarketCell extends Cell {
      */
     @Override
     public void enter() {
-        // TODO
+        Market market = new Market();
+        List<Hero> heroes = HeroesAndMonsters.getInstance().getHeroes();
+        MarketInteraction marketInteraction = new MarketInteraction(market, heroes);
+        marketInteraction.run();
     }
 
     /**
