@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Class LegendList contains a List of all Legends available in the game.
@@ -91,27 +93,16 @@ public class LegendList {
      * of lower level than the highest level of the chosen Heroes.
      */
     public List<Monster> getCorrespondingMonsters() {
-        List<Monster> output = new ArrayList<>();
+        // Find the max level
         getChosenHeroes().sort(new HigherLevelComparator());
         Level max = getChosenHeroes().get(0).getLevel();
 
-        // Don't use an iterator here, other classes may be maintaining iterators over this same list
-        for(int i = 0; i < getMonsters().size(); i++) {
-            Monster monster = getMonsters().get(i);
-            if(monster.getLevel().isLessThan(max)) {
-                output.add(monster);
-            }
-            if(output.size() >= getChosenHeroes().size()) {
-                break;
-            }
-        }
+        // Filter out Monsters that have a Level that is too high
+        Stream<Monster> monsterStream = getMonsters().stream()
+                .filter(monster -> monster.getLevel().isLessThan(max));
 
-        // If we were unable to do so, just select a subset of the Monsters
-        if(output.size() < getChosenHeroes().size()) {
-            output = getMonsters().subList(0, getChosenHeroes().size());
-        }
-
-        return output;
+        List<Monster> output = monsterStream.collect(Collectors.toList());
+        return output.subList(0, getChosenHeroes().size());
     }
 
     /**

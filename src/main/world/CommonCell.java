@@ -64,6 +64,7 @@ public class CommonCell extends Cell {
         if(rand < this.chanceOfMonsters) {
             // Fight!
             List<Hero> heroes = LegendList.getInstance().getChosenHeroes();
+//            List<Monster> monsters = LegendList.getInstance().getMonsters().subList(0, 2);
             List<Monster> monsters = LegendList.getInstance().getCorrespondingMonsters();
             Fight fight = new Fight(heroes, monsters);
             fight.fight();
