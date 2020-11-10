@@ -31,6 +31,22 @@ public class Fight {
     }
 
     /**
+     *
+     * @return the List of Heroes in this Fight
+     */
+    public List<Hero> getHeroes() {
+        return heroes;
+    }
+
+    /**
+     *
+     * @return the List of Monsters in this Fight
+     */
+    public List<Monster> getMonsters() {
+        return monsters;
+    }
+
+    /**
      * Executes the fight
      */
     public void fight() {

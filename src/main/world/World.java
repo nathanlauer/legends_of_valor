@@ -1,5 +1,6 @@
 package main.world;
 
+import main.fight.Fight;
 import main.utils.Colors;
 import main.utils.Validations;
 
@@ -21,6 +22,7 @@ public class World {
     private final Cell[][] cells;
     private int heroesRow;
     private int heroesCol;
+    private Fight fight;
 
     /**
      * Standard constructor, builds a World of the passed in size.
@@ -65,6 +67,37 @@ public class World {
     public Cell getCellAt(int row, int col) {
         checkValidity(row, col);
         return this.cells[row][col];
+    }
+
+    /**
+     *
+     * @return the ongoing fight in this World
+     */
+    public Fight getFight() {
+        return fight;
+    }
+
+    /**
+     * Sets the ongoing fight in this World
+     * @param fight the current Fight
+     */
+    public void setFight(Fight fight) {
+        this.fight = fight;
+    }
+
+    /**
+     * Marks that the current fight has finished
+     */
+    public void finishedFight() {
+        fight = null;
+    }
+
+    /**
+     * Indicates whether or not a fight is currently happening
+     * @return true if a fight is ongoing, false otherwise.
+     */
+    public boolean isFighting() {
+        return fight != null;
     }
 
     /**

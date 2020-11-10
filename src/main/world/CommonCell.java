@@ -1,5 +1,6 @@
 package main.world;
 
+import main.Runner;
 import main.fight.Fight;
 import main.legends.Hero;
 import main.legends.LegendList;
@@ -65,7 +66,10 @@ public class CommonCell extends Cell {
             List<Hero> heroes = LegendList.getInstance().getChosenHeroes();
             List<Monster> monsters = LegendList.getInstance().getCorrespondingMonsters();
             Fight fight = new Fight(heroes, monsters);
+            World world = Runner.getInstance().getWorld();
+            world.setFight(fight);
             fight.fight();
+            world.finishedFight();
         }
     }
 

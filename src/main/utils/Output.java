@@ -1,5 +1,7 @@
 package main.utils;
 
+import main.legends.Hero;
+import main.legends.Monster;
 import main.world.World;
 
 import java.util.ArrayList;
@@ -88,5 +90,30 @@ public class Output {
     public static void drawWorld(World world) {
         List<String> drawn = world.draw();
         drawn.forEach(System.out::println);
+    }
+
+    /**
+     * Displays information regarding a fight. That is, it outputs data for the Heroes and the Monsters
+     * @param heroes List of Heroes in the fight
+     * @param monsters List of Monsters in the fight
+     */
+    public static void displayFightInformation(List<Hero> heroes, List<Monster> monsters) {
+
+    }
+
+    /**
+     * Displays nominal information for each of the Heroes in the input List
+     * @param heroes List of Heroes to display info for.
+     */
+    public static void displayNominalInformation(List<Hero> heroes) {
+
+    }
+
+    /**
+     * Displays info at the end of the game
+     * @param heroes List of Heroes who played
+     */
+    public static void displayFinalInfo(List<Hero> heroes) {
+
     }
 }
