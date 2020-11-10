@@ -98,7 +98,17 @@ public class Output {
      * @param monsters List of Monsters in the fight
      */
     public static void displayFightInformation(List<Hero> heroes, List<Monster> monsters) {
-
+        Output.printSeparator();
+        System.out.println("Fight Status Information:");
+        System.out.println("Number of Heroes: " + heroes.size());
+        System.out.println("Number of Monsters: " + monsters.size());
+        Output.printSeparator();
+        System.out.println("Detailed Information");
+        System.out.println("Heroes: ");
+        Output.printOutputables(heroes);
+        Output.newLine();
+        System.out.println("Monsters: ");
+        Output.printOutputables(monsters);
     }
 
     /**
@@ -106,7 +116,16 @@ public class Output {
      * @param heroes List of Heroes to display info for.
      */
     public static void displayNominalInformation(List<Hero> heroes) {
-
+        Output.printSeparator();
+        System.out.println("Information Menu:");
+        System.out.println("Number of heroes: " + heroes.size());
+        System.out.println("Hero names: ");
+        for(Hero hero : heroes) {
+            System.out.println(hero.getName());
+        }
+        Output.printSeparator();
+        System.out.println("Detailed Information");
+        Output.printOutputables(heroes);
     }
 
     /**
@@ -114,6 +133,9 @@ public class Output {
      * @param heroes List of Heroes who played
      */
     public static void displayFinalInfo(List<Hero> heroes) {
-
+        Output.printSeparator();
+        System.out.println("Game Completed. Final Information:");
+        Output.printOutputables(heroes);
+        System.out.println("Thanks for playing!");
     }
 }
