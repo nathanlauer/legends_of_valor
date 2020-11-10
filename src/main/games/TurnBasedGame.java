@@ -39,8 +39,10 @@ public class TurnBasedGame extends Game {
             try {
                 executor.setupNextTurn();
             } catch (InvalidNextTurnException e) {
+                // Shouldn't happen, if logic implemented correctly
                 e.printStackTrace();
-                // TODO: figure out what to do here...
+                System.out.println("Error! Something went wrong");
+                System.exit(-1);
             }
             executor.playNextTurn();
             executor.processEndOfTurn();

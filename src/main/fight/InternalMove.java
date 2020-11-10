@@ -22,7 +22,3 @@ public abstract class InternalMove extends FightMove {
         super(executor);
     }
 }
-// TODO: I'm not sure if the Observer pattern actually makes sense here.
-// A simple inheritance tree with an execute move is simple, and works
-// just fine here I think. It seems that the Observer pattern may actually
-// make this more complicated.
