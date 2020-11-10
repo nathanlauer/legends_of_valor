@@ -5,7 +5,6 @@ import main.legends.Monster;
 import main.utils.GetUserListNumericalInput;
 import main.utils.GetUserNumericInput;
 
-import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -120,6 +119,9 @@ public class PairHeroesAndMonsters {
      * This method is analogous to the checkValidityForMonster() method
      */
     public void checkValidityForHero(Hero hero) {
+        // Filter out dead Monsters
+        heroesMonsters.get(hero).removeIf(Monster::hasDied);
+
         // Check if there is at least one Monster that this Hero is facing that is still alive
         for(Monster monster : this.heroesMonsters.get(hero)) {
             if(monster.isAlive()) {
@@ -145,6 +147,9 @@ public class PairHeroesAndMonsters {
      * This method is analogous to the checkValidityForHero() method
      */
     public void checkValidityForMonster(Monster monster) {
+        // Filter out fainted Heroes
+        monstersHeroes.get(monster).removeIf(Hero::hasFainted);
+
         // Check if there is at least one Hero that this Monster is facing that is still alive
         for(Hero hero : monstersHeroes.get(monster)) {
             if(!hero.hasFainted()) {
@@ -153,7 +158,7 @@ public class PairHeroesAndMonsters {
         }
 
         // No more living Heroes. Clear the previous List of Heroes this Monster faced
-        monstersHeroes.get(monster).clear();;
+        monstersHeroes.get(monster).clear();
 
         // Otherwise, check if there are remaining Heroes still alive
         Stream<Hero> livingHeroes = heroes.stream().filter(Hero::hasFainted);
