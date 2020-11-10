@@ -74,6 +74,20 @@ public abstract class Cell implements Drawable {
     }
 
     /**
+     * Indicates if this Cell is just below the Heroes location.
+     * @param heroesRow the heroes row
+     * @param heroesCol the heroes col
+     * @return true if this Cell is just beneath the Heroes location, false otherwise
+     */
+    public boolean heroesJustAbove(int heroesRow, int heroesCol) {
+        if(getCol() != heroesCol) {
+            return false;
+        }
+
+        return getRow() == (heroesRow + 1);
+    }
+
+    /**
      * Indicates whether or not the Heroes can enter this cell
      * @return true if the Heroes can enter this cell, false otherwise
      */

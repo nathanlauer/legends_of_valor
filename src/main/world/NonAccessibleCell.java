@@ -56,9 +56,13 @@ public class NonAccessibleCell extends Cell {
             throw new RuntimeException("Heroes cannot be in this cell!");
         }
 
-        String color = Colors.ANSI_BLACK;
         List<String> output = new ArrayList<>();
+        String color = Colors.ANSI_BLACK;
+        if(heroesJustAbove(heroesRow, heroesCol) || sameLocation(heroesRow, heroesCol)) {
+            color = Colors.ANSI_GREEN;
+        }
         output.add(color + "+-----+");
+        color = Colors.ANSI_BLACK;
         output.add(color + "|/ / /|");
         return output;
     }

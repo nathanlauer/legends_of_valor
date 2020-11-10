@@ -52,9 +52,13 @@ public class MarketCell extends Cell {
      */
     @Override
     public List<String> draw(int heroesRow, int heroesCol) {
-        String color = sameLocation(heroesRow, heroesCol) ? Colors.ANSI_GREEN : Colors.ANSI_BLACK;
         List<String> output = new ArrayList<>();
+        String color = Colors.ANSI_BLACK;
+        if(heroesJustAbove(heroesRow, heroesCol) || sameLocation(heroesRow, heroesCol)) {
+            color = Colors.ANSI_GREEN;
+        }
         output.add(color + "+-----+");
+        color = sameLocation(heroesRow, heroesCol) ? Colors.ANSI_GREEN : Colors.ANSI_BLACK;
         if(sameLocation(heroesRow, heroesCol)) {
             output.add(color + "|  H  |");
         } else {
