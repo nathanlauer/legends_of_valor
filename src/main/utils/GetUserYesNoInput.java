@@ -21,10 +21,15 @@ public class GetUserYesNoInput extends GetUserInput {
      * @return true if the user responded with yes, false otherwise
      */
     public boolean run(String prompt) {
+        boolean enteredValidInput = false;
         prompt += " (yes/no)";
-        System.out.println(prompt);
+        while(!enteredValidInput) {
+            System.out.println(prompt);
+            if(this.getNextLine()) {
+                enteredValidInput = true;
+            }
+        }
 
-        this.getNextLine();
         String response = this.getUserInput();
         return response.equals("yes") || response.equals("y");
     }

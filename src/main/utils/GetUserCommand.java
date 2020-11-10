@@ -32,12 +32,13 @@ public class GetUserCommand extends GetUserInput {
             System.out.println("Q/q - quit the game");
             System.out.println("Enter your move: (enter one of the above options)");
 
-            this.getNextLine();
-            input = this.getUserInput();
-            if(inputIsValid(input)) {
-                validInput = true;
-            } else {
-                System.out.println("Invalid option. Please try again.");
+            if(this.getNextLine()) {
+                input = this.getUserInput();
+                if(inputIsValid(input)) {
+                    validInput = true;
+                } else {
+                    System.out.println("Invalid option. Please try again.");
+                }
             }
         }
 

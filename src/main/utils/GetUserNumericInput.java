@@ -132,13 +132,14 @@ public class GetUserNumericInput extends GetUserInput {
 
             // Now, get their input
             try {
-                this.getNextLine();
-                String input = this.getUserInput();
-                selected = Integer.parseInt(input);
-                if(selected <= 0 || selected >= outputNum) {
-                    throw new NumberFormatException();
+                if(this.getNextLine()) {
+                    String input = this.getUserInput();
+                    selected = Integer.parseInt(input);
+                    if(selected <= 0 || selected >= outputNum) {
+                        throw new NumberFormatException();
+                    }
+                    enteredValidNum = true;
                 }
-                enteredValidNum = true;
             } catch (InputMismatchException | NumberFormatException e) {
                 System.out.println("Invalid option. Please try again");
             }

@@ -103,21 +103,22 @@ public class GetUserListNumericalInput extends GetUserInput {
 
             // Now, get their input
             try {
-                this.getNextLine();
-                String input = this.getUserInput();
-                String[] values = input.split(",\\s*");
-                for(String value : values) {
-                    try {
-                        int num = Integer.parseInt(value);
-                        if(num <= 0 || num > options.size()) {
-                            throw new NumberFormatException("Can't enter negative or a number too high!");
+                if(this.getNextLine()) {
+                    String input = this.getUserInput();
+                    String[] values = input.split(",\\s*");
+                    for(String value : values) {
+                        try {
+                            int num = Integer.parseInt(value);
+                            if(num <= 0 || num > options.size()) {
+                                throw new NumberFormatException("Can't enter negative or a number too high!");
+                            }
+                            selected.add(Integer.parseInt(value));
+                        } catch (NumberFormatException e) {
+                            throw new InputMismatchException(e.getMessage());
                         }
-                        selected.add(Integer.parseInt(value));
-                    } catch (NumberFormatException e) {
-                        throw new InputMismatchException(e.getMessage());
                     }
+                    enteredValidSequence = true;
                 }
-                enteredValidSequence = true;
             } catch (InputMismatchException e) {
                 System.out.println("Invalid option. Please try again");
             }
