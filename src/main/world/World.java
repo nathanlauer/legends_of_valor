@@ -188,7 +188,7 @@ public class World {
 
                 // Append each element of drawn to the correct location of output
                 for(int i = 0; i < drawn.size(); i++) {
-                    int index = i + i * row;
+                    int index = i + Cell.numDrawnRows * row;
                     String oneDrawnRow = drawn.get(i);
                     String current = output.get(index);
                     current += oneDrawnRow;

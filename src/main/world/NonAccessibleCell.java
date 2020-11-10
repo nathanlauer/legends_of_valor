@@ -55,11 +55,9 @@ public class NonAccessibleCell extends Cell {
         }
 
         List<String> output = new ArrayList<>();
-        output.add("-----");
-        output.add("|///|");
-        output.add("|///|");
-        output.add("|///|");
-        output.add("-----");
+        output.add("+-----+");
+        output.add("|/ / /|");
+        output.add("+-----+");
         return output;
     }
 }

@@ -51,15 +51,13 @@ public class MarketCell extends Cell {
     @Override
     public List<String> draw(int heroesRow, int heroesCol) {
         List<String> output = new ArrayList<>();
-        output.add("-----");
-        output.add("|   |");
+        output.add("+-----+");
         if(sameLocation(heroesRow, heroesCol)) {
-            output.add("| H |");
+            output.add("|  H  |");
         } else {
-            output.add("| M |");
+            output.add("|  M  |");
         }
-        output.add("|   |");
-        output.add("-----");
+        output.add("+-----+");
         return output;
     }
 }
