@@ -101,7 +101,7 @@ public class LegendList {
 
         // Filter out Monsters that have a Level that is too high
         Stream<Monster> monsterStream = getMonsters().stream()
-                .filter(monster -> monster.getLevel().isLessThan(max));
+                .filter(monster -> monster.getLevel().isLessThanOrEqual(max));
 
         List<Monster> output = monsterStream.collect(Collectors.toList());
         return output.subList(0, getChosenHeroes().size());

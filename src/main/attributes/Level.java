@@ -78,6 +78,18 @@ public class Level implements Comparable<Level>, Cloneable{
     }
 
     /**
+     * Helper method which indicates if this level is less than or equal to the passed in level.
+     * A Level is less than another if it's level is lower.
+     * A Level is equal to the other if it's level is the same.
+     * @param other the other Level in question
+     * @return true if this level is less than or equal to other, false otherwise.
+     */
+    public boolean isLessThanOrEqual(Level other) {
+        int compare = this.compareTo(other);
+        return compare <= 0 ;
+    }
+
+    /**
      *
      * @return a String representation of this Level
      */
