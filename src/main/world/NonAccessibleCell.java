@@ -1,5 +1,7 @@
 package main.world;
 
+import main.utils.Colors;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,10 +56,10 @@ public class NonAccessibleCell extends Cell {
             throw new RuntimeException("Heroes cannot be in this cell!");
         }
 
+        String color = Colors.ANSI_BLACK;
         List<String> output = new ArrayList<>();
-        output.add("+-----+");
-        output.add("|/ / /|");
-        output.add("+-----+");
+        output.add(color + "+-----+");
+        output.add(color + "|/ / /|");
         return output;
     }
 }

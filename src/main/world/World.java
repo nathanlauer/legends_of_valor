@@ -1,5 +1,6 @@
 package main.world;
 
+import main.utils.Colors;
 import main.utils.Validations;
 
 import java.util.ArrayList;
@@ -196,6 +197,21 @@ public class World {
                 }
             }
         }
+
+        String color = Colors.ANSI_BLACK;
+        StringBuilder lastRow = new StringBuilder(color + "");
+        for(int i = 0; i < numCols(); i++) {
+            if(heroesRow == numRows() - 1) {
+                if(heroesCol == i) {
+                    color = Colors.ANSI_GREEN;
+                }
+            }
+            lastRow.append(color).append("+-----+");
+            if(color.equals(Colors.ANSI_GREEN)) {
+                color = Colors.ANSI_BLACK;
+            }
+        }
+        output.add(lastRow.toString());
 
         return output;
     }

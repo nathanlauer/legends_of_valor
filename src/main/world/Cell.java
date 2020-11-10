@@ -14,7 +14,7 @@ import java.util.Objects;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public abstract class Cell implements Drawable {
-    public static final int numDrawnRows = 3;
+    public static final int numDrawnRows = 2;
     private int row;
     private int col;
 

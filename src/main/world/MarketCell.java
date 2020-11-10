@@ -1,5 +1,7 @@
 package main.world;
 
+import main.utils.Colors;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,14 +52,14 @@ public class MarketCell extends Cell {
      */
     @Override
     public List<String> draw(int heroesRow, int heroesCol) {
+        String color = sameLocation(heroesRow, heroesCol) ? Colors.ANSI_GREEN : Colors.ANSI_BLACK;
         List<String> output = new ArrayList<>();
-        output.add("+-----+");
+        output.add(color + "+-----+");
         if(sameLocation(heroesRow, heroesCol)) {
-            output.add("|  H  |");
+            output.add(color + "|  H  |");
         } else {
-            output.add("|  M  |");
+            output.add(color + "|  " + Colors.ANSI_BLUE + "M" + Colors.ANSI_BLACK + "  |");
         }
-        output.add("+-----+");
         return output;
     }
 }
