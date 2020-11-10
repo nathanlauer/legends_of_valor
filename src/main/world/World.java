@@ -242,7 +242,7 @@ public class World {
             }
         }
 
-        String color = Colors.ANSI_BLACK;
+        String color = Colors.ANSI_RESET;
         StringBuilder lastRow = new StringBuilder(color + "");
         for(int i = 0; i < numCols(); i++) {
             if(heroesRow == numRows() - 1) {
@@ -252,7 +252,7 @@ public class World {
             }
             lastRow.append(color).append("+-----+");
             if(color.equals(Colors.ANSI_GREEN)) {
-                color = Colors.ANSI_BLACK;
+                color = Colors.ANSI_RESET;
             }
         }
         output.add(lastRow.toString());

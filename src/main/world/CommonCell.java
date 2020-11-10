@@ -84,12 +84,12 @@ public class CommonCell extends Cell {
     @Override
     public List<String> draw(int heroesRow, int heroesCol) {
         List<String> output = new ArrayList<>();
-        String color = Colors.ANSI_BLACK;
+        String color = Colors.ANSI_RESET;
         if(heroesJustAbove(heroesRow, heroesCol) || sameLocation(heroesRow, heroesCol)) {
             color = Colors.ANSI_GREEN;
         }
         output.add(color + "+-----+");
-        color = sameLocation(heroesRow, heroesCol) ? Colors.ANSI_GREEN : Colors.ANSI_BLACK;
+        color = sameLocation(heroesRow, heroesCol) ? Colors.ANSI_GREEN : Colors.ANSI_RESET;
         if(sameLocation(heroesRow, heroesCol)) {
             output.add(color + "|  H  |");
         } else {

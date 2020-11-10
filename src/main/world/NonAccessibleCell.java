@@ -57,12 +57,12 @@ public class NonAccessibleCell extends Cell {
         }
 
         List<String> output = new ArrayList<>();
-        String color = Colors.ANSI_BLACK;
+        String color = Colors.ANSI_RESET;
         if(heroesJustAbove(heroesRow, heroesCol) || sameLocation(heroesRow, heroesCol)) {
             color = Colors.ANSI_GREEN;
         }
         output.add(color + "+-----+");
-        color = Colors.ANSI_BLACK;
+        color = Colors.ANSI_RESET;
         output.add(color + "|/ / /|");
         return output;
     }
