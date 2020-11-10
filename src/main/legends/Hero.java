@@ -29,7 +29,7 @@ import java.util.List;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public abstract class Hero extends Legend {
-    public static final String outputFormat = "%-4s%-21s%-15s%-15s%-6s%-8s%-8s%-8s%-21s%-21s%-5s%-5s";
+    public static final String outputFormat = "%-4s%-21s%-15s%-15s%-7s%-6s%-8s%-8s%-8s%-21s%-21s%-5s%-5s";
     public static final boolean defaultFainted = false;
 
     private boolean fainted;
@@ -213,7 +213,7 @@ public abstract class Hero extends Legend {
      * @return the Header string that can be used to print out the relevant GearItems.
      */
     public String getHeaderString() {
-        return String.format(getOutputFormat(), "Lvl", "Hero Name", "HP", "Mana", "Coins", "Str", "Agl", "Dxt", "Weapon", "Armor", "#Spl", "#Ptn");
+        return String.format(getOutputFormat(), "Lvl", "Hero Name", "HP", "Mana", "Exp", "Coins", "Str", "Agl", "Dxt", "Weapon", "Armor", "#Spl", "#Ptn");
     }
 
     /**
@@ -224,6 +224,7 @@ public abstract class Hero extends Legend {
         DecimalFormat df = new DecimalFormat("0.0");
         String hp = df.format(getHealthPower().getHealthPower()) + "/" + df.format(getHealthPower().getFullAmount());
         String mana = df.format(getMana().getManaAmount()) + "/" + df.format(getMana().getFullAmount());
+        String exp = getExperience().getExperience() + "/" + getExperience().nextLevelUpExpAmount();
         String weapon = "None";
         if(getActiveGearItems().hasActiveWeapon()) {
             Weapon wielded = getActiveGearItems().getWeapon();
@@ -236,7 +237,7 @@ public abstract class Hero extends Legend {
         }
         int numSpells = getGearItemList().getSpells().size();
         int numPotions = getGearItemList().getUsablePotions().size();
-        return String.format(getOutputFormat(), getLevel(), getName(), hp, mana, getCoffer().getNumCoins(),
+        return String.format(getOutputFormat(), getLevel(), getName(), hp, mana, exp, getCoffer().getNumCoins(),
                 getStrength().getAbilityValue(), getAgility().getAbilityValue(), getDexterity().getAbilityValue(),
                 weapon, armor, numSpells, numPotions);
     }

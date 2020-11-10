@@ -57,10 +57,9 @@ public class Experience {
     public void increaseExperience(int amount) {
         this.setExperience(this.getExperience() + amount);
 
-        Level level = hero.getLevel();
-        int nextLevelUpExpAmount = level.getLevel() * 10;
-        if(getExperience() >= nextLevelUpExpAmount) {
+        if(getExperience() >= nextLevelUpExpAmount()) {
             // Level up!!
+            Level level = hero.getLevel();
             level.incrementLevel();
 
             // Increase Mana by 10%
@@ -85,6 +84,14 @@ public class Experience {
                 ability.increaseAbilityByPercentage(5);
             }
         }
+    }
+
+    /**
+     *
+     * @return  the amount of experience required before the Hero can Level up.
+     */
+    public int nextLevelUpExpAmount() {
+        return hero.getLevel().getLevel() * 10;
     }
 
     /**
