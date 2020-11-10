@@ -115,16 +115,11 @@ public class PairHeroesAndMonsters {
      * If so, does nothing. If not, and there are remaining Monsters that are still alive,
      * then auto re-pairs the Hero against each of the remaining Monsters.
      *
-     * Additionally, this method filters out any Monsters that have died, so that the
-     * passed in Hero is not paired with dead Monsters.
      * @param hero the Hero to check
      *
      * This method is analogous to the checkValidityForMonster() method
      */
     public void checkValidityForHero(Hero hero) {
-        // Filter out dead Monsters
-        heroesMonsters.get(hero).removeIf(Monster::hasDied);
-
         // Check if there is at least one Monster that this Hero is facing that is still alive
         for(Monster monster : this.heroesMonsters.get(hero)) {
             if(monster.isAlive()) {
@@ -135,7 +130,7 @@ public class PairHeroesAndMonsters {
         // No more living Monsters. Clear the previous List of Monsters this Hero faced
         heroesMonsters.get(hero).clear();
 
-        // Otherwise, check if there are remaining Monsters still alive
+        // Check if there are remaining Monsters still alive, and if so, assign them to this Hero.
         Stream<Monster> livingMonsters = monsters.stream().filter(Monster::isAlive);
         livingMonsters.forEach(monster -> addMonsterToHero(hero, monster));
     }
@@ -145,16 +140,11 @@ public class PairHeroesAndMonsters {
      * Hero. If so, does nothing. If not, and there are remaining Heroes that are still
      * alive, then auto re-pairs this Monster with the remaining Heroes.
      *
-     * Additionally, this method filters out fainted Heroes, so that the passed in
-     * Monster does not face any fainted Heroes.
      * @param monster the Monster to check
      *
      * This method is analogous to the checkValidityForHero() method
      */
     public void checkValidityForMonster(Monster monster) {
-        // Filter out fainted Heroes
-        monstersHeroes.get(monster).removeIf(Hero::hasFainted);
-
         // Check if there is at least one Hero that this Monster is facing that is still alive
         for(Hero hero : monstersHeroes.get(monster)) {
             if(!hero.hasFainted()) {
@@ -176,7 +166,13 @@ public class PairHeroesAndMonsters {
      * @return List of Monsters that this Hero is paired with
      */
     public List<Monster> getMonstersForHero(Hero hero) {
-        return heroesMonsters.get(hero);
+        List<Monster> stillAlive = new ArrayList<>();
+        for(Monster monster : heroesMonsters.get(hero)) {
+            if(monster.isAlive()) {
+                stillAlive.add(monster);
+            }
+        }
+        return stillAlive;
     }
 
     /**
@@ -185,7 +181,13 @@ public class PairHeroesAndMonsters {
      * @return List of Heroes that this Monster is paired with.
      */
     public List<Hero> getHeroesForMonster(Monster monster) {
-        return monstersHeroes.get(monster);
+        List<Hero> stillAlive = new ArrayList<>();
+        for(Hero hero : monstersHeroes.get(monster)) {
+            if(!hero.hasFainted()) {
+                stillAlive.add(hero);
+            }
+        }
+        return stillAlive;
     }
 
     /**
@@ -199,7 +201,7 @@ public class PairHeroesAndMonsters {
         options.add("All"); // for user convenience, will be option 1
 
         for(Monster monster : this.monsters) {
-            options.add(monster.getName()); // TODO: think about outputting some more information
+            options.add(monster.getName());
         }
 
         List<Integer> selected = new GetUserListNumericalInput(scanner, prompt, options).run();

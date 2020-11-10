@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -24,6 +25,7 @@ import java.util.List;
 public class LegendList {
     private static LegendList instance = null;
     private final List<Legend> legends;
+    private final List<Hero> chosenHeroes;
 
     /**
      *
@@ -43,11 +45,14 @@ public class LegendList {
         legends = new ArrayList<>();
         try {
             new ReadLegendsFromDisk().run();
+
         } catch (IOException e) {
             e.printStackTrace();
             // Shouldn't happen
         }
         Collections.shuffle(legends); // so we don't have the same order every time
+        List<Hero> allHeroes = getHeroes();
+        this.chosenHeroes = allHeroes.subList(0, 2);
     }
 
     /**
@@ -70,6 +75,43 @@ public class LegendList {
             }
         }
         return heroes;
+    }
+
+    /**
+     *
+     * @return the list of chosen Heroes.
+     */
+    public List<Hero> getChosenHeroes() {
+        return this.chosenHeroes;
+    }
+
+    /**
+     *
+     * @return a List of Monsters of equal size to chosen Heroes. Attempts to pick Monsters
+     * of lower level than the highest level of the chosen Heroes.
+     */
+    public List<Monster> getCorrespondingMonsters() {
+        List<Monster> output = new ArrayList<>();
+        getChosenHeroes().sort(new HigherLevelComparator());
+        Level max = getChosenHeroes().get(0).getLevel();
+
+        // Don't use an iterator here, other classes may be maintaining iterators over this same list
+        for(int i = 0; i < getMonsters().size(); i++) {
+            Monster monster = getMonsters().get(i);
+            if(monster.getLevel().isLessThan(max)) {
+                output.add(monster);
+            }
+            if(output.size() >= getChosenHeroes().size()) {
+                break;
+            }
+        }
+
+        // If we were unable to do so, just select a subset of the Monsters
+        if(output.size() < getChosenHeroes().size()) {
+            output = getMonsters().subList(0, getChosenHeroes().size());
+        }
+
+        return output;
     }
 
     /**

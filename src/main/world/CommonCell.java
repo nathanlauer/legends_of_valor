@@ -1,9 +1,15 @@
 package main.world;
 
+import main.fight.Fight;
+import main.legends.Hero;
+import main.legends.Legend;
+import main.legends.LegendList;
+import main.legends.Monster;
 import main.utils.Colors;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Class CommonCell is a type of spell which is "normal." There may or may
@@ -54,7 +60,14 @@ public class CommonCell extends Cell {
      */
     @Override
     public void enter() {
-        // TODO
+        int rand = new Random().nextInt(101);
+        if(rand < this.chanceOfMonsters) {
+            // Fight!
+            List<Hero> heroes = LegendList.getInstance().getChosenHeroes();
+            List<Monster> monsters = LegendList.getInstance().getCorrespondingMonsters();
+            Fight fight = new Fight(heroes, monsters);
+            fight.fight();
+        }
     }
 
     /**

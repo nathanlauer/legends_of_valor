@@ -1,6 +1,7 @@
 package main.world;
 
 import main.legends.Hero;
+import main.legends.LegendList;
 import main.market_and_gear.Market;
 import main.market_and_gear.MarketInteraction;
 import main.utils.Colors;
@@ -43,7 +44,7 @@ public class MarketCell extends Cell {
     @Override
     public void enter() {
         Market market = new Market();
-        List<Hero> heroes = HeroesAndMonsters.getInstance().getHeroes();
+        List<Hero> heroes = LegendList.getInstance().getChosenHeroes();
         MarketInteraction marketInteraction = new MarketInteraction(market, heroes);
         marketInteraction.run();
     }
