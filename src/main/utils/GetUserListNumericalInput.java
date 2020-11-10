@@ -17,10 +17,9 @@ import java.util.regex.Pattern;
  * <p>
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
-public class GetUserListNumericalInput {
+public class GetUserListNumericalInput extends GetUserInput {
     private String prompt;
     private List<String> options;
-    private final Scanner scanner;
 
     /**
      * Empty constructor
@@ -46,7 +45,7 @@ public class GetUserListNumericalInput {
      * @param options the List of options to present to the user
      */
     public GetUserListNumericalInput(Scanner scanner, String prompt, List<String> options) {
-        this.scanner = scanner;
+        super(scanner);
         this.prompt = prompt;
         this.options = options;
     }
@@ -104,20 +103,22 @@ public class GetUserListNumericalInput {
 
             // Now, get their input
             try {
-                String input = scanner.nextLine();
-                String[] values = input.split(",\\s*");
-                for(String value : values) {
-                    try {
-                        int num = Integer.parseInt(value);
-                        if(num <= 0 || num > options.size()) {
-                            throw new NumberFormatException("Can't enter negative or a number too high!");
+                if(this.getNextLine()) {
+                    String input = this.getUserInput();
+                    String[] values = input.split(",\\s*");
+                    for(String value : values) {
+                        try {
+                            int num = Integer.parseInt(value);
+                            if(num <= 0 || num > options.size()) {
+                                throw new NumberFormatException("Can't enter negative or a number too high!");
+                            }
+                            selected.add(Integer.parseInt(value));
+                        } catch (NumberFormatException e) {
+                            throw new InputMismatchException(e.getMessage());
                         }
-                        selected.add(Integer.parseInt(value));
-                    } catch (NumberFormatException e) {
-                        throw new InputMismatchException(e.getMessage());
                     }
+                    enteredValidSequence = true;
                 }
-                enteredValidSequence = true;
             } catch (InputMismatchException e) {
                 System.out.println("Invalid option. Please try again");
             }

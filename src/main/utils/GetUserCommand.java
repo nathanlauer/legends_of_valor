@@ -11,14 +11,16 @@ import java.util.Scanner;
  * <p>
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
-public class GetUserCommand {
+public class GetUserCommand extends GetUserInput {
+    public GetUserCommand() {
+        super(new Scanner(System.in));
+    }
     /**
      * Prompts the user for their move, and returns their desired action
      * @return the action the user wants to perform
      */
     public UserCommand run() {
         boolean validInput = false;
-        Scanner scanner = new Scanner(System.in);
         String input = "";
         while(!validInput) {
             System.out.println("Controls:");
@@ -30,11 +32,13 @@ public class GetUserCommand {
             System.out.println("Q/q - quit the game");
             System.out.println("Enter your move: (enter one of the above options)");
 
-            input = scanner.nextLine();
-            if(inputIsValid(input)) {
-                validInput = true;
-            } else {
-                System.out.println("Invalid option. Please try again.");
+            if(this.getNextLine()) {
+                input = this.getUserInput();
+                if(inputIsValid(input)) {
+                    validInput = true;
+                } else {
+                    System.out.println("Invalid option. Please try again.");
+                }
             }
         }
 

@@ -11,21 +11,26 @@ import java.util.Scanner;
  * <p>
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
-public class GetUserYesNoInput {
+public class GetUserYesNoInput extends GetUserInput {
+    public GetUserYesNoInput() {
+        super(new Scanner(System.in));
+    }
     /**
      * Prompts the user for a yes/no response
      * @param prompt the prompt
      * @return true if the user responded with yes, false otherwise
      */
-    public static boolean run(String prompt) {
+    public boolean run(String prompt) {
+        boolean enteredValidInput = false;
         prompt += " (yes/no)";
-        System.out.println(prompt);
-
-        Scanner scanner = new Scanner(System.in);
-        String response = scanner.nextLine().toLowerCase();
-        if(response.equals("yes") || response.equals("y")) {
-            return true;
+        while(!enteredValidInput) {
+            System.out.println(prompt);
+            if(this.getNextLine()) {
+                enteredValidInput = true;
+            }
         }
-        return false;
+
+        String response = this.getUserInput();
+        return response.equals("yes") || response.equals("y");
     }
 }

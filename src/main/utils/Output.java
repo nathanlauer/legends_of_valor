@@ -1,5 +1,7 @@
 package main.utils;
 
+import main.legends.Hero;
+import main.legends.Monster;
 import main.world.World;
 
 import java.util.ArrayList;
@@ -88,5 +90,67 @@ public class Output {
     public static void drawWorld(World world) {
         List<String> drawn = world.draw();
         drawn.forEach(System.out::println);
+    }
+
+    /**
+     * Displays information regarding a fight. That is, it outputs data for the Heroes and the Monsters
+     * @param heroes List of Heroes in the fight
+     * @param monsters List of Monsters in the fight
+     */
+    public static void displayFightInformation(List<Hero> heroes, List<Monster> monsters) {
+        Output.printSeparator();
+        System.out.println("Fight Status Information:");
+        System.out.println("Number of Heroes: " + heroes.size());
+        System.out.println("Number of Monsters: " + monsters.size());
+        Output.printSeparator();
+        System.out.println("Detailed Information");
+        System.out.println("Heroes: ");
+        Output.printOutputables(heroes);
+        Output.newLine();
+        System.out.println("Monsters: ");
+        Output.printOutputables(monsters);
+    }
+
+    /**
+     * Displays nominal information for each of the Heroes in the input List
+     * @param heroes List of Heroes to display info for.
+     */
+    public static void displayNominalInformation(List<Hero> heroes) {
+        Output.printSeparator();
+        System.out.println("Information Menu:");
+        System.out.println("Number of heroes: " + heroes.size());
+        System.out.println("Hero names: ");
+        for(Hero hero : heroes) {
+            System.out.println(hero.getName());
+        }
+        Output.printSeparator();
+        System.out.println("Detailed Information");
+        Output.printOutputables(heroes);
+    }
+
+    /**
+     * Displays info at the end of the game
+     * @param heroes List of Heroes who played
+     */
+    public static void displayFinalInfo(List<Hero> heroes) {
+        Output.printSeparator();
+        System.out.println("Game Completed. Final Information:");
+        Output.printOutputables(heroes);
+        System.out.println("Thanks for playing!");
+    }
+
+    public static void printWelcomeInformation() {
+        System.out.println("Welcome to Legends: Heroes and Monsters!");
+        System.out.println("In this game, you will lead a number of Heroes throughout the World, fighting Monsters and gaining expereince as you go!");
+        System.out.println("In this World, there are a few different types of places:");
+        System.out.println("You can bring your heroes to a market, where you can buy and sell items.");
+        System.out.println("There are certain places that are are inaccessible.");
+        System.out.println("There are empty places as well. Beware! Some of these will contain Monsters!");
+        System.out.println("If you encounter monsters, a fight will begin. Should you win, your heroes will gain money and experience.");
+        System.out.println("If you lose, however, your heroes will be revived at half health power, without gaining any money or experience.");
+        System.out.println("At any time you may press I/i to obtain game information.");
+        System.out.println("The game continues until you press Q/q to quit the game.");
+        System.out.println("Enjoy!");
+        Output.printSeparator();
     }
 }

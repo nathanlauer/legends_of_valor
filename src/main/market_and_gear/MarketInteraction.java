@@ -49,21 +49,25 @@ public class MarketInteraction {
         while(!finished) {
             // Check to see if the user wants to buy or sell items
             String prompt = "Would you like to buy or sell items?";
-            List<String> options = new ArrayList<>(Arrays.asList("Buy", "Sell"));
+            List<String> options = new ArrayList<>(Arrays.asList("Buy", "Sell", "Done, Leave the Market"));
             int chosen = new GetUserNumericInput(new Scanner(System.in), prompt, options).run();
 
             if(chosen == 0) {
                 buyItems();
-            } else {
+            } else if (chosen == 1){
                 sellItems();
+            } else { // Finished. User wants to leave
+                finished = true;
             }
 
             // Check if the user is finished
-            prompt = "Would you like to make another transaction?";
-            options = new ArrayList<>(Arrays.asList("Yes", "No"));
-            chosen = new GetUserNumericInput(new Scanner(System.in), prompt, options).run();
-            if(chosen == 1) {
-                finished = true;
+            if(!finished) {
+                prompt = "Would you like to make another transaction?";
+                options = new ArrayList<>(Arrays.asList("Yes", "No"));
+                chosen = new GetUserNumericInput(new Scanner(System.in), prompt, options).run();
+                if(chosen == 1) {
+                    finished = true;
+                }
             }
         }
     }
@@ -173,7 +177,7 @@ public class MarketInteraction {
      */
     private void sellItem(Hero hero, GearItem item) throws NonOwnedGearItemException {
         String prompt = "Are you sure you want to sell " + item.getName() + " for " + item.getPrice() / 2.0 + " coins?";
-        boolean wantsToSell = GetUserYesNoInput.run(prompt);
+        boolean wantsToSell = new GetUserYesNoInput().run(prompt);
         if(wantsToSell) {
             item.sell(market, hero);
         }

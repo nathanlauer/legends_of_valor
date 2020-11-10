@@ -24,10 +24,9 @@ import java.util.Scanner;
  * <p>
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
-public class GetUserNumericInput {
+public class GetUserNumericInput extends GetUserInput {
     private String prompt;
     private List<String> options;
-    private final Scanner scanner;
     private List<Integer> linesToSkip;
 
     /**
@@ -54,7 +53,7 @@ public class GetUserNumericInput {
      * @param options the List of options to present to the user
      */
     public GetUserNumericInput(Scanner scanner, String prompt, List<String> options) {
-        this.scanner = scanner;
+        super(scanner);
         this.prompt = prompt;
         this.options = options;
         this.linesToSkip = new ArrayList<>();
@@ -133,12 +132,14 @@ public class GetUserNumericInput {
 
             // Now, get their input
             try {
-                String input = scanner.nextLine();
-                selected = Integer.parseInt(input);
-                if(selected <= 0 || selected >= outputNum) {
-                    throw new NumberFormatException();
+                if(this.getNextLine()) {
+                    String input = this.getUserInput();
+                    selected = Integer.parseInt(input);
+                    if(selected <= 0 || selected >= outputNum) {
+                        throw new NumberFormatException();
+                    }
+                    enteredValidNum = true;
                 }
-                enteredValidNum = true;
             } catch (InputMismatchException | NumberFormatException e) {
                 System.out.println("Invalid option. Please try again");
             }
