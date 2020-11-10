@@ -55,8 +55,6 @@ public class Experience {
      * @param amount the added amount of experience
      */
     public void increaseExperience(int amount) {
-        // TODO: Heroes should start at level 1, with experience from file.
-        // TODO: in corresponding monsters, find monsters of less than or equal levels
         this.setExperience(this.getExperience() + amount);
 
         Level level = hero.getLevel();
