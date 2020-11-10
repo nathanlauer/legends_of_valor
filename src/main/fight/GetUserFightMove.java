@@ -4,12 +4,10 @@ import main.legends.Hero;
 import main.legends.Monster;
 import main.market_and_gear.*;
 import main.utils.GetUserNumericInput;
-import main.utils.Outputable;
 import main.utils.Validations;
-import test.utils.Output;
+import main.utils.Output;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;

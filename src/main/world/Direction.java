@@ -10,8 +10,19 @@ package main.world;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public enum Direction {
-    UP,
-    DOWN,
-    RIGHT,
-    LEFT
+    UP("up"),
+    DOWN("down"),
+    RIGHT("right"),
+    LEFT("left");
+
+    private final String name;
+
+    Direction(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

@@ -9,6 +9,7 @@ import main.market_and_gear.MarketInteraction;
 import main.world.RandomWorldBuilder;
 import main.world.World;
 import main.world.WorldBuilder;
+import main.world.WorldInteraction;
 
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class Main {
         WorldBuilder builder = new RandomWorldBuilder(8, 8, 50, 20, 30);
         World world = new World(builder);
         world.placeHeroes();
-        List<String> drawn = world.draw();
-        drawn.forEach(System.out::println);
+        WorldInteraction worldInteraction = new WorldInteraction(world);
+        worldInteraction.run();
     }
 }

@@ -1,7 +1,6 @@
-package test.utils;
+package main.utils;
 
-import main.utils.GetUserNumericInput;
-import main.utils.Outputable;
+import main.world.World;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -80,5 +79,14 @@ public class Output {
         int chosen = getUserNumericInput.run();
 
         return items.get(chosen);
+    }
+
+    /**
+     * Draws the world
+     * @param world the World to be drawn
+     */
+    public static void drawWorld(World world) {
+        List<String> drawn = world.draw();
+        drawn.forEach(System.out::println);
     }
 }

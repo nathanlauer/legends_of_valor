@@ -119,21 +119,32 @@ public class World {
         boolean allowed = false;
         switch (direction) {
             case UP:
-                allowed = getHeroesRow() > 0;
+                allowed = getHeroesRow() > 0 && !cellIsNonAccessible(getHeroesRow() - 1, getHeroesCol());
                 break;
             case DOWN:
-                allowed = getHeroesRow() < numRows() - 1;
+                allowed = getHeroesRow() < numRows() - 1 && !cellIsNonAccessible(getHeroesRow() + 1, getHeroesCol());
                 break;
             case LEFT:
-                allowed = getHeroesCol() > 0;
+                allowed = getHeroesCol() > 0 && !cellIsNonAccessible(getHeroesRow(), getHeroesCol() - 1);
                 break;
             case RIGHT:
-                allowed = getHeroesCol() < numCols() - 1;
+                allowed = getHeroesCol() < numCols() - 1 && !cellIsNonAccessible(getHeroesRow(), getHeroesCol() + 1);
                 break;
             default:
                 throw new RuntimeException("Unknown direction!");
         }
         return allowed;
+    }
+
+    /**
+     * Indicates if the cell at the given spot is a NonAccessibleCell
+     * @param row the row in question
+     * @param col the col in question
+     * @return true if this cell is NonAccessible, false otherwise
+     */
+    private boolean cellIsNonAccessible(int row, int col) {
+        Cell cell = this.getCellAt(row, col);
+        return cell instanceof NonAccessibleCell;
     }
 
     /**

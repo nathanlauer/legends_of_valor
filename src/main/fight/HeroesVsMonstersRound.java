@@ -6,7 +6,7 @@ import main.games.TurnBasedGame;
 import main.games.TurnExecutor;
 import main.legends.Hero;
 import main.legends.Monster;
-import test.utils.Output;
+import main.utils.Output;
 
 import java.util.List;
 import java.util.Scanner;
