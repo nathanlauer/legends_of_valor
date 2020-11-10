@@ -9,7 +9,6 @@ import main.legends.Monster;
 import main.utils.Output;
 
 import java.util.List;
-import java.util.Scanner;
 
 /**
  * Class HeroesVsMonstersRound is a RoundExecutor, and contains the logic for progressing
@@ -39,8 +38,6 @@ public class HeroesVsMonstersRound implements RoundExecutor {
     private final List<Hero> heroes;
     private final List<Monster> monsters;
     private final TurnBasedGame turnBasedGame;
-    private final PairHeroesAndMonsters pairing;
-    private boolean firstRound;
     private int roundNum;
     private final TurnExecutor turnExecutor;
 
@@ -49,13 +46,11 @@ public class HeroesVsMonstersRound implements RoundExecutor {
      * @param heroes List of Heroes that are in this fight
      * @param monsters List of Monsters that are in this fight
      */
-    public HeroesVsMonstersRound(List<Hero> heroes, List<Monster> monsters) {
+    public HeroesVsMonstersRound(List<Hero> heroes, List<Monster> monsters, PairHeroesAndMonsters pairing) {
         this.heroes = heroes;
         this.monsters = monsters;
-        this.pairing = new PairHeroesAndMonsters(new Scanner(System.in), this.heroes, this.monsters);
-        this.firstRound = true;
         roundNum = 1;
-        turnExecutor = new HeroesVsMonstersTurn(this.heroes, this.monsters, this.pairing);
+        turnExecutor = new HeroesVsMonstersTurn(this.heroes, this.monsters, pairing);
         this.turnBasedGame = new TurnBasedGame(turnExecutor);
     }
 
@@ -66,17 +61,7 @@ public class HeroesVsMonstersRound implements RoundExecutor {
     public void setupNextRound() {
         // Setup a Heroes vs Monsters turn based game for the next round.
         turnExecutor.reset();
-
         displayStatus();
-
-        if(firstRound) {
-            // Prompt the user to setup a pairing between Heroes and Monsters
-            System.out.println("Match up your Heroes vs these Monsters:");
-            pairing.initialPairing();
-            Output.printSeparator();
-
-            firstRound = false;
-        }
     }
 
     /**
