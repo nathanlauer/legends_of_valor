@@ -115,20 +115,42 @@ public class Fight {
      * fainted Heroes are revived at half their health power level
      */
     private void processEndOfFight() {
+        Output.printSeparator();
+        System.out.println("Fight has completed. Processing results:");
         // Each surviving Hero gains 100 * monster level coins, and 2 exp.
         for(Hero hero : heroes) {
             if(!hero.hasFainted()) {
                 int gainedCoins = 100 * pairedMonsterLevels.get(hero);
                 hero.getCoffer().addCoins(gainedCoins);
+                boolean leveledUp = hero.getExperience().increaseExperience(2);
+                System.out.println(hero.getName() + " survived! Gains " + gainedCoins + " coins and two experience points.");
+                if(leveledUp) {
+                    System.out.println(hero.getName() + " leveled up! Now at Level " + hero.getLevel().getLevel());
+                }
             }
         }
 
         // Revive fainted Heroes by giving them half their health power
         for(Hero hero : heroes) {
             if(hero.hasFainted()) {
+                System.out.println(hero.getName() + " fainted. Revived with half HealthPower.");
                 double halfHp = hero.getHealthPower().getFullAmount() / 2.0;
                 hero.getHealthPower().setHealthPower(halfHp);
             }
+        }
+        Output.printSeparator();
+
+        // Finally, restore the Monsters HP for their next fights.
+        restoreMonstersHealthPower();
+    }
+
+    /**
+     * Restores Monsters health power, so that Monsters have full HP when they next fight.
+     */
+    private void restoreMonstersHealthPower() {
+        for(Monster monster : monsters) {
+            double toRestore = monster.getHealthPower().getFullAmount();
+            monster.getHealthPower().setHealthPower(toRestore);
         }
     }
 }

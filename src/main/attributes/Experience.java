@@ -53,8 +53,9 @@ public class Experience {
      * Increases this Hero's experience by the indicated amount.
      * If the Hero now has enough experience, the Hero will level up.
      * @param amount the added amount of experience
+     * @return true if the Hero leveled up, false otherwise.
      */
-    public void increaseExperience(int amount) {
+    public boolean increaseExperience(int amount) {
         this.setExperience(this.getExperience() + amount);
 
         if(getExperience() >= nextLevelUpExpAmount()) {
@@ -83,7 +84,9 @@ public class Experience {
             for(Ability ability : hero.getSpecialAbilities()) {
                 ability.increaseAbilityByPercentage(5);
             }
+            return true;
         }
+        return false;
     }
 
     /**
