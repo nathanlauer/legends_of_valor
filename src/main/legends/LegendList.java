@@ -55,7 +55,7 @@ public class LegendList {
         Collections.shuffle(legends); // so we don't have the same order every time
         List<Hero> allHeroes = getHeroes();
         Random random = new Random();
-        int numHeroes = random.nextInt(3);
+        int numHeroes = random.nextInt(3) + 1;
         this.chosenHeroes = allHeroes.subList(0, numHeroes);
     }
 
