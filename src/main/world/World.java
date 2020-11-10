@@ -96,12 +96,77 @@ public class World {
         this.heroesCol = col;
     }
 
-    public void canMove(Direction direction) {
-        // TODO
+    /**
+     *
+     * @return the row of the Heroes
+     */
+    public int getHeroesRow() {
+        return heroesRow;
     }
 
+    /**
+     *
+     * @return the col of the Heroes
+     */
+    public int getHeroesCol() {
+        return heroesCol;
+    }
+
+    public boolean canMove(Direction direction) {
+        boolean allowed = false;
+        switch (direction) {
+            case UP:
+                allowed = getHeroesRow() > 0;
+                break;
+            case DOWN:
+                allowed = getHeroesRow() < numRows() - 1;
+                break;
+            case LEFT:
+                allowed = getHeroesCol() > 0;
+                break;
+            case RIGHT:
+                allowed = getHeroesCol() < numCols() - 1;
+                break;
+            default:
+                throw new RuntimeException("Unknown direction!");
+        }
+        return allowed;
+    }
+
+    /**
+     * Moves the Heroes to their new location.
+     * Enters the Cell at the new location, which may cause certain events to occur.
+     * @param direction the direction to move in
+     * @throws InvalidMoveDirection if unable to move in the desired direction.
+     */
     public void move(Direction direction) throws InvalidMoveDirection {
-        // TODO
+        if(!canMove(direction)) {
+            throw new InvalidMoveDirection("Cannot move in this direction!");
+        }
+
+        switch (direction) {
+            case UP:
+                this.setHeroesLocation(getHeroesRow() - 1, getHeroesCol());
+                break;
+            case DOWN:
+                this.setHeroesLocation(getHeroesRow() + 1, getHeroesCol());
+                break;
+            case LEFT:
+                this.setHeroesLocation(getHeroesRow(), getHeroesCol() - 1);
+                break;
+            case RIGHT:
+                this.setHeroesLocation(getHeroesRow(), getHeroesCol() + 1);
+                break;
+            default:
+                throw new InvalidMoveDirection("Unknown move direction!");
+        }
+
+        // Now, enter the new Cell
+        Cell cell = getCellAt(getHeroesRow(), getHeroesCol());
+        if(!cell.canEnter()) {
+            throw new InvalidMoveDirection("Unable to enter the cell!");
+        }
+        cell.enter(); // may cause certain events to occur, like entering a Market or starting a Fight.
     }
 
     /**
