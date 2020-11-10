@@ -1,5 +1,8 @@
 package main.world;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Class NonAccessibleCell is a type of Cell that the Heroes cannot enter
  *
@@ -46,17 +49,17 @@ public class NonAccessibleCell extends Cell {
      * @param heroesCol location of the Heroes as a column
      */
     @Override
-    public String draw(int heroesRow, int heroesCol) {
+    public List<String> draw(int heroesRow, int heroesCol) {
         if(sameLocation(heroesRow, heroesCol)) {
             throw new RuntimeException("Heroes cannot be in this cell!");
         }
 
-        String output = "";
-        output += "-----";
-        output += "|///|";
-        output += "|///|";
-        output += "|///|";
-        output += "-----";
+        List<String> output = new ArrayList<>();
+        output.add("-----");
+        output.add("|///|");
+        output.add("|///|");
+        output.add("|///|");
+        output.add("-----");
         return output;
     }
 }

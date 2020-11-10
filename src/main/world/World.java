@@ -2,6 +2,8 @@ package main.world;
 
 import main.utils.Validations;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -170,11 +172,32 @@ public class World {
     }
 
     /**
-     *
+     * Each entry in the returned String is a single line to output.
      * @return a string representation of this World.
      */
-    public String draw() {
-        return ""; // TODO
+    public List<String> draw() {
+        List<String> output = new ArrayList<>();
+        for(int i = 0; i < Cell.numDrawnRows * numRows(); i++) {
+            output.add("");
+        }
+
+        for(int row = 0; row < numRows(); row++) {
+            for(int col = 0; col < numCols(); col++) {
+                Cell cell = getCellAt(row, col);
+                List<String> drawn = cell.draw(getHeroesRow(), getHeroesCol());
+
+                // Append each element of drawn to the correct location of output
+                for(int i = 0; i < drawn.size(); i++) {
+                    int index = i + i * row;
+                    String oneDrawnRow = drawn.get(i);
+                    String current = output.get(index);
+                    current += oneDrawnRow;
+                    output.set(index, current);
+                }
+            }
+        }
+
+        return output;
     }
 
     /**

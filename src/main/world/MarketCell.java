@@ -1,5 +1,8 @@
 package main.world;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Class MarketCell is a type of cell that contains a Market
  *
@@ -46,17 +49,17 @@ public class MarketCell extends Cell {
      * @param heroesCol location of the Heroes as a column
      */
     @Override
-    public String draw(int heroesRow, int heroesCol) {
-        String output = "";
-        output += "-----";
-        output += "|   |";
+    public List<String> draw(int heroesRow, int heroesCol) {
+        List<String> output = new ArrayList<>();
+        output.add("-----");
+        output.add("|   |");
         if(sameLocation(heroesRow, heroesCol)) {
-            output += "| H |";
+            output.add("| H |");
         } else {
-            output += "| M |";
+            output.add("| M |");
         }
-        output += "|   |";
-        output += "-----";
+        output.add("|   |");
+        output.add("-----");
         return output;
     }
 }

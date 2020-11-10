@@ -1,5 +1,7 @@
 package main.world;
 
+import java.util.List;
+
 /**
  * Interface Drawable
  *
@@ -18,5 +20,5 @@ public interface Drawable {
      * @param heroesRow location of the Heroes as a row
      * @param heroesCol location of the Heroes as a column
      */
-    String draw(int heroesRow, int heroesCol);
+    List<String> draw(int heroesRow, int heroesCol);
 }

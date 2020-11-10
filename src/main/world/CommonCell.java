@@ -1,5 +1,8 @@
 package main.world;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Class CommonCell is a type of spell which is "normal." There may or may
  * not be Monsters upon entering this cell.
@@ -61,17 +64,17 @@ public class CommonCell extends Cell {
      * @param heroesCol location of the Heroes as a column
      */
     @Override
-    public String draw(int heroesRow, int heroesCol) {
-        String output = "";
-        output += "-----";
-        output += "|   |";
+    public List<String> draw(int heroesRow, int heroesCol) {
+        List<String> output = new ArrayList<>();
+        output.add("-----");
+        output.add("|   |");
         if(sameLocation(heroesRow, heroesCol)) {
-            output += "| H |";
+            output.add("| H |");
         } else {
-            output += "|   |";
+            output.add("|   |");
         }
-        output += "|   |";
-        output += "-----";
+        output.add("|   |");
+        output.add("-----");
         return output;
     }
 }
