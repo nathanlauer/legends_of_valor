@@ -208,7 +208,8 @@ public class LegendList {
                 Ability agility = new Ability(AbilityType.AGILITY, Integer.parseInt(items[3]));
                 Ability dexterity = new Ability(AbilityType.DEXTERITY, Integer.parseInt(items[4]));
                 Coffer coffer = new Coffer(Integer.parseInt(items[5]));
-                Level level = new Level(Integer.parseInt(items[6]));
+                int startingExperience = Integer.parseInt(items[6]);
+                Level level = new Level(1); // Heroes all start at level 1
 
                 // Both Monsters and Heroes start with hp = 100 * level
                 HealthPower hp = new UncappedHealthPower(100 * level.getLevel());
@@ -228,6 +229,7 @@ public class LegendList {
                     default:
                         throw new IOException("Unknown hero file type");
                 }
+                hero.setStartingExperience(startingExperience);
                 legends.add(hero);
             }
         }

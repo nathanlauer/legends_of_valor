@@ -99,6 +99,17 @@ public class Ability implements Cloneable {
     }
 
     /**
+     * Increases the abilityValue by the passed in percentage
+     * Throws an IllegalArgumentException if amount is negative.
+     * @param percentage Percentage to increase, on a scale of 0-100
+     */
+    public void increaseAbilityByPercentage(double percentage) {
+        Validations.nonNegative(percentage, "percentage");
+        double amountToAdd = (percentage / 100.0) * this.getAbilityValue();
+        this.setAbilityValue(this.getAbilityValue() + amountToAdd);
+    }
+
+    /**
      * Decreases the abilityValue by the specified amount. If amount
      * is greater than the current abilityValue, then abilityValue is set
      * to zero. (e.g. there is no overflow to a negative value)

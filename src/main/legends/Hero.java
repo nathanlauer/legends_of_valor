@@ -6,6 +6,7 @@ import main.market_and_gear.Weapon;
 import main.utils.Coffer;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
 /**
  * Class Hero extends Legends, and represents a "good guy" in this game. There are a number
@@ -37,6 +38,8 @@ public abstract class Hero extends Legend {
     private final Coffer coffer;
     private final GearItemList gearItemList;
     private final ActiveGearItems activeGearItems;
+    private final List<Ability> specialAbilities;
+    private final Experience experience;
 
     /**
      * Standard constructor for a Hero. By default, a Hero is created without any GearItems.
@@ -52,7 +55,7 @@ public abstract class Hero extends Legend {
      * @param dexterity Dexterity Ability of this Hero
      */
     public Hero(String name, Level level, HealthPower healthPower,
-                Mana mana, Coffer coffer, Ability strength, Ability agility, Ability dexterity) {
+                Mana mana, Coffer coffer, Ability strength, Ability agility, Ability dexterity, List<Ability> specialAbilities) {
         super(name, level, healthPower, strength, AbilityBuilder.baseDefenseAbility(), agility);
         this.mana = mana;
         this.coffer = coffer;
@@ -60,10 +63,37 @@ public abstract class Hero extends Legend {
         this.fainted = Hero.defaultFainted;
         this.gearItemList = new GearItemList();
         this.activeGearItems = new ActiveGearItems(this);
+        this.specialAbilities = specialAbilities;
+        this.experience = new Experience(this);
 
         // Add the Hero-unique Abilities to this Legend.
         this.addAbility(this.dexterity);
         this.addAbility(mana);
+    }
+
+    /**
+     * Sets the experience of this Hero. This function is intended to be used when a
+     * Hero is created to set the initial experience level.
+     * @param experience the starting experience of this Hero.
+     */
+    public void setStartingExperience(int experience) {
+        getExperience().setExperience(experience);
+    }
+
+    /**
+     *
+     * @return the experience of this Hero
+     */
+    public Experience getExperience() {
+        return experience;
+    }
+
+    /**
+     *
+     * @return a List of special Abilities for this Hero
+     */
+    public List<Ability> getSpecialAbilities() {
+        return this.specialAbilities;
     }
 
     /**
