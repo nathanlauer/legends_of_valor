@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -53,7 +54,9 @@ public class LegendList {
         }
         Collections.shuffle(legends); // so we don't have the same order every time
         List<Hero> allHeroes = getHeroes();
-        this.chosenHeroes = allHeroes.subList(0, 2);
+        Random random = new Random();
+        int numHeroes = random.nextInt(3);
+        this.chosenHeroes = allHeroes.subList(0, numHeroes);
     }
 
     /**
