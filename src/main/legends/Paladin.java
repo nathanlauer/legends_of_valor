@@ -3,6 +3,9 @@ package main.legends;
 import main.attributes.*;
 import main.utils.Coffer;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * Class Paladin is a concrete type of Hero. Paladins favor their strength and
  * dexterity Abilities, meaning that they are greater and grow more quickly.
@@ -44,7 +47,8 @@ public class Paladin extends Hero {
      */
     public Paladin(String name, Level level, HealthPower healthPower, Mana mana, Coffer coffer,
                    Ability strength, Ability agility, Ability dexterity) {
-        super(name, level, healthPower, mana, coffer, strength, agility, dexterity);
+        super(name, level, healthPower, mana, coffer,
+                strength, agility, dexterity, new ArrayList<>(Arrays.asList(strength, dexterity)));
     }
 
     /**

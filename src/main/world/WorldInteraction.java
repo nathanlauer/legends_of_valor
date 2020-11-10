@@ -1,5 +1,6 @@
 package main.world;
 
+import main.legends.LegendList;
 import main.utils.GetUserCommand;
 import main.utils.Output;
 import main.utils.UserCommand;
@@ -32,7 +33,7 @@ public class WorldInteraction {
             UserCommand command = new GetUserCommand().run();
             switch (command) {
                 case INFO:
-                    System.out.println("TODO");
+                    Output.displayNominalInformation(LegendList.getInstance().getChosenHeroes());
                 case UP:
                     attemptMove(Direction.UP);
                     break;

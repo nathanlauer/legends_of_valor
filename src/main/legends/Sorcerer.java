@@ -3,6 +3,9 @@ package main.legends;
 import main.attributes.*;
 import main.utils.Coffer;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * Class Sorcerer is a concrete type of Hero. Sorcerers favor their dexterity and
  * agility Abilities, meaning that they are typically higher, and grow more rapidly.
@@ -44,7 +47,8 @@ public class Sorcerer extends Hero {
      */
     public Sorcerer(String name, Level level, HealthPower healthPower, Mana mana, Coffer coffer,
                    Ability strength, Ability agility, Ability dexterity) {
-        super(name, level, healthPower, mana, coffer, strength, agility, dexterity);
+        super(name, level, healthPower, mana, coffer,
+                strength, agility, dexterity, new ArrayList<>(Arrays.asList(dexterity, agility)));
     }
 
     /**

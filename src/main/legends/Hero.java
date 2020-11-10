@@ -6,6 +6,7 @@ import main.market_and_gear.Weapon;
 import main.utils.Coffer;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
 /**
  * Class Hero extends Legends, and represents a "good guy" in this game. There are a number
@@ -28,7 +29,7 @@ import java.text.DecimalFormat;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public abstract class Hero extends Legend {
-    public static final String outputFormat = "%-4s%-21s%-15s%-15s%-6s%-8s%-8s%-8s%-21s%-21s%-5s%-5s";
+    public static final String outputFormat = "%-4s%-21s%-15s%-15s%-7s%-6s%-8s%-8s%-8s%-21s%-21s%-5s%-5s";
     public static final boolean defaultFainted = false;
 
     private boolean fainted;
@@ -37,6 +38,8 @@ public abstract class Hero extends Legend {
     private final Coffer coffer;
     private final GearItemList gearItemList;
     private final ActiveGearItems activeGearItems;
+    private final List<Ability> specialAbilities;
+    private final Experience experience;
 
     /**
      * Standard constructor for a Hero. By default, a Hero is created without any GearItems.
@@ -52,7 +55,7 @@ public abstract class Hero extends Legend {
      * @param dexterity Dexterity Ability of this Hero
      */
     public Hero(String name, Level level, HealthPower healthPower,
-                Mana mana, Coffer coffer, Ability strength, Ability agility, Ability dexterity) {
+                Mana mana, Coffer coffer, Ability strength, Ability agility, Ability dexterity, List<Ability> specialAbilities) {
         super(name, level, healthPower, strength, AbilityBuilder.baseDefenseAbility(), agility);
         this.mana = mana;
         this.coffer = coffer;
@@ -60,10 +63,37 @@ public abstract class Hero extends Legend {
         this.fainted = Hero.defaultFainted;
         this.gearItemList = new GearItemList();
         this.activeGearItems = new ActiveGearItems(this);
+        this.specialAbilities = specialAbilities;
+        this.experience = new Experience(this);
 
         // Add the Hero-unique Abilities to this Legend.
         this.addAbility(this.dexterity);
         this.addAbility(mana);
+    }
+
+    /**
+     * Sets the experience of this Hero. This function is intended to be used when a
+     * Hero is created to set the initial experience level.
+     * @param experience the starting experience of this Hero.
+     */
+    public void setStartingExperience(int experience) {
+        getExperience().setExperience(experience);
+    }
+
+    /**
+     *
+     * @return the experience of this Hero
+     */
+    public Experience getExperience() {
+        return experience;
+    }
+
+    /**
+     *
+     * @return a List of special Abilities for this Hero
+     */
+    public List<Ability> getSpecialAbilities() {
+        return this.specialAbilities;
     }
 
     /**
@@ -183,7 +213,7 @@ public abstract class Hero extends Legend {
      * @return the Header string that can be used to print out the relevant GearItems.
      */
     public String getHeaderString() {
-        return String.format(getOutputFormat(), "Lvl", "Hero Name", "HP", "Mana", "Coins", "Str", "Agl", "Dxt", "Weapon", "Armor", "#Spl", "#Ptn");
+        return String.format(getOutputFormat(), "Lvl", "Hero Name", "HP", "Mana", "Exp", "Coins", "Str", "Agl", "Dxt", "Weapon", "Armor", "#Spl", "#Ptn");
     }
 
     /**
@@ -194,6 +224,7 @@ public abstract class Hero extends Legend {
         DecimalFormat df = new DecimalFormat("0.0");
         String hp = df.format(getHealthPower().getHealthPower()) + "/" + df.format(getHealthPower().getFullAmount());
         String mana = df.format(getMana().getManaAmount()) + "/" + df.format(getMana().getFullAmount());
+        String exp = getExperience().getExperience() + "/" + getExperience().nextLevelUpExpAmount();
         String weapon = "None";
         if(getActiveGearItems().hasActiveWeapon()) {
             Weapon wielded = getActiveGearItems().getWeapon();
@@ -206,7 +237,7 @@ public abstract class Hero extends Legend {
         }
         int numSpells = getGearItemList().getSpells().size();
         int numPotions = getGearItemList().getUsablePotions().size();
-        return String.format(getOutputFormat(), getLevel(), getName(), hp, mana, getCoffer().getNumCoins(),
+        return String.format(getOutputFormat(), getLevel(), getName(), hp, mana, exp, getCoffer().getNumCoins(),
                 getStrength().getAbilityValue(), getAgility().getAbilityValue(), getDexterity().getAbilityValue(),
                 weapon, armor, numSpells, numPotions);
     }

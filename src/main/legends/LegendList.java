@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -53,7 +54,9 @@ public class LegendList {
         }
         Collections.shuffle(legends); // so we don't have the same order every time
         List<Hero> allHeroes = getHeroes();
-        this.chosenHeroes = allHeroes.subList(0, 2);
+        Random random = new Random();
+        int numHeroes = random.nextInt(3) + 1;
+        this.chosenHeroes = allHeroes.subList(0, numHeroes);
     }
 
     /**
@@ -98,7 +101,7 @@ public class LegendList {
 
         // Filter out Monsters that have a Level that is too high
         Stream<Monster> monsterStream = getMonsters().stream()
-                .filter(monster -> monster.getLevel().isLessThan(max));
+                .filter(monster -> monster.getLevel().isLessThanOrEqual(max));
 
         List<Monster> output = monsterStream.collect(Collectors.toList());
         return output.subList(0, getChosenHeroes().size());
@@ -205,7 +208,8 @@ public class LegendList {
                 Ability agility = new Ability(AbilityType.AGILITY, Integer.parseInt(items[3]));
                 Ability dexterity = new Ability(AbilityType.DEXTERITY, Integer.parseInt(items[4]));
                 Coffer coffer = new Coffer(Integer.parseInt(items[5]));
-                Level level = new Level(Integer.parseInt(items[6]));
+                int startingExperience = Integer.parseInt(items[6]);
+                Level level = new Level(1); // Heroes all start at level 1
 
                 // Both Monsters and Heroes start with hp = 100 * level
                 HealthPower hp = new UncappedHealthPower(100 * level.getLevel());
@@ -225,6 +229,7 @@ public class LegendList {
                     default:
                         throw new IOException("Unknown hero file type");
                 }
+                hero.setStartingExperience(startingExperience);
                 legends.add(hero);
             }
         }

@@ -3,6 +3,9 @@ package main.legends;
 import main.attributes.*;
 import main.utils.Coffer;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * Class Warrior is a concrete type of Hero. Warriors favor their strength and
  * agility Abilities, meaning they are greater and grow more quickly.
@@ -44,7 +47,8 @@ public class Warrior extends Hero {
      */
     public Warrior(String name, Level level, HealthPower healthPower, Mana mana, Coffer coffer,
                    Ability strength, Ability agility, Ability dexterity) {
-        super(name, level, healthPower, mana, coffer, strength, agility, dexterity);
+        super(name, level, healthPower, mana, coffer,
+                strength, agility, dexterity, new ArrayList<>(Arrays.asList(strength, agility)));
     }
 
     /**

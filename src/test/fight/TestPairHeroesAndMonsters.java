@@ -43,6 +43,11 @@ public class TestPairHeroesAndMonsters {
         PairHeroesAndMonsters pairing = new PairHeroesAndMonsters(scanner, relevantHeroes, relevantMonsters);
         pairing.initialPairing();
 
+        // Set the hp of each of the Monsters, since some of the other tests may have killed them
+        for(Monster monster : monsters) {
+            monster.getHealthPower().setHealthPower(100);
+        }
+
         // After the pairing, the first three Heroes should each be paired with their respective Monsters
         for(int i = 0; i < 3; i++) {
             Hero hero = relevantHeroes.get(i);

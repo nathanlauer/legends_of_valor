@@ -38,8 +38,9 @@ public class TestLegendsList {
         assertEquals(400, hero.getAgility().getAbilityValue());
         assertEquals(700, hero.getDexterity().getAbilityValue());
         assertEquals(2500, hero.getCoffer().getNumCoins());
-        assertEquals(7, hero.getLevel().getLevel());
-        assertEquals(700, hero.getHealthPower().getHealthPower());
+        assertEquals(1, hero.getLevel().getLevel());
+        assertEquals(7, hero.getExperience().getExperience());
+        assertEquals(100, hero.getHealthPower().getHealthPower());
     }
 
     @Test
