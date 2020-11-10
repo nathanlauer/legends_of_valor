@@ -138,4 +138,19 @@ public class Output {
         Output.printOutputables(heroes);
         System.out.println("Thanks for playing!");
     }
+
+    public static void printWelcomeInformation() {
+        System.out.println("Welcome to Legends: Heroes and Monsters!");
+        System.out.println("In this game, you will lead a number of Heroes throughout the World, fighting Monsters and gaining expereince as you go!");
+        System.out.println("In this World, there are a few different types of places:");
+        System.out.println("You can bring your heroes to a market, where you can buy and sell items.");
+        System.out.println("There are certain places that are are inaccessible.");
+        System.out.println("There are empty places as well. Beware! Some of these will contain Monsters!");
+        System.out.println("If you encounter monsters, a fight will begin. Should you win, your heroes will gain money and experience.");
+        System.out.println("If you lose, however, your heroes will be revived at half health power, without gaining any money or experience.");
+        System.out.println("At any time you may press I/i to obtain game information.");
+        System.out.println("The game continues until you press Q/q to quit the game.");
+        System.out.println("Enjoy!");
+        Output.printSeparator();
+    }
 }

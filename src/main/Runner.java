@@ -1,5 +1,6 @@
 package main;
 
+import main.utils.Output;
 import main.world.RandomWorldBuilder;
 import main.world.World;
 import main.world.WorldBuilder;
@@ -51,6 +52,8 @@ public class Runner {
     }
 
     public void run() {
+        Output.printWelcomeInformation();
         worldInteraction.run();
     }
+
 }
