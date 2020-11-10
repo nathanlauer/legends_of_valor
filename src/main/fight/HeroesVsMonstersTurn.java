@@ -6,7 +6,7 @@ import main.legends.Hero;
 import main.legends.Legend;
 import main.legends.Monster;
 import main.market_and_gear.GearItem;
-import test.utils.Output;
+import main.utils.Output;
 
 import java.util.*;
 

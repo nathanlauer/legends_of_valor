@@ -26,7 +26,7 @@ import java.util.Random;
  * <p>
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
-public abstract class Legend extends Outputable {
+public abstract class Legend extends Outputable implements Cloneable {
     private String name;
     private final Level level;
     private final HealthPower healthPower;
@@ -227,5 +227,14 @@ public abstract class Legend extends Outputable {
                 other.getLevel().equals(this.getLevel()) &&
                 other.getHealthPower().equals(this.getHealthPower()) &&
                 other.getAbilities().equals(this.getAbilities());
+    }
+
+    /**
+     *
+     * @return a cloned copy of this Legend
+     */
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

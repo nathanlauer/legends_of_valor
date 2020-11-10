@@ -7,7 +7,7 @@ import main.utils.BeneathLevelException;
 import main.utils.GetUserNumericInput;
 import main.utils.GetUserYesNoInput;
 import main.utils.NotEnoughCoinsException;
-import test.utils.Output;
+import main.utils.Output;
 
 import java.util.*;
 import java.util.stream.Collectors;
