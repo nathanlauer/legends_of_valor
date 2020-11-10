@@ -41,7 +41,7 @@ public abstract class GetUserInput {
      * @return the string representation of the user input
      */
     public String getUserInput() {
-        return userInput;
+        return userInput.toLowerCase();
     }
 
     /**

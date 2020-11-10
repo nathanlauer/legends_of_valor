@@ -173,7 +173,7 @@ public class MarketInteraction {
      */
     private void sellItem(Hero hero, GearItem item) throws NonOwnedGearItemException {
         String prompt = "Are you sure you want to sell " + item.getName() + " for " + item.getPrice() / 2.0 + " coins?";
-        boolean wantsToSell = GetUserYesNoInput.run(prompt);
+        boolean wantsToSell = new GetUserYesNoInput().run(prompt);
         if(wantsToSell) {
             item.sell(market, hero);
         }
