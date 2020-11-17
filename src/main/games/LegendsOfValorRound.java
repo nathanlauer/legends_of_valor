@@ -1,8 +1,11 @@
 package main.games;
 
+import main.Runner;
 import main.legends.Hero;
+import main.legends.Legend;
 import main.legends.Monster;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,16 +32,49 @@ import java.util.List;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public class LegendsOfValorRound implements RoundExecutor {
-    private List<Hero> heroes;
-    private List<Monster> monsters;
+    public static final int roundsToNewMonsters = 8;
+    private final List<Legend> heroes;
+    private final List<Legend> monsters;
     private final TurnBasedGame turnBasedGame;
-    private int roundNum;
     private final TurnExecutor turnExecutor;
+    private int roundNum;
+    private int numRoundsToNewMonsters;
 
+    /**
+     * Empty constructor
+     * Obtains the list of Heroes and Monsters from the World, and
+     * uses the default number of rounds.
+     */
     public LegendsOfValorRound() {
-        roundNum = 0;
+        this(LegendsOfValorRound.roundsToNewMonsters);
+    }
+
+    /**
+     * Constructs a LegendsOfValorRound with the specified number of rounds to new Monsters.
+     * Heroes and Monsters are obtained from the world.
+     * @param roundsToNewMonsters number of rounds until new Monsters are spawned.
+     */
+    public LegendsOfValorRound(int roundsToNewMonsters) {
+        this(new ArrayList<>(), new ArrayList<>(), roundsToNewMonsters);
+
+        // TODO: once world or world interaction built for valor, call these methods
+        //heroes = Runner.getInstance().getWorld().getHeroes();
+        //monsters = Runner.getInstance().getWorld().getMonsters();
+    }
+
+    /**
+     * Standard constructor
+     * @param heroes the Heroes that are involved in this game
+     * @param monsters the Monsters that are involved in this game (may change as the game progresses)
+     * @param roundsToNewMonsters number of rounds until new Monsters are spawned.
+     */
+    public LegendsOfValorRound(List<Legend> heroes, List<Legend> monsters, int roundsToNewMonsters) {
+        this.heroes = heroes;
+        this.monsters = monsters;
         this.turnExecutor = new LegendsOfValorTurn(); // TODO: arguments?
         this.turnBasedGame = new TurnBasedGame(turnExecutor);
+        this.numRoundsToNewMonsters = roundsToNewMonsters;
+        roundNum = 0;
     }
 
     /**
@@ -46,7 +82,9 @@ public class LegendsOfValorRound implements RoundExecutor {
      */
     @Override
     public void setupNextRound() {
-        // TODO:
+        turnExecutor.reset();
+        roundNum++;
+        // TODO: some status to display?
     }
 
     /**
@@ -54,7 +92,9 @@ public class LegendsOfValorRound implements RoundExecutor {
      */
     @Override
     public void playRound() {
-        // TODO:
+        // Each round is a turn based game, so paying a round is as simple as
+        // calling the play() method on the turn based game defined here.
+        turnBasedGame.play();
     }
 
     /**
@@ -62,7 +102,55 @@ public class LegendsOfValorRound implements RoundExecutor {
      */
     @Override
     public void processEndOfRound() {
-        // TODO:
+        System.out.println("End of round " + roundNum);
+        processSurvivingHeroes();
+        respawnFaintedHeroes();
+    }
+
+    /**
+     * Helper function which process each surviving Hero.
+     * Specifically, each surviving Hero regains 10% of their HealthPower
+     * and 10% of their Mana.
+     */
+    private void processSurvivingHeroes() {
+        for(Legend legend : this.heroes) {
+            Hero hero = (Hero)legend;
+            if(!hero.hasFainted()) {
+                System.out.println(hero.getName() + " is still alive!");
+
+                // Surviving Heroes regain 10% of their health power
+                if(hero.getHealthPower().isFull()) {
+                    System.out.println(hero.getName() + "'s health power is full.");
+                } else {
+                    System.out.println(hero.getName() + " has regained 10% of their health power.");
+                    hero.getHealthPower().increaseByPercentageOfFull(10);
+                }
+
+                // And 10% of their Mana
+                if(hero.getMana().isFull()) {
+                    System.out.println(hero.getName() + "'s mana is full.");
+                } else {
+                    System.out.println(hero.getName() + " has regained 10% of their mana.");
+                    hero.getMana().increaseByPercentageOfFull(10);
+                }
+            }
+        }
+    }
+
+    /**
+     * Helper function which respawns all Heroes that have fainted in their
+     * respective Nexus.
+     */
+    private void respawnFaintedHeroes() {
+        // TODO
+    }
+
+    /**
+     * Private helper function which spawns Monsters after
+     * some number of rounds have passed.
+     */
+    private void spawnMonstersIfNecessary() {
+        // TODO
     }
 
     /**
