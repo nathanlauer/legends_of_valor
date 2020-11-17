@@ -1,5 +1,6 @@
 package main;
 
+import main.legends.LegendList;
 import main.utils.Output;
 import main.world.RandomWorldBuilder;
 import main.world.World;
@@ -53,6 +54,7 @@ public class Runner {
 
     public void run() {
         Output.printWelcomeInformation();
+        LegendList.getInstance();
         worldInteraction.run();
     }
 
