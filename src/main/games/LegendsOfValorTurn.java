@@ -1,5 +1,14 @@
 package main.games;
 
+import main.fight.FightMove;
+import main.fight.PairHeroesAndMonsters;
+import main.legends.Hero;
+import main.legends.Legend;
+import main.legends.Monster;
+
+import java.util.List;
+import java.util.ListIterator;
+
 /**
  * Class LegendsOfValorTurn implements TurnExecutor, and is therefore a TurnBasedGame,
  * and represents a single move within the game Legends of Valor. Within a turn,
@@ -13,6 +22,24 @@ package main.games;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public class LegendsOfValorTurn implements TurnExecutor {
+    private Legend current;
+    private boolean firstTurn;
+    private final ListIterator<Hero> heroIterator;
+    private final ListIterator<Monster> monsterIterator;
+    private boolean finished;
+    private FightMove fightMove;
+    // private Move move; TODO when Moves have been built
+
+    /**
+     * Standard constructor
+     * @param heroes the Heroes playing in this Turn
+     * @param monsters the Monsters playing in this Turn
+     */
+    public LegendsOfValorTurn(List<Hero> heroes, List<Monster> monsters) {
+        heroIterator = heroes.listIterator();
+        monsterIterator = monsters.listIterator();
+    }
+
     /**
      * Resets this TurnExecutor to the beginning
      */

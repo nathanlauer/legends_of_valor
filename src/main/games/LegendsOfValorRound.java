@@ -70,7 +70,7 @@ public class LegendsOfValorRound implements RoundExecutor {
     public LegendsOfValorRound(List<Hero> heroes, List<Monster> monsters, int roundsToNewMonsters) {
         this.heroes = heroes;
         this.monsters = monsters;
-        this.turnExecutor = new LegendsOfValorTurn(); // TODO: arguments?
+        this.turnExecutor = new LegendsOfValorTurn(heroes, monsters); // TODO: arguments?
         this.turnBasedGame = new TurnBasedGame(turnExecutor);
         this.numRoundsToNewMonsters = roundsToNewMonsters;
         roundNum = 0;
