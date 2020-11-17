@@ -173,6 +173,18 @@ public class LegendsOfValorRound implements RoundExecutor {
     @Override
     public boolean finishedGame() {
         // TODO:
+        // Something like:
+//        for(Legend hero : heroes) {
+//            if(world.heroReachedMonsterNexus(hero)) {
+//                return true;
+//            }
+//        }
+//
+//        for(Legend monster : monsters) {
+//            if(world.monsterReachedHeroNexus(monster)) {
+//                return true;
+//            }
+//        }
         return false;
     }
 }
