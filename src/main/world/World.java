@@ -54,7 +54,7 @@ public class World {
      *
      * @return the Cells composing this World
      */
-    public Cell[][] getCells() {
+    protected Cell[][] getCells() {
         return cells;
     }
 
