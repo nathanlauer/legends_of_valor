@@ -105,6 +105,7 @@ public class LegendsOfValorRound implements RoundExecutor {
         System.out.println("End of round " + roundNum);
         processSurvivingHeroes();
         respawnFaintedHeroes();
+        spawnMonstersIfNecessary();
     }
 
     /**
@@ -145,6 +146,7 @@ public class LegendsOfValorRound implements RoundExecutor {
         for(Legend legend : heroes) {
             Hero hero = (Hero)legend;
             if(hero.hasFainted()) {
+                System.out.println(hero.getName() + " has fainted, and will be respawned in their Nexus.");
                 // TODO: respawn in Nexus
             }
         }
@@ -155,7 +157,10 @@ public class LegendsOfValorRound implements RoundExecutor {
      * some number of rounds have passed.
      */
     private void spawnMonstersIfNecessary() {
-        // TODO
+        if(roundNum % numRoundsToNewMonsters == 0) {
+            System.out.println("New Monsters have been spawned in their Nexus!");
+            // TODO: spawn new Monsters in each Nexus
+        }
     }
 
     /**
