@@ -1,9 +1,7 @@
 package main.games;
 
-import main.Runner;
 import main.legends.Hero;
 import main.legends.Legend;
-import main.legends.Monster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +36,7 @@ public class LegendsOfValorRound implements RoundExecutor {
     private final TurnBasedGame turnBasedGame;
     private final TurnExecutor turnExecutor;
     private int roundNum;
-    private int numRoundsToNewMonsters;
+    private final int numRoundsToNewMonsters;
 
     /**
      * Empty constructor
@@ -157,7 +155,7 @@ public class LegendsOfValorRound implements RoundExecutor {
      * some number of rounds have passed.
      */
     private void spawnMonstersIfNecessary() {
-        if(roundNum % numRoundsToNewMonsters == 0) {
+        if(roundNum != 0 && roundNum % numRoundsToNewMonsters == 0) {
             System.out.println("New Monsters have been spawned in their Nexus!");
             // TODO: spawn new Monsters in each Nexus
         }
