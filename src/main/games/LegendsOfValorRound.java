@@ -2,6 +2,7 @@ package main.games;
 
 import main.legends.Hero;
 import main.legends.Legend;
+import main.legends.Monster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +32,8 @@ import java.util.List;
  */
 public class LegendsOfValorRound implements RoundExecutor {
     public static final int roundsToNewMonsters = 8;
-    private final List<Legend> heroes;
-    private final List<Legend> monsters;
+    private final List<Hero> heroes;
+    private final List<Monster> monsters;
     private final TurnBasedGame turnBasedGame;
     private final TurnExecutor turnExecutor;
     private int roundNum;
@@ -66,7 +67,7 @@ public class LegendsOfValorRound implements RoundExecutor {
      * @param monsters the Monsters that are involved in this game (may change as the game progresses)
      * @param roundsToNewMonsters number of rounds until new Monsters are spawned.
      */
-    public LegendsOfValorRound(List<Legend> heroes, List<Legend> monsters, int roundsToNewMonsters) {
+    public LegendsOfValorRound(List<Hero> heroes, List<Monster> monsters, int roundsToNewMonsters) {
         this.heroes = heroes;
         this.monsters = monsters;
         this.turnExecutor = new LegendsOfValorTurn(); // TODO: arguments?
@@ -112,8 +113,7 @@ public class LegendsOfValorRound implements RoundExecutor {
      * and 10% of their Mana.
      */
     private void processSurvivingHeroes() {
-        for(Legend legend : this.heroes) {
-            Hero hero = (Hero)legend;
+        for(Hero hero : this.heroes) {
             if(!hero.hasFainted()) {
                 System.out.println(hero.getName() + " is still alive!");
 
@@ -141,8 +141,7 @@ public class LegendsOfValorRound implements RoundExecutor {
      * respective Nexus.
      */
     private void respawnFaintedHeroes() {
-        for(Legend legend : heroes) {
-            Hero hero = (Hero)legend;
+        for(Hero hero : heroes) {
             if(hero.hasFainted()) {
                 System.out.println(hero.getName() + " has fainted, and will be respawned in their Nexus.");
                 // TODO: respawn in Nexus
@@ -174,13 +173,13 @@ public class LegendsOfValorRound implements RoundExecutor {
     public boolean finishedGame() {
         // TODO:
         // Something like:
-//        for(Legend hero : heroes) {
+//        for(Hero hero : heroes) {
 //            if(world.heroReachedMonsterNexus(hero)) {
 //                return true;
 //            }
 //        }
 //
-//        for(Legend monster : monsters) {
+//        for(Monster monster : monsters) {
 //            if(world.monsterReachedHeroNexus(monster)) {
 //                return true;
 //            }
