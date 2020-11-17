@@ -142,7 +142,12 @@ public class LegendsOfValorRound implements RoundExecutor {
      * respective Nexus.
      */
     private void respawnFaintedHeroes() {
-        // TODO
+        for(Legend legend : heroes) {
+            Hero hero = (Hero)legend;
+            if(hero.hasFainted()) {
+                // TODO: respawn in Nexus
+            }
+        }
     }
 
     /**
