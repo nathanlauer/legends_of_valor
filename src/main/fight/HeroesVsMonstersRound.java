@@ -8,6 +8,7 @@ import main.legends.Hero;
 import main.legends.Monster;
 import main.utils.Output;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -69,17 +70,39 @@ public class HeroesVsMonstersRound implements RoundExecutor {
      */
     private void displayStatus() {
         // Sort Heroes and Monsters so the ones with higher Level appear at the top
-        heroes.sort(new HigherLevelComparator());
-        monsters.sort(new HigherLevelComparator());
+        // To do so, clone each of the heroes and monsters lists, so that we don't
+        // interfere with the expected ordering of other iterators. This would otherwise
+        // cause a concurrent modification exception.
+        List<Hero> copiedHeroes = new ArrayList<>();
+        for(Hero hero : heroes) {
+            try {
+                copiedHeroes.add((Hero)hero.clone());
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+                // Shouldn't happen
+            }
+        }
+
+        List<Monster> copiedMonsters = new ArrayList<>();
+        for(Monster monster : monsters) {
+            try {
+                copiedMonsters.add((Monster) monster.clone());
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+                // Shouldn't happen
+            }
+        }
+        copiedHeroes.sort(new HigherLevelComparator());
+        copiedMonsters.sort(new HigherLevelComparator());
 
         // Display the Heroes and the Monsters
         Output.printSeparator();
         System.out.println("Start of round " + roundNum);
         System.out.println("Legend Status");
         System.out.println();
-        Output.printOutputables(heroes);
+        Output.printOutputables(copiedHeroes);
         System.out.println();
-        Output.printOutputables(monsters);
+        Output.printOutputables(copiedMonsters);
         Output.printSeparator();
     }
 
