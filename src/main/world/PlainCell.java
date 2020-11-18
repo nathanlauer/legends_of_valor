@@ -20,12 +20,12 @@ public class PlainCell extends Cell{
     }
 
     @Override
-    public boolean canEnter(Hero hero) {
+    public boolean canEnter(List<Hero> heroes) {
         return false;
     }
 
     @Override
-    public void enter(Hero hero) {
+    public void enter(List<Hero> heroes) {
 
     }
 

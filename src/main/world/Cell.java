@@ -3,6 +3,7 @@ package main.world;
 import main.legends.Hero;
 import main.utils.Validations;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -90,15 +91,15 @@ public abstract class Cell implements Drawable {
 
     /**
      * Indicates whether or not the Hero can enter this cell
-     * @return true if the Hero can enter this cell, false otherwise
+     * @return true if the Heroes can enter this cell, false otherwise
      */
-    public abstract boolean canEnter(Hero hero);
+    public abstract boolean canEnter(List<Hero> heroes);
 
     /**
      * The Hero enter this cell, and something happens
-     * @param hero - the hero to enter this cell
+     * @param heroes - the heroes to enter this cell
      */
-    public abstract void enter(Hero hero);
+    public abstract void enter(List<Hero> heroes);
 
 
 

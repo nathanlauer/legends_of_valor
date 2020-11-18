@@ -2,6 +2,8 @@ package main.world;
 
 import main.legends.Hero;
 
+import java.util.List;
+
 /**
  * Represents a monster nexus cell
  * @author: Sandra Zhen
@@ -21,12 +23,12 @@ public class MonsterNexusCell extends NexusCell{
     }
 
     @Override
-    public boolean canEnter(Hero hero) {
+    public boolean canEnter(List<Hero> heroes) {
         return false;
     }
 
     @Override
-    public void enter(Hero hero) {
+    public void enter(List<Hero> heroes) {
 
     }
 }

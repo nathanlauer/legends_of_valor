@@ -109,6 +109,6 @@ public class ValorWorldBuilder extends WorldBuilder{
 
     @Override
     public boolean builtSuccessfulWorld(Cell[][] cells) {
-        return false;
+        return true;
     }
 }

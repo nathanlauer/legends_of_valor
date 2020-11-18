@@ -7,6 +7,8 @@ package main.world;
 
 import main.legends.Hero;
 
+import java.util.List;
+
 public class HeroNexusCell extends NexusCell{
     /**
      * Standard constructor
@@ -20,12 +22,12 @@ public class HeroNexusCell extends NexusCell{
     }
 
     @Override
-    public boolean canEnter(Hero hero) {
+    public boolean canEnter(List<Hero> heroes) {
         return false;
     }
 
     @Override
-    public void enter(Hero hero) {
+    public void enter(List<Hero> heroes) {
 
     }
 }

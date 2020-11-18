@@ -228,10 +228,12 @@ public abstract class World {
 
         // Now, enter the new Cell
         Cell cell = getCellAt(getHeroRow(hero), getHeroCol(hero));
-        if (!cell.canEnter(hero)) {
+        List<Hero> heroList = new ArrayList<>();
+        heroList.add(hero);
+        if (!cell.canEnter(heroList)) {
             throw new InvalidMoveDirection("Unable to enter the cell!");
         }
-        cell.enter(hero); // may cause certain events to occur, like entering a Market or starting a Fight.
+        cell.enter(heroList); // may cause certain events to occur, like entering a Market or starting a Fight.
     }
 
     /**

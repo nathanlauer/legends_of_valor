@@ -9,13 +9,24 @@ import main.legends.Hero;
 import java.util.List;
 
 public class CaveCell extends Cell{
+    /**
+     * Standard constructor
+     * Throws an IllegalArgumentException if either row or col are negative
+     *
+     * @param row the row for this Cell
+     * @param col the col for this Cell
+     */
+    public CaveCell(int row, int col) {
+        super(row, col);
+    }
+
     @Override
-    public boolean canEnter(Hero hero) {
+    public boolean canEnter(List<Hero> heroes) {
         return false;
     }
 
     @Override
-    public void enter(Hero hero) {
+    public void enter(List<Hero> heroes) {
 
     }
 
