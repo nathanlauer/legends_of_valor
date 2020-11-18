@@ -14,6 +14,8 @@ public enum UserCommand {
     DOWN,
     RIGHT,
     LEFT,
+    TELEPORT,
+    BACK,
     QUIT,
     INFO
 }
