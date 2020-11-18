@@ -12,7 +12,8 @@ public class Position{
 	private int rowSpawn, colSpawn;
 	
 	public Position(){
-		
+		row = 0;
+		col = 0;
 	}
 	public void setSpawnPosition(int row, int col) {
 		this.rowSpawn = row;
@@ -23,24 +24,19 @@ public class Position{
 		this.col = col;
 	}
 	
-	public void setPostionRow(int row) {
+	public void setRow(int row) {
 		this.row = row;
 	}
 	
-	public void setPositionCol(int col) {
+	public void setCol(int col) {
 		this.col = col;
 	}
 	
-	public void respawn() {
-		row = rowSpawn;
-		col = colSpawn;
-	}
-	
-	public int getPositionRow() {
+	public int getRow() {
 		return row;
 	}
 	
-	public int getPositionCol() {
+	public int getCol() {
 		return col;
 	}
 }
