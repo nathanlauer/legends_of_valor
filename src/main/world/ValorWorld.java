@@ -25,25 +25,7 @@ public class ValorWorld extends World{
 
     }
 
-    /**
-     * Marks the location of the Heroes, by inserting the Heroes into a random Nexus
-     * cell on the World.
-     */
-    public void placeHeroes() {
-        boolean foundCommonCell = false;
-        Random random = new Random();
-        while(!foundCommonCell) {
-            int row = random.nextInt(super.numRows());
-            for(int col = 0; col < super.numCols(); col++) {
-                Cell cell = getCellAt(row, col);
-                if(cell instanceof NexusCell) {
-                    foundCommonCell = true;
-                    super.setHeroesLocation(row,col);
-                    break;
-                }
-            }
-        }
-    }
+
 
 
     /**

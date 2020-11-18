@@ -1,5 +1,7 @@
 package main.world;
 
+import main.legends.Hero;
+
 import java.util.Random;
 
 public class RandomWorld extends World {
@@ -13,7 +15,7 @@ public class RandomWorld extends World {
     }
 
     @Override
-    public void placeHero(String heroId) {
+    protected void placeHero(Hero hero) {
         boolean foundCommonCell = false;
         Random random = new Random();
         while (!foundCommonCell) {
@@ -22,10 +24,11 @@ public class RandomWorld extends World {
                 Cell cell = getCellAt(row, col);
                 if (cell instanceof CommonCell) {
                     foundCommonCell = true;
-                    setHeroesLocation(heroId, row, col);
+                    setHeroLocation(hero, row, col);
                     break;
                 }
             }
         }
     }
+
 }

@@ -40,14 +40,14 @@ public class Runner {
     private void buildValorWorld(){
         WorldBuilder builder = new RandomWorldBuilder(8, 8, 50, 20, 30);
         world = new ValorWorld(builder);
-        world.placeHeroes();
+        world.placeHeroes(LegendList.getInstance().getChosenHeroes());
         worldInteraction = new WorldInteraction(world);
     }
     private void buildRandomWorld(){
 
         WorldBuilder builder = new RandomWorldBuilder(8, 8, 50, 20, 30);
         world = new RandomWorld(builder);
-        world.placeHeroes();
+        world.placeHeroes(LegendList.getInstance().getChosenHeroes());
         worldInteraction = new WorldInteraction(world);
     }
 

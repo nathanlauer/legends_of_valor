@@ -1,5 +1,6 @@
 package main.world;
 
+import main.legends.Hero;
 import main.legends.LegendList;
 import main.utils.GetUserCommand;
 import main.utils.Output;
@@ -60,11 +61,11 @@ public class WorldInteraction {
      * Attempts to move in the given direction
      * @param direction the Direction to move
      */
-    private void attemptMove(Direction direction) {
+    private void attemptMove(Hero hero, Direction direction) {
         String failure = "Unable to move " + direction + "! Please enter a different move.";
-        if(world.canMove(direction)) {
+        if(world.canMove(hero,direction)) {
             try {
-                world.move(direction);
+                world.move(hero,direction);
             } catch (InvalidMoveDirection e) {
                 System.out.println(failure);
             }

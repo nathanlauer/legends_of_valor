@@ -1,6 +1,7 @@
 package main.world;
 
 import main.fight.Fight;
+import main.legends.Hero;
 import main.utils.Colors;
 import main.utils.Validations;
 
@@ -20,7 +21,7 @@ import java.util.List;
  */
 public abstract class World {
     private final Cell[][] cells;
-    private HashMap<String,Position> heroPositions;
+    private HashMap<Hero,Position> heroPositions;
     private class Position{
         private int row, col;
         public Position(int row, int col){
@@ -115,52 +116,52 @@ public abstract class World {
      * Marks the location of the Heroes, by inserting the Heroes into a random
      * cell on the World.
      */
-    protected abstract void placeHero(String heroId);
-    public void placeHeroes(List<String> heroIds) {
-        for(String heroId:heroIds){
-            placeHero(heroId);
+    protected abstract void placeHero(Hero hero);
+    public void placeHeroes(List<Hero> heroes) {
+        for(Hero hero:heroes){
+            placeHero(hero);
         }
     }
 
     /**
      * Sets the Heroes location
-     * @param heroId - identifier for hero
+     * @param hero - identifier for hero
      * @param row the new row for the hero
      * @param col the new col for the hero
      */
-    public void setHeroLocation(String heroId,int row, int col) {
+    public void setHeroLocation(Hero hero,int row, int col) {
         checkValidity(row, col);
-        heroPositions.put(heroId,new Position(row,col));
+        heroPositions.put(hero,new Position(row,col));
     }
 
     /**
      * @return the row of the Heroes
      */
-    private int getHeroRow(String heroId) {
-        return heroPositions.get(heroId).getRow();
+    private int getHeroRow(Hero hero) {
+        return heroPositions.get(hero).getRow();
     }
 
     /**
      * @return the col of the Heroes
      */
-    private int getHeroCol(String heroId) {
-        return heroPositions.get(heroId).getCol();
+    private int getHeroCol(Hero hero) {
+        return heroPositions.get(hero).getCol();
     }
 
-    public boolean canMove(String heroId,Direction direction) {
+    public boolean canMove(Hero hero,Direction direction) {
         boolean allowed = false;
         switch (direction) {
             case UP:
-                allowed = getHeroRow(heroId) > 0 && !cellIsNonAccessible(getHeroRow(heroId) - 1, getHeroCol(heroId));
+                allowed = getHeroRow(hero) > 0 && !cellIsNonAccessible(getHeroRow(hero) - 1, getHeroCol(hero));
                 break;
             case DOWN:
-                allowed = getHeroRow(heroId) < numRows() - 1 && !cellIsNonAccessible(getHeroRow(heroId) + 1, getHeroCol(heroId));
+                allowed = getHeroRow(hero) < numRows() - 1 && !cellIsNonAccessible(getHeroRow(hero) + 1, getHeroCol(hero));
                 break;
             case LEFT:
-                allowed = getHeroCol(heroId) > 0 && !cellIsNonAccessible(getHeroRow(heroId), getHeroCol(heroId) - 1);
+                allowed = getHeroCol(hero) > 0 && !cellIsNonAccessible(getHeroRow(hero), getHeroCol(hero) - 1);
                 break;
             case RIGHT:
-                allowed = getHeroCol(heroId) < numCols() - 1 && !cellIsNonAccessible(getHeroRow(heroId), getHeroCol(heroId) + 1);
+                allowed = getHeroCol(hero) < numCols() - 1 && !cellIsNonAccessible(getHeroRow(hero), getHeroCol(hero) + 1);
                 break;
             default:
                 throw new RuntimeException("Unknown direction!");
@@ -187,30 +188,30 @@ public abstract class World {
      * @param direction the direction to move in
      * @throws InvalidMoveDirection if unable to move in the desired direction.
      */
-    public void move(String heroId,Direction direction) throws InvalidMoveDirection {
-        if (!canMove(heroId,direction)) {
+    public void move(Hero hero,Direction direction) throws InvalidMoveDirection {
+        if (!canMove(hero,direction)) {
             throw new InvalidMoveDirection("Cannot move in this direction!");
         }
 
         switch (direction) {
             case UP:
-                this.setHeroLocation(heroId,getHeroRow(heroId) - 1, getHeroCol(heroId));
+                this.setHeroLocation(hero,getHeroRow(hero) - 1, getHeroCol(hero));
                 break;
             case DOWN:
-                this.setHeroLocation(heroId,getHeroRow(heroId) + 1, getHeroCol(heroId));
+                this.setHeroLocation(hero,getHeroRow(hero) + 1, getHeroCol(hero));
                 break;
             case LEFT:
-                this.setHeroLocation(heroId,getHeroRow(heroId), getHeroCol(heroId) - 1);
+                this.setHeroLocation(hero,getHeroRow(hero), getHeroCol(hero) - 1);
                 break;
             case RIGHT:
-                this.setHeroLocation(heroId,getHeroRow(heroId), getHeroCol(heroId) + 1);
+                this.setHeroLocation(hero,getHeroRow(hero), getHeroCol(hero) + 1);
                 break;
             default:
                 throw new InvalidMoveDirection("Unknown move direction!");
         }
 
         // Now, enter the new Cell
-        Cell cell = getCellAt(getHeroRow(heroId), getHeroCol(heroId));
+        Cell cell = getCellAt(getHeroRow(hero), getHeroCol(hero));
         if (!cell.canEnter()) {
             throw new InvalidMoveDirection("Unable to enter the cell!");
         }
@@ -231,7 +232,7 @@ public abstract class World {
         for (int row = 0; row < numRows(); row++) {
             for (int col = 0; col < numCols(); col++) {
                 Cell cell = getCellAt(row, col);
-                List<String> drawn = cell.draw(getHeroRow(heroId), getHeroCol(heroId));
+                List<String> drawn = cell.draw(getHeroRow(hero), getHeroCol(hero));
 
                 // Append each element of drawn to the correct location of output
                 for (int i = 0; i < drawn.size(); i++) {
