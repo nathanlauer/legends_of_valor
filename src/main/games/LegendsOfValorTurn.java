@@ -1,12 +1,17 @@
 package main.games;
 
 import main.Runner;
+import main.fight.Attack;
 import main.fight.FightMove;
+import main.fight.InvalidFightMoveException;
 import main.fight.PairHeroesAndMonsters;
 import main.legends.Hero;
 import main.legends.Legend;
 import main.legends.Monster;
+import main.world.Direction;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -55,6 +60,22 @@ public class LegendsOfValorTurn implements TurnExecutor {
         // class for each round, passing in whichever Heroes and Monsters are
         // currently in existence.
         throw new RuntimeException("Don't use this method in Legends of Valor!");
+    }
+
+    /**
+     * Indicates whether or not the current legend is a Monster
+     * @return true if current is a Monster, false otherwise
+     */
+    private boolean currentIsMonster() {
+        return current instanceof Monster;
+    }
+
+    /**
+     * Indicates whether or not the current legend is a Hero
+     * @return true is current is a Hero, false otherwise
+     */
+    private boolean currentIsHero() {
+        return !currentIsMonster();
     }
 
     /**
@@ -118,7 +139,7 @@ public class LegendsOfValorTurn implements TurnExecutor {
      * @return true if the last Legend to go was a Hero, false otherwise.
      */
     private boolean monsterShouldGoNext() {
-        return current instanceof Hero;
+        return currentIsHero();
     }
 
     /**
@@ -167,7 +188,39 @@ public class LegendsOfValorTurn implements TurnExecutor {
      */
     @Override
     public void playNextTurn() {
-        // TODO:
+        // Do not execute a move if we are in a completed state
+        if(finished) { return; }
+
+        if(currentIsMonster()) {
+            playNextMonstersTurn();
+        } else {
+            // TODO
+        }
+    }
+
+    /**
+     * Helper function which plays the next Monster's turn.
+     * A Monster's turn follows simple logic: if there is a Hero in range, attack it.
+     * Otherwise, move forward (forward for Monsters is down)
+     */
+    private void playNextMonstersTurn() {
+        // TODO: List<Hero> heroesInRange = Runner.getInstance().getWorld().heroesInRange(current);
+        List<Hero> heroesInRange = new ArrayList<>();
+        if(heroesInRange.size() > 0){
+            Hero toAttack = heroesInRange.get(0);
+            FightMove attack = new Attack(current, Collections.singletonList(toAttack));
+            try {
+                attack.execute();
+            } catch (InvalidFightMoveException e) {
+                e.printStackTrace();
+                // Shouldn't happen
+            }
+        } else {
+            // Build a downward move for this Monster
+            // TODO:
+            // Move downwards = new DirectionalMove(current, Direction.DOWN);
+            // downwards.execute();
+        }
     }
 
     /**
