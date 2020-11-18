@@ -1,5 +1,6 @@
 package main.games;
 
+import main.Runner;
 import main.fight.FightMove;
 import main.fight.PairHeroesAndMonsters;
 import main.legends.Hero;
@@ -38,6 +39,9 @@ public class LegendsOfValorTurn implements TurnExecutor {
     public LegendsOfValorTurn(List<Hero> heroes, List<Monster> monsters) {
         heroIterator = heroes.listIterator();
         monsterIterator = monsters.listIterator();
+        current = null; // will be set in setupNextTurn method
+        firstTurn = true;
+        finished = false;
     }
 
     /**
@@ -45,7 +49,12 @@ public class LegendsOfValorTurn implements TurnExecutor {
      */
     @Override
     public void reset() {
-        // TODO:
+        // Don't use this method for Valor, since Monsters are added along the way, and
+        // we don't want to worry about concurrent modification exceptions.
+        // Instead, the LegendsOfValorRound class should create a new instance of this
+        // class for each round, passing in whichever Heroes and Monsters are
+        // currently in existence.
+        throw new RuntimeException("Don't use this method in Legends of Valor!");
     }
 
     /**
@@ -53,7 +62,104 @@ public class LegendsOfValorTurn implements TurnExecutor {
      */
     @Override
     public void setupNextTurn() throws InvalidNextTurnException {
-        // TODO:
+        if(firstTurn) {
+            setupFirstTurn();
+            firstTurn = false;
+        } else {
+            setupLaterTurns();
+        }
+    }
+
+    /**
+     * Private helper function which sets up the first turn
+     * @throws InvalidNextTurnException if no Heroes have any health power
+     */
+    private void setupFirstTurn() throws InvalidNextTurnException {
+        boolean found = false;
+        while(heroIterator.hasNext() && !found) {
+            Hero hero = heroIterator.next();
+            if(!hero.hasFainted()) {
+                current = hero;
+                found = true;
+            }
+        }
+        if(!found) {
+            throw new InvalidNextTurnException("No valid Hero for the first move!");
+        }
+        firstTurn = false;
+    }
+
+    /**
+     * Private helper function which sets up a turn that is not the first turn.
+     * Checks whether the previous Legend was a Monster or a Hero, and then
+     * marks current as the next opposite Legend (e.g. if a Monster just went,
+     * chooses the next Hero, and vise versa).
+     *
+     * There is a possibility that there are no valid Monsters in the World,
+     * and hence, in such a situation, Heroes should move consecutively. For
+     * example, it's plausible that all Monsters have been killed, and only
+     * Heroes remain.
+     *
+     * In the semantics of Legends of Valor, however, the opposite is not possible.
+     * Heroes are respawned in their Nexus as soon as they faint, and hence
+     * there is not actually a possibility that there may be no Heroes on the board.
+     */
+    private void setupLaterTurns() throws InvalidNextTurnException {
+        // Not the first turn. Check to see if a Hero or a Monster went previously.
+        if(monsterShouldGoNext()) {
+            monsterGoesNext();
+        } else {
+            heroGoesNext();
+        }
+    }
+
+    /**
+     * Indicates whether or not the next Turn should be taken by a Monster.
+     * @return true if the last Legend to go was a Hero, false otherwise.
+     */
+    private boolean monsterShouldGoNext() {
+        return current instanceof Hero;
+    }
+
+    /**
+     * Helper function which handles the situation where a Monster is
+     * supposed to go next. As noted in the above function, there is
+     * a possible scenario where there are actually no living Monsters.
+     */
+    private void monsterGoesNext() throws InvalidNextTurnException {
+        boolean found = false;
+        while(monsterIterator.hasNext() && !found) {
+            Monster monster = monsterIterator.next();
+            if(monster.isAlive()) {
+                current = monster;
+                found = true;
+            }
+        }
+
+        // If there are no living Monsters, then go to the next Hero
+        if(!found) {
+            heroGoesNext();
+        }
+    }
+
+    /**
+     * Private helper function which handles the situation where a Hero is
+     * supposed to go next.
+     */
+    private void heroGoesNext() throws InvalidNextTurnException {
+        boolean found = false;
+        while(heroIterator.hasNext() && !found) {
+            Hero hero = heroIterator.next();
+            if(!hero.hasFainted()) {
+                current = hero;
+                found = true;
+            }
+        }
+
+        // If we were unable to find a valid Hero, then this turn based game has finished
+        if(!found) {
+            finished = true;
+        }
     }
 
     /**
@@ -69,7 +175,10 @@ public class LegendsOfValorTurn implements TurnExecutor {
      */
     @Override
     public void processEndOfTurn() {
-        // TODO:
+        // TODO: after a turn, check if current has reached a nexus
+//        if(Runner.getInstance().getWorld().legendReachedNexus(current)) {
+//            finished = true;
+//        }
     }
 
     /**
@@ -79,7 +188,6 @@ public class LegendsOfValorTurn implements TurnExecutor {
      */
     @Override
     public boolean finishedAllTurns() {
-        // TODO:
-        return false;
+        return finished;
     }
 }
