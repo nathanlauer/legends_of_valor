@@ -1,5 +1,7 @@
 package main.world;
 
+import main.legends.Hero;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,7 +27,10 @@ public class ValorWorld extends World{
 
     }
 
+    @Override
+    protected void placeHero(Hero hero) {
 
+    }
 
 
     /**

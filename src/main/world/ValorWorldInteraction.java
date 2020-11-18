@@ -16,9 +16,10 @@ public class ValorWorldInteraction extends WorldInteraction{
 	private final ValorWorld valorWorld;
 	private List<Hero> chosenHeroes;
 	
-	public ValorWorldInteraction() {
+	public ValorWorldInteraction(ValorWorld valorWorld) {
 		// TODO Auto-generated constructor stub
 		super(valorWorld);
+		this.valorWorld = valorWorld;
 		chosenHeroes = LegendList.getInstance().getChosenHeroes();
 	}
 	

@@ -61,11 +61,11 @@ public class WorldInteraction {
      * Attempts to move in the given direction
      * @param direction the Direction to move
      */
-    private void attemptMove(Hero hero, Direction direction) {
+    private void attemptMove(Direction direction) {
         String failure = "Unable to move " + direction + "! Please enter a different move.";
-        if(world.canMove(hero,direction)) {
+        if(world.canMove(direction)) {
             try {
-                world.move(hero,direction);
+                world.move(direction);
             } catch (InvalidMoveDirection e) {
                 System.out.println(failure);
             }

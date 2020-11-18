@@ -2,6 +2,8 @@ package main.world;
 
 import main.fight.Fight;
 import main.legends.Hero;
+import main.legends.Legend;
+import main.legends.LegendList;
 import main.utils.Colors;
 import main.utils.Validations;
 
@@ -170,6 +172,20 @@ public abstract class World {
     }
 
     /**
+     * Returns true if all heroes can move in a direction
+     * @param direction
+     * @return
+     */
+    public boolean canMove(Direction direction){
+        for(Hero hero:LegendList.getInstance().getChosenHeroes()){
+            if(!canMove(hero,direction)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * Indicates if the cell at the given spot is a NonAccessibleCell
      *
      * @param row the row in question
@@ -212,10 +228,21 @@ public abstract class World {
 
         // Now, enter the new Cell
         Cell cell = getCellAt(getHeroRow(hero), getHeroCol(hero));
-        if (!cell.canEnter()) {
+        if (!cell.canEnter(hero)) {
             throw new InvalidMoveDirection("Unable to enter the cell!");
         }
-        cell.enter(); // may cause certain events to occur, like entering a Market or starting a Fight.
+        cell.enter(hero); // may cause certain events to occur, like entering a Market or starting a Fight.
+    }
+
+    /**
+     * Moves all chosen heroes in direction
+     * @param direction
+     * @throws InvalidMoveDirection
+     */
+    public void move(Direction direction) throws InvalidMoveDirection{
+        for(Hero hero: LegendList.getInstance().getChosenHeroes()){
+            move(hero,direction);
+        }
     }
 
     /**
@@ -248,8 +275,8 @@ public abstract class World {
         String color = Colors.ANSI_RESET;
         StringBuilder lastRow = new StringBuilder(color + "");
         for (int i = 0; i < numCols(); i++) {
-            if (getHeroRow() == numRows() - 1) {
-                if (getHeroRow() == i) {
+            if (getHeroRow(hero) == numRows() - 1) {
+                if (getHeroRow(hero) == i) {
                     color = Colors.ANSI_GREEN;
                 }
             }
