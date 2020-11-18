@@ -3,6 +3,7 @@ package main.world;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Represents a world with vertical lanes
@@ -23,6 +24,27 @@ public class ValorWorld extends World{
         lanes = divideIntoLanes(getCells(),numLanes,space);
 
     }
+
+    /**
+     * Marks the location of the Heroes, by inserting the Heroes into a random Nexus
+     * cell on the World.
+     */
+    public void placeHeroes() {
+        boolean foundCommonCell = false;
+        Random random = new Random();
+        while(!foundCommonCell) {
+            int row = random.nextInt(super.numRows());
+            for(int col = 0; col < super.numCols(); col++) {
+                Cell cell = getCellAt(row, col);
+                if(cell instanceof NexusCell) {
+                    foundCommonCell = true;
+                    super.setHeroesLocation(row,col);
+                    break;
+                }
+            }
+        }
+    }
+
 
     /**
      * Divides world into n lanes, with space between each lane
@@ -48,31 +70,6 @@ public class ValorWorld extends World{
         return lanes;
     }
 
-    private class Lane{
-        private List<Cell> cells;
-        public Lane(){
-            cells = new ArrayList<>();
-        }
 
-        public void addCell(Cell cell){
-            cells.add(cell);
-        }
-
-        /**
-         * Returns whether or not cell is in lane
-         * @param cell
-         * @return
-         */
-        public boolean isInLane(Cell cell){
-            return this.cells.contains(cell);
-        }
-
-
-        @Override
-        public String toString(){
-            return Arrays.toString(cells.toArray());
-        }
-
-    }
 
 }

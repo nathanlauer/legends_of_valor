@@ -5,6 +5,7 @@ import main.utils.Colors;
 import main.utils.Validations;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -18,40 +19,49 @@ import java.util.Random;
  * <p>
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
-public class World {
+public abstract class World {
     private final Cell[][] cells;
-    private int heroesRow;
-    private int heroesCol;
+    private HashMap<String,Position> heroPositions;
+    private class Position{
+        private int row, col;
+        public Position(int row, int col){
+            this.row = row;
+            this.col = col;
+        }
+        public int getRow() {
+            return row;
+        }
+        public int getCol() {
+            return col;
+        }
+    }
     private Fight fight;
 
     /**
      * Standard constructor, builds a World of the passed in size.
+     *
      * @param worldBuilder class which builds this World
      */
     public World(WorldBuilder worldBuilder) {
         this.cells = worldBuilder.run();
-        heroesRow = 0;
-        heroesCol = 0;
+        heroPositions = new HashMap<>();
     }
 
     /**
-     *
      * @return the number of rows in this World.
      */
-    private int numRows() {
+    protected int numRows() {
         return this.cells.length;
     }
 
     /**
-     *
      * @return the number of columns in this World.
      */
-    private int numCols() {
+    protected int numCols() {
         return this.cells[0].length;
     }
 
     /**
-     *
      * @return the Cells composing this World
      */
     protected Cell[][] getCells() {
@@ -60,6 +70,7 @@ public class World {
 
     /**
      * Returns the Cell corresponding to the passed in row and col
+     *
      * @param row the requested row
      * @param col requested col
      * @return Cell at the (row/col) location
@@ -70,7 +81,6 @@ public class World {
     }
 
     /**
-     *
      * @return the ongoing fight in this World
      */
     public Fight getFight() {
@@ -79,6 +89,7 @@ public class World {
 
     /**
      * Sets the ongoing fight in this World
+     *
      * @param fight the current Fight
      */
     public void setFight(Fight fight) {
@@ -94,6 +105,7 @@ public class World {
 
     /**
      * Indicates whether or not a fight is currently happening
+     *
      * @return true if a fight is ongoing, false otherwise.
      */
     public boolean isFighting() {
@@ -104,64 +116,52 @@ public class World {
      * Marks the location of the Heroes, by inserting the Heroes into a random
      * cell on the World.
      */
-    public void placeHeroes() {
-        boolean foundCommonCell = false;
-        Random random = new Random();
-        while(!foundCommonCell) {
-            int row = random.nextInt(this.numRows());
-            for(int col = 0; col < numCols(); col++) {
-                Cell cell = getCellAt(row, col);
-                if(cell instanceof CommonCell) {
-                    foundCommonCell = true;
-                    this.heroesRow = row;
-                    this.heroesCol = col;
-                    break;
-                }
-            }
+    protected abstract void placeHero(String heroId);
+    public void placeHeroes(List<String> heroIds) {
+        for(String heroId:heroIds){
+            placeHero(heroId);
         }
     }
 
     /**
      * Sets the Heroes location
-     * @param row the new row for the Heroes
-     * @param col the new col for the Heroes
+     * @param heroId - identifier for hero
+     * @param row the new row for the hero
+     * @param col the new col for the hero
      */
-    public void setHeroesLocation(int row, int col) {
+    public void setHeroLocation(String heroId,int row, int col) {
         checkValidity(row, col);
-        this.heroesRow = row;
-        this.heroesCol = col;
+        heroPositions.put(heroId,new Position(row,col));
     }
 
     /**
-     *
      * @return the row of the Heroes
      */
-    public int getHeroesRow() {
-        return heroesRow;
+    private int getHeroRow(String heroId) {
+        return heroPositions.get(heroId).getRow();
     }
 
     /**
-     *
      * @return the col of the Heroes
      */
-    public int getHeroesCol() {
-        return heroesCol;
+    private int getHeroCol(String heroId) {
+        return heroPositions.get(heroId).getCol();
     }
 
-    public boolean canMove(Direction direction) {
+    public boolean canMove(String heroId,Direction direction) {
         boolean allowed = false;
         switch (direction) {
             case UP:
-                allowed = getHeroesRow() > 0 && !cellIsNonAccessible(getHeroesRow() - 1, getHeroesCol());
+                allowed = getHeroRow(heroId) > 0 && !cellIsNonAccessible(getHeroRow(heroId) - 1, getHeroCol(heroId));
                 break;
             case DOWN:
-                allowed = getHeroesRow() < numRows() - 1 && !cellIsNonAccessible(getHeroesRow() + 1, getHeroesCol());
+                allowed = getHeroRow(heroId) < numRows() - 1 && !cellIsNonAccessible(getHeroRow(heroId) + 1, getHeroCol(heroId));
                 break;
             case LEFT:
-                allowed = getHeroesCol() > 0 && !cellIsNonAccessible(getHeroesRow(), getHeroesCol() - 1);
+                allowed = getHeroCol(heroId) > 0 && !cellIsNonAccessible(getHeroRow(heroId), getHeroCol(heroId) - 1);
                 break;
             case RIGHT:
-                allowed = getHeroesCol() < numCols() - 1 && !cellIsNonAccessible(getHeroesRow(), getHeroesCol() + 1);
+                allowed = getHeroCol(heroId) < numCols() - 1 && !cellIsNonAccessible(getHeroRow(heroId), getHeroCol(heroId) + 1);
                 break;
             default:
                 throw new RuntimeException("Unknown direction!");
@@ -171,6 +171,7 @@ public class World {
 
     /**
      * Indicates if the cell at the given spot is a NonAccessibleCell
+     *
      * @param row the row in question
      * @param col the col in question
      * @return true if this cell is NonAccessible, false otherwise
@@ -183,34 +184,35 @@ public class World {
     /**
      * Moves the Heroes to their new location.
      * Enters the Cell at the new location, which may cause certain events to occur.
+     *
      * @param direction the direction to move in
      * @throws InvalidMoveDirection if unable to move in the desired direction.
      */
-    public void move(Direction direction) throws InvalidMoveDirection {
-        if(!canMove(direction)) {
+    public void move(String heroId,Direction direction) throws InvalidMoveDirection {
+        if (!canMove(heroId,direction)) {
             throw new InvalidMoveDirection("Cannot move in this direction!");
         }
 
         switch (direction) {
             case UP:
-                this.setHeroesLocation(getHeroesRow() - 1, getHeroesCol());
+                this.setHeroLocation(heroId,getHeroRow(heroId) - 1, getHeroCol(heroId));
                 break;
             case DOWN:
-                this.setHeroesLocation(getHeroesRow() + 1, getHeroesCol());
+                this.setHeroLocation(heroId,getHeroRow(heroId) + 1, getHeroCol(heroId));
                 break;
             case LEFT:
-                this.setHeroesLocation(getHeroesRow(), getHeroesCol() - 1);
+                this.setHeroLocation(heroId,getHeroRow(heroId), getHeroCol(heroId) - 1);
                 break;
             case RIGHT:
-                this.setHeroesLocation(getHeroesRow(), getHeroesCol() + 1);
+                this.setHeroLocation(heroId,getHeroRow(heroId), getHeroCol(heroId) + 1);
                 break;
             default:
                 throw new InvalidMoveDirection("Unknown move direction!");
         }
 
         // Now, enter the new Cell
-        Cell cell = getCellAt(getHeroesRow(), getHeroesCol());
-        if(!cell.canEnter()) {
+        Cell cell = getCellAt(getHeroRow(heroId), getHeroCol(heroId));
+        if (!cell.canEnter()) {
             throw new InvalidMoveDirection("Unable to enter the cell!");
         }
         cell.enter(); // may cause certain events to occur, like entering a Market or starting a Fight.
@@ -218,21 +220,22 @@ public class World {
 
     /**
      * Each entry in the returned String is a single line to output.
+     *
      * @return a string representation of this World.
      */
     public List<String> draw() {
         List<String> output = new ArrayList<>();
-        for(int i = 0; i < Cell.numDrawnRows * numRows(); i++) {
+        for (int i = 0; i < Cell.numDrawnRows * numRows(); i++) {
             output.add("");
         }
 
-        for(int row = 0; row < numRows(); row++) {
-            for(int col = 0; col < numCols(); col++) {
+        for (int row = 0; row < numRows(); row++) {
+            for (int col = 0; col < numCols(); col++) {
                 Cell cell = getCellAt(row, col);
-                List<String> drawn = cell.draw(getHeroesRow(), getHeroesCol());
+                List<String> drawn = cell.draw(getHeroRow(heroId), getHeroCol(heroId));
 
                 // Append each element of drawn to the correct location of output
-                for(int i = 0; i < drawn.size(); i++) {
+                for (int i = 0; i < drawn.size(); i++) {
                     int index = i + Cell.numDrawnRows * row;
                     String oneDrawnRow = drawn.get(i);
                     String current = output.get(index);
@@ -244,14 +247,14 @@ public class World {
 
         String color = Colors.ANSI_RESET;
         StringBuilder lastRow = new StringBuilder(color + "");
-        for(int i = 0; i < numCols(); i++) {
-            if(heroesRow == numRows() - 1) {
-                if(heroesCol == i) {
+        for (int i = 0; i < numCols(); i++) {
+            if (getHeroRow() == numRows() - 1) {
+                if (getHeroRow() == i) {
                     color = Colors.ANSI_GREEN;
                 }
             }
             lastRow.append(color).append("+-----+");
-            if(color.equals(Colors.ANSI_GREEN)) {
+            if (color.equals(Colors.ANSI_GREEN)) {
                 color = Colors.ANSI_RESET;
             }
         }
@@ -262,6 +265,7 @@ public class World {
 
     /**
      * Ensures that row and col are not negative, and within a valid range.
+     *
      * @param row the row in question
      * @param col the col in question
      */
