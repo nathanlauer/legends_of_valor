@@ -2,14 +2,19 @@ package main.legends;
 
 import main.attributes.*;
 import main.utils.Coffer;
+import main.utils.GetUserListNumericalInput;
+import main.utils.GetUserNumericInput;
+import main.utils.Output;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -44,7 +49,7 @@ public class LegendList {
      * Private constructor
      */
     private LegendList() {
-        legends = new ArrayList<>();
+        legends = new ArrayList<>(); 
         try {
             new ReadLegendsFromDisk().run();
 
@@ -52,11 +57,52 @@ public class LegendList {
             e.printStackTrace();
             // Shouldn't happen
         }
-        Collections.shuffle(legends); // so we don't have the same order every time
+       
+        //Collections.shuffle(legends); // so we don't have the same order every time
         List<Hero> allHeroes = getHeroes();
-        Random random = new Random();
+        this.chosenHeroes = chooseHeroes(allHeroes); 
+        /**Random random = new Random();
         int numHeroes = random.nextInt(3) + 1;
-        this.chosenHeroes = allHeroes.subList(0, numHeroes);
+        this.chosenHeroes = allHeroes.subList(0, numHeroes);**/
+    }
+    
+    /**
+     * Player chooses a team of heroes.
+     * Default max number of heroes: 3. 
+     */
+    private List<Hero> chooseHeroes(List<Hero> allHeroes) {
+    	int heroNum = 0;
+    	List<Hero> heroChosen = new ArrayList<>();
+    	Output.printOutputables(allHeroes);
+    	List<String> options = new ArrayList<>();
+    	for(Hero hero: allHeroes) {
+    		options.add(hero.getName());
+    	}
+    	String prompt = "Please choose your team of Heroes. Up to 3 heroes.";
+        List<Integer> chosen = new GetUserListNumericalInput(new Scanner(System.in), prompt, options).run();
+        for(Integer i : chosen) {
+        	if(heroChosen.contains(allHeroes.get(i-1))) {//The program only supports unique heroes.
+            	System.out.println("You can only have one "+allHeroes.get(i-1).getName()+"in your team");
+            	continue;
+            }
+        	if(heroNum == 3) {
+            	System.out.println("You can only choose 3 heroes at most.");
+            	break;
+            }
+        	heroChosen.add(allHeroes.get(i-1));
+            heroNum++;  
+        }
+        return heroChosen;
+    }
+    
+    /**
+     * print out the initial stats of the chosen heroes.
+     */
+    public void printChosenHeroes() {
+    	Output.printSeparator();
+    	System.out.println("Your team: ");
+    	Output.printOutputables(chosenHeroes);
+    	Output.printSeparator();
     }
 
     /**

@@ -7,7 +7,6 @@ import main.utils.Validations;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Class World represents the world. It is composed of a series of Cells, and allows
