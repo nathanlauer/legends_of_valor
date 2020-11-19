@@ -4,6 +4,7 @@ package main.world;
  * Bush cell
  * @author Sandra Zhen
  */
+import main.Runner;
 import main.legends.Hero;
 import main.utils.Colors;
 
@@ -43,7 +44,8 @@ public class BushCell extends Cell{
         List<String> output = new ArrayList<>();
         String color = Colors.ANSI_RESET;
         output.add(color + "B-----B ");
-        output.add(color + "|     | ");
+        World world = Runner.getInstance().getWorld();
+        output.add(world.drawMiddleRow(this, Colors.ANSI_RESET));
         output.add(color + "B-----B " + Colors.ANSI_RESET); // Reset the color for the next Cell
         return output;
     }

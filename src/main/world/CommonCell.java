@@ -108,7 +108,8 @@ public class CommonCell extends Cell {
         List<String> output = new ArrayList<>();
         String color = Colors.ANSI_RESET;
         output.add(color + "+-----+ ");
-        output.add(color + "|     | ");
+        World world = Runner.getInstance().getWorld();
+        output.add(world.drawMiddleRow(this, Colors.ANSI_RESET));
         output.add(color + "+-----+ " + Colors.ANSI_RESET); // Reset the color for the next Cell
         return output;
     }

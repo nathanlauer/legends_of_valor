@@ -6,6 +6,7 @@ import main.legends.Hero;
 import main.legends.Legend;
 import main.legends.LegendList;
 import main.legends.Monster;
+import main.utils.Colors;
 
 import java.util.*;
 
@@ -49,6 +50,19 @@ public class ValorWorld extends World {
                 }
             }
         }
+    }
+
+    /**
+     * Given a cell, draws the middle row for the cell according to the
+     * semantics of the specific World.
+     *
+     * @param cell The cell to be drawn
+     * @return String representing the middle row of a Cell.
+     */
+    @Override
+    public String drawMiddleRow(Cell cell, String color) {
+
+        return color + "|" + Colors.ANSI_RESET + "     " + color + "| " + Colors.ANSI_RESET; // TODO: add Hero and Monster position
     }
 
 

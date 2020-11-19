@@ -235,6 +235,14 @@ public abstract class World implements Drawable {
     }
 
     /**
+     * Given a cell, draws the middle row for the cell according to the
+     * semantics of the specific World.
+     * @param cell The cell to be drawn
+     * @return String representing the middle row of a Cell.
+     */
+    public abstract String drawMiddleRow(Cell cell, String color);
+
+    /**
      * Each entry in the returned String is a single line to output.
      *
      * @return a string representation of this World.
@@ -260,21 +268,6 @@ public abstract class World implements Drawable {
                 }
             }
         }
-
-//        String color = Colors.ANSI_RESET;
-//        StringBuilder lastRow = new StringBuilder(color + "");
-//        for(int i = 0; i < numCols(); i++) {
-//            if(heroesRow == numRows() - 1) {
-//                if(heroesCol == i) {
-//                    color = Colors.ANSI_GREEN;
-//                }
-//            }
-//            lastRow.append(color).append("+-----+");
-//            if(color.equals(Colors.ANSI_GREEN)) {
-//                color = Colors.ANSI_RESET;
-//            }
-//        }
-//        output.add(lastRow.toString());
 
         return output;
     }

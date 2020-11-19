@@ -4,6 +4,7 @@ package main.world;
  * Cave cell
  * @author Sandra Zhen
  */
+import main.Runner;
 import main.legends.Hero;
 import main.utils.Colors;
 
@@ -43,7 +44,8 @@ public class CaveCell extends Cell{
         List<String> output = new ArrayList<>();
         String color = Colors.ANSI_RESET;
         output.add(color + "C-----C ");
-        output.add(color + "|     | ");
+        World world = Runner.getInstance().getWorld();
+        output.add(world.drawMiddleRow(this, Colors.ANSI_RESET));
         output.add(color + "C-----C " + Colors.ANSI_RESET); // Reset the color for the next Cell
         return output;
     }

@@ -1,5 +1,6 @@
 package main.world;
 
+import main.Runner;
 import main.legends.Hero;
 import main.utils.Colors;
 
@@ -44,7 +45,8 @@ public class MonsterNexusCell extends NexusCell{
         List<String> output = new ArrayList<>();
         String color = Colors.ANSI_CYAN;
         output.add(color + "+-----+ ");
-        output.add(color + "|     | ");
+        World world = Runner.getInstance().getWorld();
+        output.add(world.drawMiddleRow(this, Colors.ANSI_CYAN));
         output.add(color + "+-----+ " + Colors.ANSI_RESET); // Reset the color for the next Cell
         return output;
     }
