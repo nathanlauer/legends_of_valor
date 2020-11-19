@@ -98,6 +98,7 @@ public class LegendsOfValorTurn implements TurnExecutor {
         }
 
         // And draw the World, so the user has a sense of what is going on
+        Output.printSeparator();
         Output.drawWorld(Runner.getInstance().getWorld());
     }
 
