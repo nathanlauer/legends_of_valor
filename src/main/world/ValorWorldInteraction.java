@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import main.attributes.Position;
 import main.legends.Hero;
 import main.legends.LegendList;
 import main.utils.GetUserCommand;
@@ -78,11 +79,8 @@ public class ValorWorldInteraction extends WorldInteraction{
 		 Hero teleportee = teleportTo();//get the target hero that the current hero wants to teleport to.
 		 String failure = "Unable to transport to " +teleportee.getName()  + "! Please teleport to anther hero's side.";
 	        if(valorWorld.canTeleport(hero, teleportee.getPosition())) {
-	            try {
-	                valorWorld.move(hero, teleportee.getPosition());
-	            } catch (InvalidMoveDirection e) {
-	                System.out.println(failure);
-	            }
+	            valorWorld.setHeroLocation(hero, valorWorld.getHeroRow(teleportee),valorWorld.getHeroCol(hero));
+
 	        } else {
 	            System.out.println(failure);
 	        }

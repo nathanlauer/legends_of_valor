@@ -15,12 +15,12 @@ public class ValorWorldBuilder extends WorldBuilder{
     /**
      * Class represents distribution of cells in to valor world
      */
-    public class ValorWorldDistribution{
+    public static class ValorWorldDistribution{
         private int chanceOfBushCells,chanceOfPlainCells,chanceOfCaveCells,chanceOfKoulouCells;
-        ValorWorldDistribution(){//manual default config
+        public ValorWorldDistribution(){//manual default config
             this(20,40,20,20);
         }
-        ValorWorldDistribution(int chanceOfBushCells,int chanceOfPlainCells,int chanceOfCaveCells,int chanceOfKoulouCells){
+        public ValorWorldDistribution(int chanceOfBushCells,int chanceOfPlainCells,int chanceOfCaveCells,int chanceOfKoulouCells){
             Validations.nonNegative(chanceOfBushCells, "chanceOfBushCells");
             Validations.nonNegative(chanceOfPlainCells, "chanceOfPlainCells");
             Validations.nonNegative(chanceOfCaveCells, "chanceOfCaveCells");

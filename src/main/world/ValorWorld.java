@@ -4,6 +4,7 @@ import javafx.geometry.Pos;
 import main.attributes.Position;
 import main.legends.Hero;
 import main.legends.Legend;
+import main.legends.LegendList;
 import main.legends.Monster;
 
 import java.util.*;
@@ -100,20 +101,22 @@ public class ValorWorld extends World{
 
     /**
      * Spawns new monsters in valor world
-     * @param numMonsters - number of monsters to spawn
      * @return list of spawned monsters
      */
-    public List<Monster> spawnNewMonsters(int numMonsters){
-
+    public List<Monster> spawnNewMonsters(){
+        List<Monster > monsterList = LegendList.getInstance().getCorrespondingMonsters();
         List<Monster> monsters = new ArrayList<>();
-        for(int i = 0; i<numMonsters;i++){
-            //TODO implement by building monster. Is there an existing factory for it?
+        for(int i = 0; i<monsterList.size();i++){
+            Monster monster = monsterList.get(i);
+            setMonsterPosition(nexus);
+            monsters.add(monster);
+
         }
         return monsters;
     }
 
     public Monster spawnNewMonsterInLane(Lane lane){
-        //TODO implement
+        //TODO implement by building monster and setting its position to the lane.
     }
 
 

@@ -38,7 +38,8 @@ public class Runner {
     }
 
     private void buildValorWorld(){
-        WorldBuilder builder = new ValorWorldBuilder(8, 8);
+        ValorWorldBuilder.ValorWorldDistribution distribution = new ValorWorldBuilder.ValorWorldDistribution();
+        WorldBuilder builder = new ValorWorldBuilder(8, 8,distribution);
         world = new ValorWorld(builder);
         world.placeHeroes(LegendList.getInstance().getChosenHeroes());
         worldInteraction = new WorldInteraction(world);
