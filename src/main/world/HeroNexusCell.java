@@ -43,10 +43,10 @@ public class HeroNexusCell extends NexusCell{
     public List<String> draw() {
         List<String> output = new ArrayList<>();
         String color = Colors.ANSI_GREEN;
-        output.add(color + "+-----+ ");
+        output.add(color + "M-----M ");
         World world = Runner.getInstance().getWorld();
         output.add(world.drawMiddleRow(this, Colors.ANSI_GREEN));
-        output.add(color + "+-----+ " + Colors.ANSI_RESET); // Reset the color for the next Cell
+        output.add(color + "M-----M " + Colors.ANSI_RESET); // Reset the color for the next Cell
         return output;
     }
 }
