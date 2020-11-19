@@ -79,7 +79,6 @@ public class ValorWorld extends World {
                 rightSide +
                 color + "| "
                 + Colors.ANSI_RESET;
-//        return color + "|" + Colors.ANSI_RESET + "     " + color + "| " + Colors.ANSI_RESET; // TODO: add Hero and Monster position
     }
 
 
