@@ -26,12 +26,14 @@ public class HeroNexusCell extends NexusCell{
 
     @Override
     public boolean canEnter(List<Hero> heroes) {
-        return false;
+        // TODO: check if there is another Hero in this cell already
+        return true;
     }
 
     @Override
     public void enter(List<Hero> heroes) {
-
+        // This is a market cell, so enter the Market with the heroes
+        super.enter(heroes);
     }
 
     /**
