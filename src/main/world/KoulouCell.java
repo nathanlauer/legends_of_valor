@@ -25,7 +25,8 @@ public class KoulouCell extends Cell{
 
     @Override
     public boolean canEnter(List<Hero> heroes) {
-        return false;
+        // TODO: check if there is another Hero in this cell already
+        return true;
     }
 
     @Override
@@ -40,7 +41,6 @@ public class KoulouCell extends Cell{
      */
     @Override
     public List<String> draw() {
-        // TODO: add in Hero and Monster if necessary
         List<String> output = new ArrayList<>();
         String color = Colors.ANSI_RESET;
         output.add(color + "K-----K ");
