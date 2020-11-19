@@ -20,5 +20,6 @@ public interface Drawable {
      * @param heroesRow location of the Heroes as a row
      * @param heroesCol location of the Heroes as a column
      */
-    List<String> draw(int heroesRow, int heroesCol);
+//    List<String> draw(int heroesRow, int heroesCol);
+    List<String> draw();
 }

@@ -2,6 +2,7 @@ package main.world;
 
 import main.legends.Hero;
 
+import java.util.List;
 import java.util.Random;
 
 public class RandomWorld extends World {
@@ -35,4 +36,13 @@ public class RandomWorld extends World {
         }
     }
 
+    /**
+     * Returns a string representation of the implementing entity. If
+     * the position of the entity corresponds to (heroesRow,heroesCol), then
+     * draws that the Heroes are in that location.
+     */
+    @Override
+    public List<String> draw() {
+        return null; // TODO: if time
+    }
 }

@@ -72,28 +72,44 @@ public class CommonCell extends Cell {
         }
     }
 
+//    /**
+//     * Returns a string representation of the implementing entity. If
+//     * the position of the entity corresponds to (heroesRow,heroesCol), then
+//     * draws that the Heroes are in that location.
+//     *
+//     * @param heroesRow location of the Heroes as a row
+//     * @param heroesCol location of the Heroes as a column
+//     */
+//    @Override
+//    public List<String> draw(int heroesRow, int heroesCol) {
+//        List<String> output = new ArrayList<>();
+//        String color = Colors.ANSI_RESET;
+//        if(heroesJustAbove(heroesRow, heroesCol) || sameLocation(heroesRow, heroesCol)) {
+//            color = Colors.ANSI_GREEN;
+//        }
+//        output.add(color + "+-----+");
+//        color = sameLocation(heroesRow, heroesCol) ? Colors.ANSI_GREEN : Colors.ANSI_RESET;
+//        if(sameLocation(heroesRow, heroesCol)) {
+//            output.add(color + "|  H  |");
+//        } else {
+//            output.add(color + "|     |");
+//        }
+//        return output;
+//    }
+
     /**
      * Returns a string representation of the implementing entity. If
      * the position of the entity corresponds to (heroesRow,heroesCol), then
      * draws that the Heroes are in that location.
-     *
-     * @param heroesRow location of the Heroes as a row
-     * @param heroesCol location of the Heroes as a column
      */
     @Override
-    public List<String> draw(int heroesRow, int heroesCol) {
+    public List<String> draw() {
+        // TODO: add in Hero and Monster if necessary
         List<String> output = new ArrayList<>();
         String color = Colors.ANSI_RESET;
-        if(heroesJustAbove(heroesRow, heroesCol) || sameLocation(heroesRow, heroesCol)) {
-            color = Colors.ANSI_GREEN;
-        }
-        output.add(color + "+-----+");
-        color = sameLocation(heroesRow, heroesCol) ? Colors.ANSI_GREEN : Colors.ANSI_RESET;
-        if(sameLocation(heroesRow, heroesCol)) {
-            output.add(color + "|  H  |");
-        } else {
-            output.add(color + "|     |");
-        }
+        output.add(color + "+-----+ ");
+        output.add(color + "|     | ");
+        output.add(color + "+-----+ " + Colors.ANSI_RESET); // Reset the color for the next Cell
         return output;
     }
 }

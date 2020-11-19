@@ -13,7 +13,7 @@ import java.util.*;
  * Represents a world with vertical lanes
  * @author Sandra Zhen
  */
-public class ValorWorld extends World{
+public class ValorWorld extends World {
     private final int laneWidth = 2;
     private final int numLanes = 3;
     private final int space = 1;
@@ -96,7 +96,7 @@ public class ValorWorld extends World{
      */
     public void respawnHero(Hero hero){
         Position position = spawnPositions.get(hero);
-        setHeroLocation(hero,position.getPositionRow(),position.getPositionCol());
+//        setHeroLocation(hero,position.getPositionRow(),position.getPositionCol());
     }
 
     /**
@@ -108,7 +108,7 @@ public class ValorWorld extends World{
         List<Monster> monsters = new ArrayList<>();
         for(int i = 0; i<monsterList.size();i++){
             Monster monster = monsterList.get(i);
-            setMonsterPosition(nexus);
+//            setMonsterPosition(nexus);
             monsters.add(monster);
 
         }
@@ -117,7 +117,6 @@ public class ValorWorld extends World{
 
     public Monster spawnNewMonsterInLane(Lane lane){
         //TODO implement by building monster and setting its position to the lane.
+        return null;
     }
-
-
 }

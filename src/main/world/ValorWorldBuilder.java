@@ -63,12 +63,14 @@ public class ValorWorldBuilder extends WorldBuilder{
             }
         }
         //replace first row with monster nexus cells
+        int row = 0;
         for(int i = 0; i<cells[0].length;i++){
-            cells[cells.length-1][i] = new MonsterNexusCell(cells.length-1,i);
+            cells[row][i] = new MonsterNexusCell(row,i);
         }
         //replace last row with hero nexus cells
+        row = cells.length - 1;
         for(int i = 0; i<cells[0].length;i++){
-            cells[0][i] = new HeroNexusCell(0,i);
+            cells[row][i] = new HeroNexusCell(row,i);
         }
         //create columns of inaccessible cells
         for(int r = 0; r<cells.length;r++) {
