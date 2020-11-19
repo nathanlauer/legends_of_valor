@@ -32,7 +32,8 @@ public class HeroNexusCell extends NexusCell{
 
     @Override
     public void enter(List<Hero> heroes) {
-
+        // This is a market cell, so enter the Market with the heroes
+        super.enter(heroes);
     }
 
     /**
