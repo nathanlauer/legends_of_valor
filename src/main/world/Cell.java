@@ -1,5 +1,6 @@
 package main.world;
 
+import main.attributes.Position;
 import main.legends.Hero;
 import main.utils.Validations;
 
@@ -73,6 +74,15 @@ public abstract class Cell implements Drawable {
      */
     public boolean sameLocation(int row, int col) {
         return row == getRow() && col == getCol();
+    }
+
+    /**
+     * Indicates whether or not this Cell has the passed in Position
+     * @param position the relevant Position
+     * @return true if the passed Position has the correct row/col, false otherwise
+     */
+    public boolean hasPosition(Position position) {
+        return sameLocation(position.getRow(), position.getCol());
     }
 
     /**

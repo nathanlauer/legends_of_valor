@@ -10,6 +10,7 @@ import main.utils.Validations;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Class World represents the world. It is composed of a series of Cells, and allows
@@ -136,6 +137,41 @@ public abstract class World implements Drawable {
     protected int getHeroCol(Hero hero) {
         return heroPositions.get(hero).getCol();
     }
+
+    /**
+     * Indicates whether or not there is a hero in the passed in Cell
+     * @param cell the Cell in question
+     * @return true if the Hero is in the cell, false otherwise
+     */
+    public boolean isHeroInCell(Cell cell) {
+        for (Map.Entry<Hero,Position> entry : heroPositions.entrySet()) {
+            Position position = entry.getValue();
+            if(cell.hasPosition(position)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns the Hero in the passed in Cell, or null if none
+     * @param cell the Cell in question
+     * @return a contained Hero in the passed Cell, or null if none
+     */
+    public Hero getHeroInCell(Cell cell) {
+        if(!isHeroInCell(cell)) {
+            return null;
+        }
+
+        for (Map.Entry<Hero,Position> entry : heroPositions.entrySet()) {
+            Position position = entry.getValue();
+            if(cell.hasPosition(position)) {
+                return entry.getKey();
+            }
+        }
+        return null;
+    }
+
 
     public boolean canMove(Hero hero,Direction direction) {
         boolean allowed = false;

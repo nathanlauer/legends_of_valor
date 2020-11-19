@@ -30,7 +30,7 @@ public class ValorWorld extends World {
         super(worldBuilder);
         lanes = divideIntoLanes(getCells(),numLanes,space);
         spawnPositions = new HashMap<>();
-
+        monsterPositions = new HashMap<>();
     }
 
     @Override
@@ -61,8 +61,27 @@ public class ValorWorld extends World {
      */
     @Override
     public String drawMiddleRow(Cell cell, String color) {
+        // Draw the Hero on the left side, or empty space if no Hero
+        String leftSide = "  "; // assume two spaces
+        if(isHeroInCell(cell)) {
+            Hero hero = getHeroInCell(cell);
+            leftSide = Colors.ANSI_GREEN + hero.getName().substring(0, 2);
+        }
 
-        return color + "|" + Colors.ANSI_RESET + "     " + color + "| " + Colors.ANSI_RESET; // TODO: add Hero and Monster position
+        // Draw the Monster on the right side, or empty space if no Monster
+        String rightSide = "  ";
+        if(this.isMonsterInCell(cell)) {
+            Monster monster = getMonsterInCell(cell);
+            rightSide = Colors.ANSI_RED + monster.getName().substring(0, 2);
+        }
+
+        return color + "|" +
+                leftSide +
+                " " +
+                rightSide +
+                color + "| "
+                + Colors.ANSI_RESET;
+//        return color + "|" + Colors.ANSI_RESET + "     " + color + "| " + Colors.ANSI_RESET; // TODO: add Hero and Monster position
     }
 
 
@@ -131,6 +150,40 @@ public class ValorWorld extends World {
 
     public Monster spawnNewMonsterInLane(Lane lane){
         //TODO implement by building monster and setting its position to the lane.
+        return null;
+    }
+
+    /**
+     * Indicates whether or not there is a Monster in the passed in Cell
+     * @param cell the Cell in question
+     * @return true if there is Monster present in the Cell, false otherwise
+     */
+    public boolean isMonsterInCell(Cell cell) {
+        for (Map.Entry<Monster,Position> entry : monsterPositions.entrySet()) {
+            Position position = entry.getValue();
+            if(cell.hasPosition(position)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns the Monster in the passed Cell, or null if there are none
+     * @param cell the Cell in question
+     * @return Monster in the passed Cell, or null if none
+     */
+    public Monster getMonsterInCell(Cell cell) {
+        if(!isMonsterInCell(cell)) {
+            return null;
+        }
+
+        for (Map.Entry<Monster,Position> entry : monsterPositions.entrySet()) {
+            Position position = entry.getValue();
+            if(cell.hasPosition(position)) {
+                return entry.getKey();
+            }
+        }
         return null;
     }
 }
