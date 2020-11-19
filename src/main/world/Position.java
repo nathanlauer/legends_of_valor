@@ -1,7 +1,7 @@
 /**
  * 
  */
-package main.attributes;
+package main.world;
 
 /**
  * 

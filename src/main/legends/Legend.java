@@ -3,7 +3,7 @@ package main.legends;
 import main.attributes.Ability;
 import main.attributes.HealthPower;
 import main.attributes.Level;
-import main.attributes.Position;
+import main.world.Position;
 import main.utils.Outputable;
 
 import java.util.ArrayList;

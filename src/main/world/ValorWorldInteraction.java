@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import main.attributes.Position;
 import main.legends.Hero;
 import main.legends.LegendList;
 import main.utils.GetUserCommand;

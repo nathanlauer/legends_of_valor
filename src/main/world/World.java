@@ -24,19 +24,7 @@ import java.util.List;
 public abstract class World {
     private final Cell[][] cells;
     private HashMap<Hero,Position> heroPositions;
-    private class Position{
-        private int row, col;
-        public Position(int row, int col){
-            this.row = row;
-            this.col = col;
-        }
-        public int getRow() {
-            return row;
-        }
-        public int getCol() {
-            return col;
-        }
-    }
+
     private Fight fight;
 
     /**
@@ -140,14 +128,14 @@ public abstract class World {
      * @return the row of the Heroes
      */
     protected int getHeroRow(Hero hero) {
-        return heroPositions.get(hero).getRow();
+        return heroPositions.get(hero).getPositionRow();
     }
 
     /**
      * @return the col of the Heroes
      */
     protected int getHeroCol(Hero hero) {
-        return heroPositions.get(hero).getCol();
+        return heroPositions.get(hero).getPositionCol();
     }
 
     public boolean canMove(Hero hero,Direction direction) {

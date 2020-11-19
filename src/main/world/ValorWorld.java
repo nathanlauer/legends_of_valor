@@ -1,9 +1,6 @@
 package main.world;
 
-import javafx.geometry.Pos;
-import main.attributes.Position;
 import main.legends.Hero;
-import main.legends.Legend;
 import main.legends.LegendList;
 import main.legends.Monster;
 
