@@ -49,7 +49,7 @@ public class ValorWorldInteraction extends WorldInteraction{
 	                	attemptTeleport(hero);
 	                	break;
 	                case BACK:
-	                	attemptBack(hero);
+//	                	attemptBack(hero);
 	                	break;
 	                case QUIT:
 	                    finished = true;
@@ -76,19 +76,19 @@ public class ValorWorldInteraction extends WorldInteraction{
 	 }
 	 
 	 public void attemptTeleport(Hero hero) {
-		 Hero teleportee = teleportTo();//get the target hero that the current hero wants to teleport to.
-		 String failure = "Unable to transport to " +teleportee.getName()  + "! Please teleport to anther hero's side.";
-     if(valorWorld.canTeleport(hero, teleportee.getPosition())) {
-         valorWorld.setHeroLocation(hero, valorWorld.getHeroRow(teleportee),valorWorld.getHeroCol(hero));
-     } else {
-         System.out.println(failure);
-     }
+//		 Hero teleportee = teleportTo();//get the target hero that the current hero wants to teleport to.
+//		 String failure = "Unable to transport to " +teleportee.getName()  + "! Please teleport to anther hero's side.";
+//     if(valorWorld.canTeleport(hero, teleportee.getPosition())) {
+//         valorWorld.setHeroLocation(hero, valorWorld.getHeroRow(teleportee),valorWorld.getHeroCol(hero));
+//     } else {
+//         System.out.println(failure);
+//     }
 	 }
 	 
 	 public void backToRespawn (Hero hero) { // should be in ValorWorld.
-		 currentPointCol = heroPositionMap.get(hero).getCol();//
-		 Position respawn = new Position(0,currentPointCol);
-		 heroPositionMap.replace(hero,respawn);
+//		 currentPointCol = heroPositionMap.get(hero).getCol();//
+//		 Position respawn = new Position(0,currentPointCol);
+//		 heroPositionMap.replace(hero,respawn);
 	 }
 	 
 	 public Hero teleportTo() {

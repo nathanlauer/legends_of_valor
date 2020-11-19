@@ -2,7 +2,7 @@ package main.world;
 
 import java.util.List;
 
-public abstract class NexusCell extends Cell{
+public abstract class NexusCell extends MarketCell {
 
     /**
      * Standard constructor
@@ -15,10 +15,4 @@ public abstract class NexusCell extends Cell{
         super(row, col);
     }
 
-
-
-    @Override
-    public List<String> draw(int heroesRow, int heroesCol) {
-        return null;
-    }
 }

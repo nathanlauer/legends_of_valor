@@ -1,5 +1,6 @@
 package main.world;
 
+import main.attributes.Position;
 import main.legends.Hero;
 import main.utils.Validations;
 
@@ -16,7 +17,7 @@ import java.util.Objects;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public abstract class Cell implements Drawable {
-    public static final int numDrawnRows = 2;
+    public static final int numDrawnRows = 3;
     private int row;
     private int col;
 
@@ -73,6 +74,15 @@ public abstract class Cell implements Drawable {
      */
     public boolean sameLocation(int row, int col) {
         return row == getRow() && col == getCol();
+    }
+
+    /**
+     * Indicates whether or not this Cell has the passed in Position
+     * @param position the relevant Position
+     * @return true if the passed Position has the correct row/col, false otherwise
+     */
+    public boolean hasPosition(Position position) {
+        return sameLocation(position.getRow(), position.getCol());
     }
 
     /**

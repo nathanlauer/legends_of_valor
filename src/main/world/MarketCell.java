@@ -1,5 +1,6 @@
 package main.world;
 
+import main.Runner;
 import main.legends.Hero;
 import main.legends.LegendList;
 import main.market_and_gear.Market;
@@ -52,24 +53,15 @@ public class MarketCell extends Cell {
      * Returns a string representation of the implementing entity. If
      * the position of the entity corresponds to (heroesRow,heroesCol), then
      * draws that the Heroes are in that location.
-     *
-     * @param heroesRow location of the Heroes as a row
-     * @param heroesCol location of the Heroes as a column
      */
     @Override
-    public List<String> draw(int heroesRow, int heroesCol) {
+    public List<String> draw() {
         List<String> output = new ArrayList<>();
-        String color = Colors.ANSI_RESET;
-        if(heroesJustAbove(heroesRow, heroesCol) || sameLocation(heroesRow, heroesCol)) {
-            color = Colors.ANSI_GREEN;
-        }
-        output.add(color + "+-----+");
-        color = sameLocation(heroesRow, heroesCol) ? Colors.ANSI_GREEN : Colors.ANSI_RESET;
-        if(sameLocation(heroesRow, heroesCol)) {
-            output.add(color + "|  H  |");
-        } else {
-            output.add(color + "|  " + Colors.ANSI_BLUE + "M" + Colors.ANSI_RESET + "  |");
-        }
+        String color = Colors.ANSI_BLUE;
+        output.add(color + "M-----M");
+        World world = Runner.getInstance().getWorld();
+        output.add(world.drawMiddleRow(this, Colors.ANSI_BLUE));
+        output.add(color + "M-----M " + Colors.ANSI_RESET); // Reset the color for the next Cell
         return output;
     }
 }

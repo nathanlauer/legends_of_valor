@@ -1,7 +1,9 @@
 package main.world;
 
 import main.legends.Hero;
+import main.utils.Colors;
 
+import java.util.List;
 import java.util.Random;
 
 public class RandomWorld extends World {
@@ -35,4 +37,25 @@ public class RandomWorld extends World {
         }
     }
 
+    /**
+     * Given a cell, draws the middle row for the cell according to the
+     * semantics of the specific World.
+     *
+     * @param cell The cell to be drawn
+     * @return String representing the middle row of a Cell.
+     */
+    @Override
+    public String drawMiddleRow(Cell cell, String color) {
+        return color + "|     | "; // TODO: add
+    }
+
+    /**
+     * Returns a string representation of the implementing entity. If
+     * the position of the entity corresponds to (heroesRow,heroesCol), then
+     * draws that the Heroes are in that location.
+     */
+    @Override
+    public List<String> draw() {
+        return null; // TODO: if time
+    }
 }

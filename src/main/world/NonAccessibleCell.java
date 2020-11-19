@@ -47,24 +47,14 @@ public class NonAccessibleCell extends Cell {
      * Returns a string representation of the implementing entity. If
      * the position of the entity corresponds to (heroesRow,heroesCol), then
      * draws that the Heroes are in that location.
-     *
-     * @param heroesRow location of the Heroes as a row
-     * @param heroesCol location of the Heroes as a column
      */
     @Override
-    public List<String> draw(int heroesRow, int heroesCol) {
-        if(sameLocation(heroesRow, heroesCol)) {
-            throw new RuntimeException("Heroes cannot be in this cell!");
-        }
-
+    public List<String> draw() {
         List<String> output = new ArrayList<>();
-        String color = Colors.ANSI_RESET;
-        if(heroesJustAbove(heroesRow, heroesCol) || sameLocation(heroesRow, heroesCol)) {
-            color = Colors.ANSI_GREEN;
-        }
-        output.add(color + "+-----+");
-        color = Colors.ANSI_RESET;
-        output.add(color + "|/ / /|");
+        String color = Colors.ANSI_GRAY;
+        output.add(color + "+-----+ ");
+        output.add(color + "|/////| ");
+        output.add(color + "+-----+ " + Colors.ANSI_RESET); // Reset the color for the next Cell
         return output;
     }
 }

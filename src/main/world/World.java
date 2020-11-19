@@ -1,8 +1,8 @@
 package main.world;
 
+import main.attributes.Position;
 import main.fight.Fight;
 import main.legends.Hero;
-import main.legends.Legend;
 import main.legends.LegendList;
 import main.utils.Colors;
 import main.utils.Validations;
@@ -10,6 +10,7 @@ import main.utils.Validations;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Class World represents the world. It is composed of a series of Cells, and allows
@@ -21,22 +22,9 @@ import java.util.List;
  * <p>
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
-public abstract class World {
+public abstract class World implements Drawable {
     private final Cell[][] cells;
-    private HashMap<Hero,Position> heroPositions;
-    private class Position{
-        private int row, col;
-        public Position(int row, int col){
-            this.row = row;
-            this.col = col;
-        }
-        public int getRow() {
-            return row;
-        }
-        public int getCol() {
-            return col;
-        }
-    }
+    private HashMap<Hero, Position> heroPositions;
     private Fight fight;
 
     /**
@@ -150,6 +138,41 @@ public abstract class World {
         return heroPositions.get(hero).getCol();
     }
 
+    /**
+     * Indicates whether or not there is a hero in the passed in Cell
+     * @param cell the Cell in question
+     * @return true if the Hero is in the cell, false otherwise
+     */
+    public boolean isHeroInCell(Cell cell) {
+        for (Map.Entry<Hero,Position> entry : heroPositions.entrySet()) {
+            Position position = entry.getValue();
+            if(cell.hasPosition(position)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns the Hero in the passed in Cell, or null if none
+     * @param cell the Cell in question
+     * @return a contained Hero in the passed Cell, or null if none
+     */
+    public Hero getHeroInCell(Cell cell) {
+        if(!isHeroInCell(cell)) {
+            return null;
+        }
+
+        for (Map.Entry<Hero,Position> entry : heroPositions.entrySet()) {
+            Position position = entry.getValue();
+            if(cell.hasPosition(position)) {
+                return entry.getKey();
+            }
+        }
+        return null;
+    }
+
+
     public boolean canMove(Hero hero,Direction direction) {
         boolean allowed = false;
         switch (direction) {
@@ -248,23 +271,31 @@ public abstract class World {
     }
 
     /**
+     * Given a cell, draws the middle row for the cell according to the
+     * semantics of the specific World.
+     * @param cell The cell to be drawn
+     * @return String representing the middle row of a Cell.
+     */
+    public abstract String drawMiddleRow(Cell cell, String color);
+
+    /**
      * Each entry in the returned String is a single line to output.
      *
      * @return a string representation of this World.
      */
     public List<String> draw() {
         List<String> output = new ArrayList<>();
-        for (int i = 0; i < Cell.numDrawnRows * numRows(); i++) {
+        for(int i = 0; i < Cell.numDrawnRows * numRows(); i++) {
             output.add("");
         }
 
-        for (int row = 0; row < numRows(); row++) {
-            for (int col = 0; col < numCols(); col++) {
+        for(int row = 0; row < numRows(); row++) {
+            for(int col = 0; col < numCols(); col++) {
                 Cell cell = getCellAt(row, col);
-                List<String> drawn = cell.draw(getHeroRow(hero), getHeroCol(hero));
+                List<String> drawn = cell.draw();
 
                 // Append each element of drawn to the correct location of output
-                for (int i = 0; i < drawn.size(); i++) {
+                for(int i = 0; i < drawn.size(); i++) {
                     int index = i + Cell.numDrawnRows * row;
                     String oneDrawnRow = drawn.get(i);
                     String current = output.get(index);
@@ -273,21 +304,6 @@ public abstract class World {
                 }
             }
         }
-
-        String color = Colors.ANSI_RESET;
-        StringBuilder lastRow = new StringBuilder(color + "");
-        for (int i = 0; i < numCols(); i++) {
-            if (getHeroRow(hero) == numRows() - 1) {
-                if (getHeroRow(hero) == i) {
-                    color = Colors.ANSI_GREEN;
-                }
-            }
-            lastRow.append(color).append("+-----+");
-            if (color.equals(Colors.ANSI_GREEN)) {
-                color = Colors.ANSI_RESET;
-            }
-        }
-        output.add(lastRow.toString());
 
         return output;
     }
