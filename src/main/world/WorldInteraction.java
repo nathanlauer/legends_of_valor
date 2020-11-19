@@ -1,5 +1,6 @@
 package main.world;
 
+import main.legends.Hero;
 import main.legends.LegendList;
 import main.utils.GetUserCommand;
 import main.utils.Output;

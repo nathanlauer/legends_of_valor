@@ -2,10 +2,7 @@ package main;
 
 import main.legends.LegendList;
 import main.utils.Output;
-import main.world.RandomWorldBuilder;
-import main.world.World;
-import main.world.WorldBuilder;
-import main.world.WorldInteraction;
+import main.world.*;
 
 /**
  * Class Runner is the class which actually runs the game, by creating a World and a WorldInteraction.
@@ -19,8 +16,8 @@ import main.world.WorldInteraction;
  */
 public class Runner {
     private static Runner instance;
-    private final World world;
-    private final WorldInteraction worldInteraction;
+    private World world;
+    private WorldInteraction worldInteraction;
 
     /**
      *
@@ -37,11 +34,22 @@ public class Runner {
      * Private constructor. Builds the World and the World Interaction.
      */
     private Runner() {
-        WorldBuilder builder = new RandomWorldBuilder(8, 8, 50, 20, 30);
-        world = new World(builder);
-        world.placeHeroes();
-        worldInteraction = new WorldInteraction(world);
+        buildValorWorld();
+    }
 
+    private void buildValorWorld(){
+        ValorWorldBuilder.ValorWorldDistribution distribution = new ValorWorldBuilder.ValorWorldDistribution();
+        WorldBuilder builder = new ValorWorldBuilder(8, 8,distribution);
+        world = new ValorWorld(builder);
+        world.placeHeroes(LegendList.getInstance().getChosenHeroes());
+        worldInteraction = new WorldInteraction(world);
+    }
+    private void buildRandomWorld(){
+
+        WorldBuilder builder = new RandomWorldBuilder(8, 8, 50, 20, 30);
+        world = new RandomWorld(builder);
+        world.placeHeroes(LegendList.getInstance().getChosenHeroes());
+        worldInteraction = new WorldInteraction(world);
     }
 
     /**

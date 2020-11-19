@@ -15,6 +15,10 @@ public class Position{
 		row = 0;
 		col = 0;
 	}
+	public Position(int row, int col){
+		this.row = row;
+		this.col = col;
+	}
 	public void setSpawnPosition(int row, int col) {
 		this.rowSpawn = row;
 		this.colSpawn = col;
