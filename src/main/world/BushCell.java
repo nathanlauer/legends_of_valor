@@ -25,12 +25,13 @@ public class BushCell extends Cell{
 
     @Override
     public boolean canEnter(List<Hero> heroes) {
-        return false;
+        // TODO: check if there is another Hero in this cell already
+        return true;
     }
 
     @Override
     public void enter(List<Hero> heroes) {
-
+        // TODO: increase Hero's relevant ability
     }
 
     /**

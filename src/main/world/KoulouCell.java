@@ -25,7 +25,8 @@ public class KoulouCell extends Cell{
 
     @Override
     public boolean canEnter(List<Hero> heroes) {
-        return false;
+        // TODO: check if there is another Hero in this cell already
+        return true;
     }
 
     @Override

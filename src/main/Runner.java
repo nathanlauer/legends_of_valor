@@ -1,8 +1,14 @@
 package main;
 
+import main.games.ValorGame;
+import main.legends.Hero;
+import main.legends.Legend;
 import main.legends.LegendList;
+import main.legends.Monster;
 import main.utils.Output;
 import main.world.*;
+
+import java.util.List;
 
 /**
  * Class Runner is the class which actually runs the game, by creating a World and a WorldInteraction.
@@ -62,8 +68,11 @@ public class Runner {
 
     public void run() {
         Output.printWelcomeInformation();
-        LegendList.getInstance();
-        worldInteraction.run();
+        LegendList.getInstance(); // prompts the user to choose their Hero's
+//        worldInteraction.run();
+        List<Hero> heroes = LegendList.getInstance().getChosenHeroes();
+        List<Monster> monsters = LegendList.getInstance().getCorrespondingMonsters(); // TODO: This might change
+        new ValorGame(heroes, monsters).play();
     }
 
 }

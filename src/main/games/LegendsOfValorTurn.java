@@ -7,8 +7,15 @@ import main.fight.InvalidFightMoveException;
 import main.fight.PairHeroesAndMonsters;
 import main.legends.Hero;
 import main.legends.Legend;
+import main.legends.LegendList;
 import main.legends.Monster;
+import main.utils.Colors;
+import main.utils.GetUserCommand;
+import main.utils.Output;
+import main.utils.UserCommand;
 import main.world.Direction;
+import main.world.InvalidMoveDirection;
+import main.world.World;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -89,6 +96,9 @@ public class LegendsOfValorTurn implements TurnExecutor {
         } else {
             setupLaterTurns();
         }
+
+        // And draw the World, so the user has a sense of what is going on
+        Output.drawWorld(Runner.getInstance().getWorld());
     }
 
     /**
@@ -194,7 +204,7 @@ public class LegendsOfValorTurn implements TurnExecutor {
         if(currentIsMonster()) {
             playNextMonstersTurn();
         } else {
-            // TODO
+            playNextHeroesTurn();
         }
     }
 
@@ -221,6 +231,88 @@ public class LegendsOfValorTurn implements TurnExecutor {
             // Move downwards = new DirectionalMove(current, Direction.DOWN);
             // downwards.execute();
         }
+    }
+
+    /**
+     * Helper function which plays the next Hero's turn.
+     * For a Hero, we prompt the user for their desired action for the relevant Hero,
+     * and then execute it if possible.
+     */
+    private void playNextHeroesTurn() {
+        displayCurrentHeroStatus();
+        Hero hero = (Hero)current;
+        boolean enteredLegalMove = false;
+        // TODO: prompt user for attack or move first, then if choose move, proceed as below
+        while(!enteredLegalMove) {
+            UserCommand command = new GetUserCommand().run();
+            switch (command) {
+                case UP:
+                    enteredLegalMove = attemptMoveIfPossible(hero, Direction.UP);
+                    break;
+                case DOWN:
+                    enteredLegalMove = attemptMoveIfPossible(hero, Direction.DOWN);
+                    break;
+                case LEFT:
+                    enteredLegalMove = attemptMoveIfPossible(hero, Direction.LEFT);
+                    break;
+                case RIGHT:
+                    enteredLegalMove = attemptMoveIfPossible(hero, Direction.RIGHT);
+                    break;
+                case TELEPORT:
+                    enteredLegalMove = attemptTeleport(hero);
+                    break;
+                case BACK:
+//	                	attemptBack(hero);
+                    break;
+                default:
+                    throw new RuntimeException("Unknown command!");
+            }
+        }
+    }
+
+    private void displayCurrentHeroStatus() {
+        Output.printSeparator();
+        Hero hero = (Hero)current;
+        String firstTwoLetters = Colors.ANSI_GREEN + hero.getName().substring(0, 2) + Colors.ANSI_RESET;
+        System.out.println("It is " + hero.getName() + " turn! Identified by (" + firstTwoLetters + ") on the map. Status:");
+        Output.printOutputables(Collections.singletonList(hero));
+    }
+
+    /**
+     * Attempts to move in the Direction indicated
+     * @param hero Hero whose move it is
+     * @param direction Direction to move the Hero
+     */
+    private boolean attemptMoveIfPossible(Hero hero, Direction direction) {
+        String failure = "Unable to move " + direction + "! Please enter a different move.";
+        World world = Runner.getInstance().getWorld();
+        if(world.canMove(hero, direction)) {
+            try {
+                world.move(hero, direction);
+                return true;
+            } catch (InvalidMoveDirection e) {
+                System.out.println(failure);
+            }
+        } else {
+            System.out.println(failure);
+        }
+        return false;
+    }
+
+    /**
+     * Attempts to Teleport the passed in Hero
+     * @param hero the Hero to Teleport
+     * @return true if the teleportation was successful, false otherwise.
+     */
+    public boolean attemptTeleport(Hero hero) {
+        return false;
+//		 Hero teleportee = teleportTo();//get the target hero that the current hero wants to teleport to.
+//		 String failure = "Unable to transport to " +teleportee.getName()  + "! Please teleport to anther hero's side.";
+//     if(valorWorld.canTeleport(hero, teleportee.getPosition())) {
+//         valorWorld.setHeroLocation(hero, valorWorld.getHeroRow(teleportee),valorWorld.getHeroCol(hero));
+//     } else {
+//         System.out.println(failure);
+//     }
     }
 
     /**

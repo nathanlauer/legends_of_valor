@@ -52,6 +52,7 @@ public class CommonCell extends Cell {
      */
     @Override
     public boolean canEnter(List<Hero> heroes) {
+        // TODO: check if there is another Hero in this cell already
         return true;
     }
 

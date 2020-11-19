@@ -34,8 +34,8 @@ public class LegendsOfValorRound implements RoundExecutor {
     public static final int roundsToNewMonsters = 8;
     private final List<Hero> heroes;
     private final List<Monster> monsters;
-    private final TurnBasedGame turnBasedGame;
-    private final TurnExecutor turnExecutor;
+    private TurnBasedGame turnBasedGame;
+    private TurnExecutor turnExecutor;
     private int roundNum;
     private final int numRoundsToNewMonsters;
 
@@ -70,7 +70,7 @@ public class LegendsOfValorRound implements RoundExecutor {
     public LegendsOfValorRound(List<Hero> heroes, List<Monster> monsters, int roundsToNewMonsters) {
         this.heroes = heroes;
         this.monsters = monsters;
-        this.turnExecutor = new LegendsOfValorTurn(heroes, monsters); // TODO: arguments?
+        this.turnExecutor = new LegendsOfValorTurn(heroes, monsters);
         this.turnBasedGame = new TurnBasedGame(turnExecutor);
         this.numRoundsToNewMonsters = roundsToNewMonsters;
         roundNum = 0;
@@ -81,7 +81,8 @@ public class LegendsOfValorRound implements RoundExecutor {
      */
     @Override
     public void setupNextRound() {
-        turnExecutor.reset();
+        this.turnExecutor = new LegendsOfValorTurn(heroes, monsters);
+        this.turnBasedGame = new TurnBasedGame(turnExecutor);
         roundNum++;
         // TODO: some status to display?
     }
