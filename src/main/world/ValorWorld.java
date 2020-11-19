@@ -18,6 +18,7 @@ public class ValorWorld extends World {
     private final int laneWidth = 2;
     private final int numLanes = 3;
     private final int space = 1;
+    private int lanesInsertedHero;
     private HashMap<Hero,Position> spawnPositions;
     private HashMap<Monster,Position> monsterPositions;
 
@@ -31,25 +32,22 @@ public class ValorWorld extends World {
         lanes = divideIntoLanes(getCells(),numLanes,space);
         spawnPositions = new HashMap<>();
         monsterPositions = new HashMap<>();
+        lanesInsertedHero = 0;
     }
 
     @Override
     protected void placeHero(Hero hero) {
-        boolean foundCommonCell = false;
-        Random random = new Random();
-        while (!foundCommonCell) {
-            int row = random.nextInt(this.numRows());
-            for (int col = 0; col < numCols(); col++) {
-                Cell cell = getCellAt(row, col);
-                if (cell instanceof HeroNexusCell) {
-                    foundCommonCell = true;
-                    setHeroLocation(hero, row, col);
+        int col = lanesInsertedHero * (laneWidth + 1); // plus one accounts for separator between lanes
+        int row = this.numRows() - 1;
+        Cell cell = getCellAt(row, col);
+        assert cell instanceof HeroNexusCell;
 
-                    spawnPositions.put(hero,new Position(row,col));
-                    break;
-                }
-            }
-        }
+        // Insert this Hero to this Cell
+        setHeroLocation(hero, row, col);
+        spawnPositions.put(hero,new Position(row,col));
+
+        // And increment the number of lanes that we have inserted a Hero to
+        lanesInsertedHero++;
     }
 
     /**
