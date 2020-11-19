@@ -1,5 +1,6 @@
 package main.world;
 
+import main.legends.Hero;
 import main.utils.Colors;
 
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class NonAccessibleCell extends Cell {
      * @return true if the Heroes can enter this cell, false otherwise
      */
     @Override
-    public boolean canEnter() {
+    public boolean canEnter(List<Hero> heroes) {
         return false;
     }
 
@@ -38,7 +39,7 @@ public class NonAccessibleCell extends Cell {
      * The Heroes enter this cell, and something happens
      */
     @Override
-    public void enter() {
+    public void enter(List<Hero> heroes) {
         throw new RuntimeException("Cannot enter this cell!");
     }
 

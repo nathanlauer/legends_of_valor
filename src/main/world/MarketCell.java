@@ -34,7 +34,7 @@ public class MarketCell extends Cell {
      * @return true if the Heroes can enter this cell, false otherwise
      */
     @Override
-    public boolean canEnter() {
+    public boolean canEnter(List<Hero>heroes) {
         return true;
     }
 
@@ -42,9 +42,8 @@ public class MarketCell extends Cell {
      * The Heroes enter this cell, and something happens
      */
     @Override
-    public void enter() {
+    public void enter(List<Hero> heroes) {
         Market market = new Market();
-        List<Hero> heroes = LegendList.getInstance().getChosenHeroes();
         MarketInteraction marketInteraction = new MarketInteraction(market, heroes);
         marketInteraction.run();
     }

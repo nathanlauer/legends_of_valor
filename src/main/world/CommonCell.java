@@ -51,7 +51,7 @@ public class CommonCell extends Cell {
      * @return true if the Heroes can enter this cell, false otherwise
      */
     @Override
-    public boolean canEnter() {
+    public boolean canEnter(List<Hero> heroes) {
         return true;
     }
 
@@ -59,11 +59,10 @@ public class CommonCell extends Cell {
      * The Heroes enter this cell, and something happens
      */
     @Override
-    public void enter() {
+    public void enter(List<Hero> heroes) {
         int rand = new Random().nextInt(101);
         if(rand < this.chanceOfMonsters) {
             // Fight!
-            List<Hero> heroes = LegendList.getInstance().getChosenHeroes();
             List<Monster> monsters = LegendList.getInstance().getCorrespondingMonsters();
             Fight fight = new Fight(heroes, monsters);
             World world = Runner.getInstance().getWorld();

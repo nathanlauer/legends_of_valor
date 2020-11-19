@@ -3,6 +3,7 @@ package main.legends;
 import main.attributes.Ability;
 import main.attributes.HealthPower;
 import main.attributes.Level;
+import main.attributes.Position;
 import main.utils.Outputable;
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ import java.util.Random;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public abstract class Legend extends Outputable implements Cloneable {
+	private Position position;//each legend has a position on map.
     private String name;
     private final Level level;
     private final HealthPower healthPower;
@@ -50,6 +52,7 @@ public abstract class Legend extends Outputable implements Cloneable {
         this.defense = defense;
         this.agility = agility;
         abilities = new ArrayList<>(Arrays.asList(this.healthPower, this.strength, this.defense, this.agility));
+        position = new Position();
     }
 
     public void setName(String name) {
@@ -102,6 +105,14 @@ public abstract class Legend extends Outputable implements Cloneable {
      */
     public Ability getAgility() {
         return agility;
+    }
+    /**
+     * 
+     * get the position of the legend on map
+     */
+    public Position getPosition() {
+		return position;
+    	
     }
 
     /**
