@@ -14,6 +14,10 @@ public class RandomWorld extends World {
         super(worldBuilder);
     }
 
+    /**
+     * Marks the location of the Heroes, by inserting the Heroes into a random
+     * cell on the World.
+     */
     @Override
     protected void placeHero(Hero hero) {
         boolean foundCommonCell = false;

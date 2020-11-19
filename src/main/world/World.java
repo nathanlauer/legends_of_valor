@@ -115,8 +115,8 @@ public abstract class World {
     }
 
     /**
-     * Marks the location of the Heroes, by inserting the Heroes into a random
-     * cell on the World.
+     * Place hero initially
+     * @param hero
      */
     protected abstract void placeHero(Hero hero);
     public void placeHeroes(List<Hero> heroes) {
@@ -139,14 +139,14 @@ public abstract class World {
     /**
      * @return the row of the Heroes
      */
-    private int getHeroRow(Hero hero) {
+    protected int getHeroRow(Hero hero) {
         return heroPositions.get(hero).getRow();
     }
 
     /**
      * @return the col of the Heroes
      */
-    private int getHeroCol(Hero hero) {
+    protected int getHeroCol(Hero hero) {
         return heroPositions.get(hero).getCol();
     }
 
