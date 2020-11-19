@@ -80,7 +80,6 @@ public class CommonCell extends Cell {
      */
     @Override
     public List<String> draw() {
-        // TODO: add in Hero and Monster if necessary
         List<String> output = new ArrayList<>();
         String color = Colors.ANSI_RESET;
         output.add(color + "+-----+ ");
