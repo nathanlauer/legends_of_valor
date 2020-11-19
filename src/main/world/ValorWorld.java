@@ -17,6 +17,8 @@ public class ValorWorld extends World{
     private final int numLanes = 3;
     private final int space = 1;
     private HashMap<Hero,Position> spawnPositions;
+    private HashMap<Monster,Position> monsterPositions;
+
     private Lane[] lanes;
     /**
      * Standard constructor, builds a Laned World
@@ -74,6 +76,20 @@ public class ValorWorld extends World{
     }
 
     /**
+     * Returns lane that this cell belongs to
+     * @param cell
+     * @return
+     */
+    private Lane getLane(Cell cell){
+        for(int i = 0; i<lanes.length;i++){
+            if(lanes[i].contains(cell)){
+                return lanes[i];
+            }
+        }
+        return null;
+    }
+
+    /**
      * given a Hero, “respawns” them in their Nexus
      * @param hero
      */
@@ -84,10 +100,16 @@ public class ValorWorld extends World{
 
     /**
      * Spawns new monsters in valor world
+     * @param numMonsters - number of monsters to spawn
      * @return list of spawned monsters
      */
-    public List<Monster> spawnNewMonsters(){
-        //TODO implement
+    public List<Monster> spawnNewMonsters(int numMonsters){
+
+        List<Monster> monsters = new ArrayList<>();
+        for(int i = 0; i<numMonsters;i++){
+            //TODO implement by building monster. Is there an existing factory for it?
+        }
+        return monsters;
     }
 
     public Monster spawnNewMonsterInLane(Lane lane){

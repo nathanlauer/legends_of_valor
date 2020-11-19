@@ -23,7 +23,7 @@ public class Lane{
      * @param cell
      * @return
      */
-    public boolean isInLane(Cell cell){
+    public boolean contains(Cell cell){
         return this.cells.contains(cell);
     }
 
