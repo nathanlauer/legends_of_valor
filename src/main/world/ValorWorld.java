@@ -21,6 +21,7 @@ public class ValorWorld extends World {
     private final int space = 1;
     private int lanesInsertedHero;
     private int laneTeleportTo;
+    private boolean canTeleport;
     private HashMap<Hero,Boolean> teleported;
     private HashMap<Hero,Position> teleportPositions;
     private HashMap<Hero,Position> spawnPositions;
@@ -74,6 +75,8 @@ public class ValorWorld extends World {
         return allowed;
     }
     
+   
+    
     /**
      * Monster can only move down to next cell and the cell cannot have a monster occupied already, and it cannot be out of bound.
      * @param monster
@@ -96,24 +99,25 @@ public class ValorWorld extends World {
      * @return
      */
     public boolean canTeleport(Hero hero) {
+    	boolean canTeleport = false;
     	if(teleported.containsKey(hero)) {//hero can always teleport back
     		if(teleported.get(hero)) 
-    			return true;	
-    	} 
-    	String failure = "You can only teleport to a different lane";
-    	String prompt = "which lane would you like to teleport to?";
-		List<String> options = new ArrayList<>(Arrays.asList("Top lane", "Mid lane", "Bot lane"));
-		System.out.print("run question1");
-		int choice = new GetUserNumericInput(new Scanner(System.in), prompt, options).run();
-		int heroCol = heroPositions.get(hero).getCol();
-		if((choice == 0 && (heroCol ==0 || heroCol ==1))||(choice ==1 && (heroCol ==3 || heroCol ==4))|| (choice == 2 &&(heroCol ==6|| heroCol == 7))){ 
-			System.out.println(failure);
-			return false;
-		}
-		else {
-			laneTeleportTo = choice;
-			return true;
-		}
+    			canTeleport = true;	
+    	} else {
+	    	String failure = "You can only teleport to a different lane.";
+	    	String prompt = "which lane would you like to teleport to?";
+			List<String> options = new ArrayList<>(Arrays.asList("Top lane", "Mid lane", "Bot lane"));
+			int choice = new GetUserNumericInput(new Scanner(System.in), prompt, options).run();
+			int heroCol = heroPositions.get(hero).getCol();
+			if((choice == 0 && (heroCol ==0 || heroCol ==1))||(choice ==1 && (heroCol ==3 || heroCol ==4))|| (choice == 2 &&(heroCol ==6|| heroCol == 7))){ 
+				System.out.println(failure);
+				canTeleport = false;
+			} else {
+				laneTeleportTo = choice;
+				canTeleport = true;
+			}
+    	}
+    	return canTeleport;
     }
     /**
      * Hero teleports to another lane
@@ -165,6 +169,7 @@ public class ValorWorld extends World {
      * @param hero
      */
     public void teleportTo(Hero hero) {	
+    	Position curPos = heroPositions.get(hero);
     	int targetCol = laneTeleportTo*3;
 		Position closestPos = null;
 		int smallestSeen = Integer.MAX_VALUE;
@@ -178,10 +183,10 @@ public class ValorWorld extends World {
 		}
 		if(closestPos.getCol()%2 == 0) {
 			this.setHeroLocation(hero, closestPos.getRow(), closestPos.getCol()+1);
-			teleportPositions.put(hero, new Position(closestPos.getRow(),closestPos.getCol()+1));
+			teleportPositions.put(hero, curPos);
 		} else {
 			this.setHeroLocation(hero, closestPos.getRow(), closestPos.getCol()-1);
-			teleportPositions.put(hero, new Position(closestPos.getRow(),closestPos.getCol()-1));
+			teleportPositions.put(hero, curPos);
 		}
     	teleported.put(hero, true);
     }
@@ -214,7 +219,7 @@ public class ValorWorld extends World {
             	break;
             default:
                 throw new InvalidMoveDirection("Unknown move direction!");
-        }
+    	}
 
         // Now, enter the new Cell
         Cell cell = getCellAt(getHeroRow(hero), getHeroCol(hero));
