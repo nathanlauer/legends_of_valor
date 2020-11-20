@@ -52,7 +52,7 @@ public class ValorWorld extends World {
         boolean allowed = false;
         switch (direction) {
             case UP:
-                allowed = getHeroRow(hero) > 0 && !isHeroInCell(getCellAt(getHeroRow(hero)-1, getHeroCol(hero)));
+                allowed = getHeroRow(hero) > 0 && !isHeroInCell(getCellAt(getHeroRow(hero)-1, getHeroCol(hero))) && !isMonsterInCell(getCellAt(getHeroRow(hero), getHeroCol(hero)))  ;
                 break;
             case DOWN:
                 allowed = getHeroRow(hero) < numRows() - 1 && !isHeroInCell(getCellAt(getHeroRow(hero)+1, getHeroCol(hero)));
@@ -111,20 +111,29 @@ public class ValorWorld extends World {
     			}
     		}    				
     	} else {
-	    	String failure = "You can only teleport to a different lane.";
-	    	String prompt = "which lane would you like to teleport to?";
-			List<String> options = new ArrayList<>(Arrays.asList("Top lane", "Mid lane", "Bot lane"));
-			int choice = new GetUserNumericInput(new Scanner(System.in), prompt, options).run();
-			int heroCol = heroPositions.get(hero).getCol();
-			if((choice == 0 && (heroCol ==0 || heroCol ==1))||(choice ==1 && (heroCol ==3 || heroCol ==4))|| (choice == 2 &&(heroCol ==6|| heroCol == 7))){ 
-				System.out.println(failure);
-				canTeleport = false;
-			} else {
-				laneTeleportTo = choice;
-				canTeleport = true;
-			}
+	    	canTeleport = isValidLane(hero);
     	}
     	return canTeleport;
+    }
+    
+    /**
+     * check if hero picks a valid lane to teleport to
+     * @param hero
+     * @return
+     */
+    public boolean isValidLane(Hero hero) {
+    	String failure = "You can only teleport to a different lane.";
+    	String prompt = "which lane would you like to teleport to?";
+		List<String> options = new ArrayList<>(Arrays.asList("Top lane", "Mid lane", "Bot lane"));
+		int choice = new GetUserNumericInput(new Scanner(System.in), prompt, options).run();
+		int heroCol = heroPositions.get(hero).getCol();
+		if((choice == 0 && (heroCol ==0 || heroCol ==1))||(choice ==1 && (heroCol ==3 || heroCol ==4))|| (choice == 2 &&(heroCol ==6|| heroCol == 7))){ 
+			System.out.println(failure);
+			return false;
+		} else {
+			laneTeleportTo = choice;
+			return true;
+		}
     }
     /**
      * Hero teleports to another lane
