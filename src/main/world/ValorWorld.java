@@ -100,9 +100,16 @@ public class ValorWorld extends World {
      */
     public boolean canTeleport(Hero hero) {
     	boolean canTeleport = false;
-    	if(teleported.containsKey(hero)) {//hero can always teleport back
-    		if(teleported.get(hero)) 
-    			canTeleport = true;	
+    	if(teleported.containsKey(hero)) {//hero can always teleport back unless the departure point is occupied by another hero
+    		if(teleported.get(hero)) {
+    			int prevRow = teleportPositions.get(hero).getRow();
+    			int prevCol = teleportPositions.get(hero).getCol();
+    			if(isHeroInCell(getCellAt(prevRow,prevCol))) {
+    				canTeleport = false;
+    			} else {
+    				canTeleport = true;					
+    			}
+    		}    				
     	} else {
 	    	String failure = "You can only teleport to a different lane.";
 	    	String prompt = "which lane would you like to teleport to?";
@@ -170,23 +177,30 @@ public class ValorWorld extends World {
      */
     public void teleportTo(Hero hero) {	
     	Position curPos = heroPositions.get(hero);
-    	int targetCol = laneTeleportTo*3;
 		Position closestPos = null;
+		int targetCol = laneTeleportTo*3;
 		int smallestSeen = Integer.MAX_VALUE;
+		boolean found = false;
 		for(Position pos: heroPositions.values()) {
 			if(pos.getCol() == targetCol || pos.getCol()== targetCol+1) {
+				found = true;
 				if(pos.getRow()<smallestSeen) {
 					smallestSeen = pos.getRow();
 					closestPos = pos;
 				}
 			}
 		}
-		if(closestPos.getCol()%2 == 0) {
-			this.setHeroLocation(hero, closestPos.getRow(), closestPos.getCol()+1);
+		if(found == false) {//if there's no hero in the desired lane, teleport the hero to nexus on that lane
+			this.setHeroLocation(hero, this.numRows() - 1, targetCol);
 			teleportPositions.put(hero, curPos);
-		} else {
-			this.setHeroLocation(hero, closestPos.getRow(), closestPos.getCol()-1);
-			teleportPositions.put(hero, curPos);
+		} else if(found) {
+			if(closestPos.getCol()%2 == 0) {
+				this.setHeroLocation(hero, closestPos.getRow(), closestPos.getCol()-1);
+				teleportPositions.put(hero, curPos);
+			} else {
+				this.setHeroLocation(hero, closestPos.getRow(), closestPos.getCol()+1);
+				teleportPositions.put(hero, curPos);
+			}
 		}
     	teleported.put(hero, true);
     }
