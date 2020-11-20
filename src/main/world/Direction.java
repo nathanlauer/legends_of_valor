@@ -13,7 +13,9 @@ public enum Direction {
     UP("up"),
     DOWN("down"),
     RIGHT("right"),
-    LEFT("left");
+    LEFT("left"),
+    TELEPORT("teleport"),
+    BACK("back");
 
     private final String name;
 

@@ -24,7 +24,7 @@ import java.util.Map;
  */
 public abstract class World implements Drawable {
     private final Cell[][] cells;
-    private HashMap<Hero, Position> heroPositions;
+    protected HashMap<Hero, Position> heroPositions;
     private Fight fight;
 
     /**
@@ -215,7 +215,7 @@ public abstract class World implements Drawable {
      * @param col the col in question
      * @return true if this cell is NonAccessible, false otherwise
      */
-    private boolean cellIsNonAccessible(int row, int col) {
+    public boolean cellIsNonAccessible(int row, int col) {
         Cell cell = this.getCellAt(row, col);
         return cell instanceof NonAccessibleCell;
     }

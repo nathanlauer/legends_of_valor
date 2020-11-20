@@ -3,7 +3,6 @@ package main.world;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
 import main.attributes.Position;
 import main.legends.Hero;
 import main.legends.LegendList;
@@ -46,10 +45,10 @@ public class ValorWorldInteraction extends WorldInteraction{
 	                    attemptMove(hero, Direction.RIGHT);
 	                    break;
 	                case TELEPORT:
-	                	attemptTeleport(hero);
+	                	attemptMove(hero, Direction.TELEPORT);
 	                	break;
 	                case BACK:
-//	                	attemptBack(hero);
+	                	attemptMove(hero, Direction.BACK);
 	                	break;
 	                case QUIT:
 	                    finished = true;
@@ -74,34 +73,4 @@ public class ValorWorldInteraction extends WorldInteraction{
 	            System.out.println(failure);
 	        }
 	 }
-	 
-	 public void attemptTeleport(Hero hero) {
-//		 Hero teleportee = teleportTo();//get the target hero that the current hero wants to teleport to.
-//		 String failure = "Unable to transport to " +teleportee.getName()  + "! Please teleport to anther hero's side.";
-//     if(valorWorld.canTeleport(hero, teleportee.getPosition())) {
-//         valorWorld.setHeroLocation(hero, valorWorld.getHeroRow(teleportee),valorWorld.getHeroCol(hero));
-//     } else {
-//         System.out.println(failure);
-//     }
-	 }
-	 
-	 public void backToRespawn (Hero hero) { // should be in ValorWorld.
-//		 currentPointCol = heroPositionMap.get(hero).getCol();//
-//		 Position respawn = new Position(0,currentPointCol);
-//		 heroPositionMap.replace(hero,respawn);
-	 }
-	 
-	 public Hero teleportTo() {
-		 List<Hero> heroChosen = new ArrayList<>();
-		 Output.printOutputables(chosenHeroes);
-		 List<String> options = new ArrayList<>();
-		 for(Hero hero: chosenHeroes) {
-			 options.add(hero.getName());
-		 }
-		 String prompt = "Which hero would you like to transport to?";
-	     List<Integer> chosen = new GetUserListNumericalInput(new Scanner(System.in), prompt, options).run();
-	     int targetHeroIndex = new GetUserNumericInput(new Scanner(System.in), prompt, options).run();
-	     return chosenHeroes.get(targetHeroIndex);
-	 }
-
 }

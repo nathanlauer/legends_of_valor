@@ -260,10 +260,10 @@ public class LegendsOfValorTurn implements TurnExecutor {
                     enteredLegalMove = attemptMoveIfPossible(hero, Direction.RIGHT);
                     break;
                 case TELEPORT:
-                    enteredLegalMove = attemptTeleport(hero);
+                    enteredLegalMove = attemptMoveIfPossible(hero, Direction.TELEPORT);
                     break;
                 case BACK:
-//	                	attemptBack(hero);
+	                enteredLegalMove = attemptMoveIfPossible(hero,Direction.BACK);
                     break;
                 default:
                     throw new RuntimeException("Unknown command!");
