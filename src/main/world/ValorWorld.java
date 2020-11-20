@@ -21,9 +21,9 @@ public class ValorWorld extends World {
     private final int space = 1;
     private int lanesInsertedHero;
     private int laneTeleportTo;
-    private boolean canTeleport;
     private HashMap<Hero,Boolean> teleported;
     private HashMap<Hero,Position> teleportPositions;
+    private HashMap<Integer, Integer> furtherRow;
     private HashMap<Hero,Position> spawnPositions;
     private HashMap<Monster,Position> monsterPositions;
 
@@ -39,6 +39,7 @@ public class ValorWorld extends World {
         monsterPositions = new HashMap<>();
         teleported = new HashMap<>();
         teleportPositions = new HashMap<>();
+        furtherRow = new HashMap<>();
         lanesInsertedHero = 0;
         laneTeleportTo = 0;
         spawnNewMonsters();
@@ -172,35 +173,54 @@ public class ValorWorld extends World {
     }
     
     /**
-     * Hero teleports to a new lane. Hero will be put at the adjacent cell of closest(to monsterNexus) hero in that lane.
+     * Hero teleports to a new lane. Hero will be teleported to the closest(to monsterNexus) already- explored point in that lane(with no monster behind).
      * @param hero
      */
     public void teleportTo(Hero hero) {	
     	Position curPos = heroPositions.get(hero);
-		Position closestPos = null;
 		int targetCol = laneTeleportTo*3;
 		int smallestSeen = Integer.MAX_VALUE;
+		int furtherCol = 0;
 		boolean found = false;
-		for(Position pos: heroPositions.values()) {
-			if(pos.getCol() == targetCol || pos.getCol()== targetCol+1) {
+		for(Integer col : furtherRow.keySet()) {
+			if(col == targetCol || col == targetCol +1) {
 				found = true;
-				if(pos.getRow()<smallestSeen) {
-					smallestSeen = pos.getRow();
-					closestPos = pos;
+				if(col < smallestSeen) {
+					smallestSeen = col;
+					furtherCol = col;
 				}
 			}
 		}
-		if(found == false) {//if there's no hero in the desired lane, teleport the hero to nexus on that lane
-			this.setHeroLocation(hero, this.numRows() - 1, targetCol);
-			teleportPositions.put(hero, curPos);
-		} else if(found) {
-			if(closestPos.getCol()%2 == 0) {
-				this.setHeroLocation(hero, closestPos.getRow(), closestPos.getCol()-1);
+		if(found) {
+			int targetRow = furtherRow.get(furtherCol);
+			int largestSeen = Integer.MIN_VALUE;
+			boolean monsterBehind = false;
+			Position furtherPos = null;
+			for(Position pos : monsterPositions.values()) {
+				if(pos.getCol() == furtherCol || pos.getCol() == furtherCol+1 || pos.getCol() == furtherCol-1) {
+					if(pos.getRow()>targetRow) {
+						monsterBehind = true;
+						if(largestSeen < pos.getRow()) {
+							largestSeen = pos.getRow();
+							furtherPos = pos;
+						}
+					}
+				}
+			}
+			if(monsterBehind) {	
+				this.setHeroLocation(hero, furtherPos.getRow(), furtherPos.getCol());
 				teleportPositions.put(hero, curPos);
 			} else {
-				this.setHeroLocation(hero, closestPos.getRow(), closestPos.getCol()+1);
+				if(isHeroInCell(getCellAt(targetRow,furtherCol))) {
+					this.setHeroLocation(hero, targetRow, furtherCol+1);
+				} else {
+				this.setHeroLocation(hero, targetRow, furtherCol);
+				}
 				teleportPositions.put(hero, curPos);
 			}
+		} else {// if no further path has been explored, transports to nexus of that lane.
+			this.setHeroLocation(hero, this.numRows()-1, targetCol);
+			teleportPositions.put(hero, curPos);
 		}
     	teleported.put(hero, true);
     }
@@ -215,6 +235,7 @@ public class ValorWorld extends World {
         switch (direction) {
             case UP:
                 this.setHeroLocation(hero,getHeroRow(hero) - 1, getHeroCol(hero));
+                furtherRow.put(getHeroCol(hero),getHeroRow(hero));
                 break;
             case DOWN:
                 this.setHeroLocation(hero,getHeroRow(hero) + 1, getHeroCol(hero));
