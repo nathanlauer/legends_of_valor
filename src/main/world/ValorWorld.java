@@ -2,10 +2,7 @@ package main.world;
 
 import javafx.geometry.Pos;
 import main.attributes.Position;
-import main.legends.Hero;
-import main.legends.Legend;
-import main.legends.LegendList;
-import main.legends.Monster;
+import main.legends.*;
 import main.utils.Colors;
 
 import java.util.*;
@@ -19,6 +16,7 @@ public class ValorWorld extends World {
     private final int numLanes = 3;
     private final int space = 1;
     private int lanesInsertedHero;
+    private int lanesInsertedMonster;
     private HashMap<Hero,Position> spawnPositions;
     private HashMap<Monster,Position> monsterPositions;
 
@@ -33,6 +31,7 @@ public class ValorWorld extends World {
         spawnPositions = new HashMap<>();
         monsterPositions = new HashMap<>();
         lanesInsertedHero = 0;
+        lanesInsertedMonster=0;
         spawnNewMonsters();
     }
 
@@ -147,15 +146,23 @@ public class ValorWorld extends World {
         List<Monster > monsterList = LegendList.getInstance().getCorrespondingMonsters();
         List<Monster> monsters = new ArrayList<>();
         for(int i = 0; i<monsterList.size();i++){
-            Monster monster = monsterList.get(i);
-            Cell emptyMonsterNexus=null;
-            do{
-                int col = new Random().nextInt(getCells()[0].length);
-                emptyMonsterNexus = getEmptyMonsterNexusCell(col);
-            }while(emptyMonsterNexus==null);
-//            setMonsterPosition(nexus);
-            setMonsterLocation(monster,emptyMonsterNexus.getRow(),emptyMonsterNexus.getCol());
-            monsters.add(monster);
+            int col = 0; // +1 accounts for separate between lanes
+            Monster monster = null;
+            try {
+                //try to clone the monster and set its position to empty nexus cell
+                monster = (Monster)(monsterList.get(i).clone());
+                Cell emptyMonsterNexus=null;
+                do{
+                    col = lanesInsertedMonster * (laneWidth + space);
+                    emptyMonsterNexus = getEmptyMonsterNexusCell(col);
+                    lanesInsertedMonster++;
+                }while(emptyMonsterNexus==null);
+                setMonsterLocation(monster,emptyMonsterNexus.getRow(),emptyMonsterNexus.getCol());
+                monsters.add(monster);
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+            }
+
 
         }
         return monsters;
@@ -181,8 +188,8 @@ public class ValorWorld extends World {
 
 
     /**
-     * Spawns a random monster in the provided column or null if monster has already been spawned
-     * @param col
+     * Spawns a random monster in the provided column or null if monster has already been spawned or cannot be created
+     * @param col - column to spawn monster
      * @return
      */
     public Monster spawnNewMonsterInLane(int col){
@@ -191,8 +198,13 @@ public class ValorWorld extends World {
         if(emptyMonsterNexus!=null) {
             List<Monster> monsterList = LegendList.getInstance().getCorrespondingMonsters();
             int r = new Random().nextInt(monsterList.size());
-            Monster monster = monsterList.get(r);
-            setMonsterLocation(monster, emptyMonsterNexus.getRow(), col);
+            Monster monster = null;
+            try {
+                monster = (Monster)(monsterList.get(r).clone());
+                setMonsterLocation(monster, emptyMonsterNexus.getRow(), col);
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+            }
             return monster;
         }
         return null;
