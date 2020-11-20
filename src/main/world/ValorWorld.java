@@ -67,6 +67,7 @@ public class ValorWorld extends World {
             	break;
             case BACK:
             	allowed = true; // since a hero can get back to nexus at any time.
+            	break;
             default:
                 throw new RuntimeException("Unknown direction!");
         }
@@ -95,33 +96,34 @@ public class ValorWorld extends World {
      * @return
      */
     public boolean canTeleport(Hero hero) {
-    	if(teleported.get(hero)) {//hero can always teleport back
-    		return true;
-    	} else {
-    		String failure = "You can't teleport to the same lane";
-    		List<String> options = new ArrayList<>();
-    		options.add("Top Lane");
-    		options.add("Mid Lane");
-    		options.add("Bot Lane");
-        	String prompt = "which lane would you like to teleport to?";
-            int choice = new GetUserNumericInput(new Scanner(System.in), prompt, options).run();
-            int heroCol = heroPositions.get(hero).getCol();
-            if((heroCol>=0 && heroCol<=1 && choice == 1) || (heroCol>=3 && heroCol<=4 && choice == 2) ||(heroCol>=6 && heroCol<=7 && choice == 3)) {
-            	System.out.print(failure);
-            	return false;
-            } else {
-            	laneTeleportTo = choice;
-            	return true;
-            }
-    	}
+    	if(teleported.containsKey(hero)) {//hero can always teleport back
+    		if(teleported.get(hero)) 
+    			return true;	
+    	} 
+    	String failure = "You can only teleport to a different lane";
+    	String prompt = "which lane would you like to teleport to?";
+		List<String> options = new ArrayList<>(Arrays.asList("Top lane", "Mid lane", "Bot lane"));
+		System.out.print("run question1");
+		int choice = new GetUserNumericInput(new Scanner(System.in), prompt, options).run();
+		int heroCol = heroPositions.get(hero).getCol();
+		if((choice == 0 && (heroCol ==0 || heroCol ==1))||(choice ==1 && (heroCol ==3 || heroCol ==4))|| (choice == 2 &&(heroCol ==6|| heroCol == 7))){ 
+			System.out.println(failure);
+			return false;
+		}
+		else {
+			laneTeleportTo = choice;
+			return true;
+		}
     }
     /**
      * Hero teleports to another lane
      * @param hero
      */
     public void teleport(Hero hero) {
-    	if(teleported.get(hero)) {//teleport back
-    		teleportBack(hero);
+    	if(teleported.containsKey(hero)) {
+    		if(teleported.get(hero)) {//teleport back
+    			teleportBack(hero);
+    		}
     	} else {//teleport to a new lane.
     		teleportTo(hero);
     	}
@@ -163,7 +165,7 @@ public class ValorWorld extends World {
      * @param hero
      */
     public void teleportTo(Hero hero) {	
-    	int targetCol = (laneTeleportTo-1)*3;
+    	int targetCol = laneTeleportTo*3;
 		Position closestPos = null;
 		int smallestSeen = Integer.MAX_VALUE;
 		for(Position pos: heroPositions.values()) {
@@ -209,6 +211,7 @@ public class ValorWorld extends World {
             	break;
             case BACK:
             	respawnHero(hero);
+            	break;
             default:
                 throw new InvalidMoveDirection("Unknown move direction!");
         }
