@@ -174,7 +174,7 @@ public class ValorWorld extends World {
      * @return
      */
     private Cell getEmptyMonsterNexusCell(int col){
-        if(col<0||col>getCells()[0].length)return null;
+        if(col<0||col>=getCells()[0].length)return null;
         Cell[][] cells = getCells();
         for(int i = 0; i<cells.length;i++){
             if(cells[i][col] instanceof MonsterNexusCell) {
