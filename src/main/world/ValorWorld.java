@@ -36,6 +36,8 @@ public class ValorWorld extends World {
         lanes = divideIntoLanes(getCells(),numLanes,space);
         spawnPositions = new HashMap<>();
         monsterPositions = new HashMap<>();
+        teleported = new HashMap<>();
+        teleportPositions = new HashMap<>();
         lanesInsertedHero = 0;
         laneTeleportTo = 0;
     }
@@ -183,6 +185,7 @@ public class ValorWorld extends World {
     /**
      * Hero makes a move.
      */
+    @Override
     public void move(Hero hero,Direction direction) throws InvalidMoveDirection {
         if (!canMove(hero,direction)) {
             throw new InvalidMoveDirection("Cannot move in this direction!");
