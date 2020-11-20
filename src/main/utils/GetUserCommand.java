@@ -28,6 +28,8 @@ public class GetUserCommand extends GetUserInput {
             System.out.println("A/a - move left");
             System.out.println("S/s - move down");
             System.out.println("D/d - move right");
+            System.out.println("T/t - teleport");
+            System.out.println("B/b - back to nexus");
             System.out.println("I/i - get info");
             System.out.println("Q/q - quit the game");
             System.out.println("Enter your move: (enter one of the above options)");
@@ -51,6 +53,10 @@ public class GetUserCommand extends GetUserInput {
                 return UserCommand.DOWN;
             case "d":
                 return UserCommand.RIGHT;
+            case "t":
+            	return UserCommand.TELEPORT;
+            case "b":
+            	return UserCommand.BACK;
             case "i":
                 return UserCommand.INFO;
             case "q":
@@ -72,6 +78,8 @@ public class GetUserCommand extends GetUserInput {
                 input.equals("a") ||
                 input.equals("s") ||
                 input.equals("d") ||
+                input.equals("t") ||
+                input.equals("b") ||
                 input.equals("i") ||
                 input.equals("q");
 

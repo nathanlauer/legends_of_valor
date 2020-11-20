@@ -260,10 +260,10 @@ public class LegendsOfValorTurn implements TurnExecutor {
                     enteredLegalMove = attemptMoveIfPossible(hero, Direction.RIGHT);
                     break;
                 case TELEPORT:
-                    enteredLegalMove = attemptTeleport(hero);
+                    enteredLegalMove = attemptMoveIfPossible(hero, Direction.TELEPORT);
                     break;
                 case BACK:
-//	                	attemptBack(hero);
+	                enteredLegalMove = attemptMoveIfPossible(hero,Direction.BACK);
                     break;
                 default:
                     throw new RuntimeException("Unknown command!");
@@ -287,16 +287,16 @@ public class LegendsOfValorTurn implements TurnExecutor {
     private boolean attemptMoveIfPossible(Hero hero, Direction direction) {
         String failure = "Unable to move " + direction + "! Please enter a different move.";
         World world = Runner.getInstance().getWorld();
-        if(world.canMove(hero, direction)) {
+        //if(world.canMove(hero, direction)) {
             try {
                 world.move(hero, direction);
                 return true;
             } catch (InvalidMoveDirection e) {
                 System.out.println(failure);
             }
-        } else {
-            System.out.println(failure);
-        }
+        //} else {
+           // System.out.println(failure);
+        //}
         return false;
     }
 
