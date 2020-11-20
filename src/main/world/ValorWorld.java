@@ -67,7 +67,7 @@ public class ValorWorld extends World {
             	allowed = canTeleport(hero);
             	break;
             case BACK:
-            	allowed = true; // since a hero can get back to nexus at any time.
+            	allowed = canGoBack(hero); 
             	break;
             default:
                 throw new RuntimeException("Unknown direction!");
@@ -353,6 +353,19 @@ public class ValorWorld extends World {
         }
         return null;
     }
+    
+    /**
+     * A hero can always go back to his nexus unless it is occupied by another hero.
+     * @param hero
+     * @return
+     */
+    public boolean canGoBack(Hero hero) {
+    	Position position = spawnPositions.get(hero);
+        if(isHeroInCell(getCellAt(position.getRow(),position.getCol()))) {
+        	return false;
+        }
+        return true;
+    }
 
     /**
      * given a Hero, “respawns” them in their Nexus
@@ -360,7 +373,7 @@ public class ValorWorld extends World {
      */
     public void respawnHero(Hero hero){
         Position position = spawnPositions.get(hero);
-//        setHeroLocation(hero,position.getPositionRow(),position.getPositionCol());
+        heroPositions.put(hero, position);
     }
     /**
      * Sets the Monster location
