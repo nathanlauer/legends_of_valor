@@ -2,10 +2,7 @@ package main.world;
 
 import javafx.geometry.Pos;
 import main.attributes.Position;
-import main.legends.Hero;
-import main.legends.Legend;
-import main.legends.LegendList;
-import main.legends.Monster;
+import main.legends.*;
 import main.utils.Colors;
 import main.utils.GetUserNumericInput;
 
@@ -24,6 +21,7 @@ public class ValorWorld extends World {
     private HashMap<Hero,Boolean> teleported;
     private HashMap<Hero,Position> teleportPositions;
     private HashMap<Integer, Integer> farthestRow;
+    private int lanesInsertedMonster;
     private HashMap<Hero,Position> spawnPositions;
     private HashMap<Monster,Position> monsterPositions;
 
@@ -42,6 +40,7 @@ public class ValorWorld extends World {
         farthestRow = new HashMap<>();
         lanesInsertedHero = 0;
         laneTeleportTo = 0;
+        lanesInsertedMonster=0;
         spawnNewMonsters();
     }
 
@@ -416,15 +415,26 @@ public class ValorWorld extends World {
         List<Monster > monsterList = LegendList.getInstance().getCorrespondingMonsters();
         List<Monster> monsters = new ArrayList<>();
         for(int i = 0; i<monsterList.size();i++){
-            Monster monster = monsterList.get(i);
-            Cell emptyMonsterNexus=null;
-            do{
-                int col = new Random().nextInt(getCells()[0].length);
-                emptyMonsterNexus = getEmptyMonsterNexusCell(col);
-            }while(emptyMonsterNexus==null);
-//            setMonsterPosition(nexus);
-            setMonsterLocation(monster,emptyMonsterNexus.getRow(),emptyMonsterNexus.getCol());
-            monsters.add(monster);
+            int col = 0; // +1 accounts for separate between lanes
+            Monster monster = null;
+            try {
+                //try to clone the monster and set its position to empty nexus cell
+                monster = (Monster)(monsterList.get(i).clone());
+                Cell emptyMonsterNexus=null;
+                do{
+                    col = lanesInsertedMonster * (laneWidth + space);
+                    //spawn in one of the columns of the lane randomly
+                    col+=new Random().nextInt(laneWidth);
+
+                    emptyMonsterNexus = getEmptyMonsterNexusCell(col);
+                    lanesInsertedMonster++;
+                }while(emptyMonsterNexus==null);
+                setMonsterLocation(monster,emptyMonsterNexus.getRow(),emptyMonsterNexus.getCol());
+                monsters.add(monster);
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+            }
+
 
         }
         return monsters;
@@ -436,7 +446,7 @@ public class ValorWorld extends World {
      * @return
      */
     private Cell getEmptyMonsterNexusCell(int col){
-        if(col<0||col>getCells()[0].length)return null;
+        if(col<0||col>=getCells()[0].length)return null;
         Cell[][] cells = getCells();
         for(int i = 0; i<cells.length;i++){
             if(cells[i][col] instanceof MonsterNexusCell) {
@@ -449,23 +459,7 @@ public class ValorWorld extends World {
     }
 
 
-    /**
-     * Spawns a random monster in the provided column or null if monster has already been spawned
-     * @param col
-     * @return
-     */
-    public Monster spawnNewMonsterInLane(int col){
 
-        Cell emptyMonsterNexus = getEmptyMonsterNexusCell(col);
-        if(emptyMonsterNexus!=null) {
-            List<Monster> monsterList = LegendList.getInstance().getCorrespondingMonsters();
-            int r = new Random().nextInt(monsterList.size());
-            Monster monster = monsterList.get(r);
-            setMonsterLocation(monster, emptyMonsterNexus.getRow(), col);
-            return monster;
-        }
-        return null;
-    }
 
     /**
      * Indicates whether or not there is a Monster in the passed in Cell
