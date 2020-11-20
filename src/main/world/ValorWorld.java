@@ -23,7 +23,7 @@ public class ValorWorld extends World {
     private int laneTeleportTo;
     private HashMap<Hero,Boolean> teleported;
     private HashMap<Hero,Position> teleportPositions;
-    private HashMap<Integer, Integer> furtherRow;
+    private HashMap<Integer, Integer> farthestRow;
     private HashMap<Hero,Position> spawnPositions;
     private HashMap<Monster,Position> monsterPositions;
 
@@ -39,7 +39,7 @@ public class ValorWorld extends World {
         monsterPositions = new HashMap<>();
         teleported = new HashMap<>();
         teleportPositions = new HashMap<>();
-        furtherRow = new HashMap<>();
+        farthestRow = new HashMap<>();
         lanesInsertedHero = 0;
         laneTeleportTo = 0;
         spawnNewMonsters();
@@ -149,22 +149,9 @@ public class ValorWorld extends World {
     public void teleportBack(Hero hero) {
     	int teleportedRow = teleportPositions.get(hero).getRow();
 		int teleportedCol = teleportPositions.get(hero).getCol();
-		int largestSeen = Integer.MIN_VALUE;
-		boolean monsterBehind = false;
-		Position furtherPos = null;
-		for(Position pos : monsterPositions.values()) {
-			if(pos.getCol() == teleportedCol || pos.getCol() == teleportedCol+1 || pos.getCol() == teleportedCol-1) {
-				if(pos.getRow()>teleportedRow) {
-					monsterBehind = true;
-					if(largestSeen < pos.getRow()) {
-						largestSeen = pos.getRow();
-						furtherPos = pos;
-					}
-				}
-			}
-		}
-		if(monsterBehind) {	
-			this.setHeroLocation(hero, furtherPos.getRow(), furtherPos.getCol());		
+		Position monsterPos = getFarthestMonster(teleportedRow, teleportedCol);
+		if(monsterPos != null) {	
+			this.setHeroLocation(hero, monsterPos.getRow(), monsterPos.getCol());		
 		} else {
 			this.setHeroLocation(hero, teleportPositions.get(hero).getRow(), teleportPositions.get(hero).getCol());
 		}
@@ -180,49 +167,64 @@ public class ValorWorld extends World {
     	Position curPos = heroPositions.get(hero);
 		int targetCol = laneTeleportTo*3;
 		int smallestSeen = Integer.MAX_VALUE;
-		int furtherCol = 0;
+		int farthestCol = 0;
 		boolean found = false;
-		for(Integer col : furtherRow.keySet()) {
+		for(Integer col : farthestRow.keySet()) {//find the furtherest row of the lane
 			if(col == targetCol || col == targetCol +1) {
 				found = true;
 				if(col < smallestSeen) {
 					smallestSeen = col;
-					furtherCol = col;
+					farthestCol = col;
 				}
 			}
 		}
 		if(found) {
-			int targetRow = furtherRow.get(furtherCol);
-			int largestSeen = Integer.MIN_VALUE;
-			boolean monsterBehind = false;
-			Position furtherPos = null;
-			for(Position pos : monsterPositions.values()) {
-				if(pos.getCol() == furtherCol || pos.getCol() == furtherCol+1 || pos.getCol() == furtherCol-1) {
-					if(pos.getRow()>targetRow) {
-						monsterBehind = true;
-						if(largestSeen < pos.getRow()) {
-							largestSeen = pos.getRow();
-							furtherPos = pos;
-						}
-					}
-				}
-			}
-			if(monsterBehind) {	
-				this.setHeroLocation(hero, furtherPos.getRow(), furtherPos.getCol());
-				teleportPositions.put(hero, curPos);
+	    	int targetRow = farthestRow.get(farthestCol);
+			Position monsterPos = getFarthestMonster(farthestCol, targetRow);
+			if(monsterPos!= null) {	
+				this.setHeroLocation(hero, monsterPos.getRow(), monsterPos.getCol());	
 			} else {
-				if(isHeroInCell(getCellAt(targetRow,furtherCol))) {
-					this.setHeroLocation(hero, targetRow, furtherCol+1);
+				if(isHeroInCell(getCellAt(targetRow,farthestCol))) {
+					if(farthestCol%2 == 0)
+						this.setHeroLocation(hero, targetRow, farthestCol+1);
+					else
+						this.setHeroLocation(hero, targetRow, farthestCol-1);
 				} else {
-				this.setHeroLocation(hero, targetRow, furtherCol);
+					this.setHeroLocation(hero, targetRow, farthestCol);
 				}
-				teleportPositions.put(hero, curPos);
 			}
 		} else {// if no further path has been explored, transports to nexus of that lane.
 			this.setHeroLocation(hero, this.numRows()-1, targetCol);
-			teleportPositions.put(hero, curPos);
 		}
+		teleportPositions.put(hero, curPos);
     	teleported.put(hero, true);
+    }
+    /**
+     * Check if there's monster behind the target position. If so, return the farthest Monster position.
+     * @param targetCol
+     * @param targetRow
+     * @return
+     */
+    public Position getFarthestMonster(int targetCol, int targetRow) {
+		int largestSeen = Integer.MIN_VALUE;
+		boolean monsterBehind = false;
+		Position farthestPos = null;
+		for(Position pos : monsterPositions.values()) {
+			if(pos.getCol() == targetCol || pos.getCol() == targetCol+1 || pos.getCol() == targetCol-1) {
+				if(pos.getRow()>targetRow) {
+					monsterBehind = true;
+					if(largestSeen < pos.getRow()) {
+						largestSeen = pos.getRow();
+						farthestPos = pos;
+					}
+				}
+			}
+		}
+		if(monsterBehind) {
+			return farthestPos;
+		} else {
+			return null;
+		}
     }
     /**
      * Hero makes a move.
@@ -235,7 +237,7 @@ public class ValorWorld extends World {
         switch (direction) {
             case UP:
                 this.setHeroLocation(hero,getHeroRow(hero) - 1, getHeroCol(hero));
-                furtherRow.put(getHeroCol(hero),getHeroRow(hero));
+                farthestRow.put(getHeroCol(hero),getHeroRow(hero));
                 break;
             case DOWN:
                 this.setHeroLocation(hero,getHeroRow(hero) + 1, getHeroCol(hero));
