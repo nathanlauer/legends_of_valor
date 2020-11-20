@@ -33,6 +33,7 @@ public class ValorWorld extends World {
         spawnPositions = new HashMap<>();
         monsterPositions = new HashMap<>();
         lanesInsertedHero = 0;
+        spawnNewMonsters();
     }
 
     @Override
