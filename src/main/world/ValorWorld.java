@@ -190,28 +190,7 @@ public class ValorWorld extends World {
     }
 
 
-    /**
-     * Spawns a random monster in the provided column or null if monster has already been spawned or cannot be created
-     * @param col - column to spawn monster
-     * @return
-     */
-    public Monster spawnNewMonsterInLane(int col){
 
-        Cell emptyMonsterNexus = getEmptyMonsterNexusCell(col);
-        if(emptyMonsterNexus!=null) {
-            List<Monster> monsterList = LegendList.getInstance().getCorrespondingMonsters();
-            int r = new Random().nextInt(monsterList.size());
-            Monster monster = null;
-            try {
-                monster = (Monster)(monsterList.get(r).clone());
-                setMonsterLocation(monster, emptyMonsterNexus.getRow(), col);
-            } catch (CloneNotSupportedException e) {
-                e.printStackTrace();
-            }
-            return monster;
-        }
-        return null;
-    }
 
     /**
      * Indicates whether or not there is a Monster in the passed in Cell
