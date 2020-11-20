@@ -314,7 +314,7 @@ public abstract class World implements Drawable {
      * @param row the row in question
      * @param col the col in question
      */
-    private void checkValidity(int row, int col) {
+    protected void checkValidity(int row, int col) {
         Validations.nonNegative(row, "row");
         Validations.nonNegative(col, "col");
         assert row < numRows();
