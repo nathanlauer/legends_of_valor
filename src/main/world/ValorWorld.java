@@ -154,6 +154,9 @@ public class ValorWorld extends World {
                 Cell emptyMonsterNexus=null;
                 do{
                     col = lanesInsertedMonster * (laneWidth + space);
+                    //spawn in one of the columns of the lane randomly
+                    col+=new Random().nextInt(laneWidth);
+
                     emptyMonsterNexus = getEmptyMonsterNexusCell(col);
                     lanesInsertedMonster++;
                 }while(emptyMonsterNexus==null);
