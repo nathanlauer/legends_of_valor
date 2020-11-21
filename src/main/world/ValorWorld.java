@@ -52,7 +52,7 @@ public class ValorWorld extends World {
         boolean allowed = false;
         switch (direction) {
             case UP:
-                allowed = getHeroRow(hero) > 0 && !isHeroInCell(getCellAt(getHeroRow(hero)-1, getHeroCol(hero))) && !isMonsterInCell(getCellAt(getHeroRow(hero), getHeroCol(hero)))  ;
+                allowed = getHeroRow(hero) > 0 && !isHeroInCell(getCellAt(getHeroRow(hero)-1, getHeroCol(hero))) && !monsterInCellNextToHero(hero);
                 break;
             case DOWN:
                 allowed = getHeroRow(hero) < numRows() - 1 && !isHeroInCell(getCellAt(getHeroRow(hero)+1, getHeroCol(hero)));
@@ -73,6 +73,38 @@ public class ValorWorld extends World {
                 throw new RuntimeException("Unknown direction!");
         }
         return allowed;
+    }
+
+    /**
+     * Helper function which indicates if there is a Monster that is next to
+     * the passed in Hero. Next to means that a Monster is in the same Cell
+     * as a Hero, or the Cell to the left, or the Cell to the right
+     * as a Hero, or the Cell to the left, or the Cell to the right
+     * @param hero
+     */
+    private boolean monsterInCellNextToHero(Hero hero) {
+        int heroRow = getHeroRow(hero);
+        int heroCol = getHeroCol(hero);
+
+        // check same Cells
+        if(isMonsterInCell(getCellAt(heroRow, heroCol))) {
+            return true;
+        }
+
+        // Check cell to the left
+        if(heroCol > 0) {
+            if(isMonsterInCell(getCellAt(heroRow, heroCol - 1))) {
+                return true;
+            }
+        }
+
+        // Check cell to the right
+        if(heroCol < numCols() - 1) {
+            if(isMonsterInCell(getCellAt(heroRow, heroCol + 1))) {
+                return true;
+            }
+        }
+        return false;
     }
     
    
