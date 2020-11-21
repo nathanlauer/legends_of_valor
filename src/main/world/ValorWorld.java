@@ -127,7 +127,8 @@ public class ValorWorld extends World {
 		List<String> options = new ArrayList<>(Arrays.asList("Top lane", "Mid lane", "Bot lane"));
 		int choice = new GetUserNumericInput(new Scanner(System.in), prompt, options).run();
 		int heroCol = heroPositions.get(hero).getCol();
-		if((choice == 0 && (heroCol ==0 || heroCol ==1))||(choice ==1 && (heroCol ==3 || heroCol ==4))|| (choice == 2 &&(heroCol ==6|| heroCol == 7))){ 
+		int lane = choice +1;
+		if(heroCol != (lane*3 - 2) && heroCol != (lane*3 - 3)){
 			System.out.println(failure);
 			return false;
 		} else {
