@@ -4,10 +4,8 @@ import main.Runner;
 import main.fight.Attack;
 import main.fight.FightMove;
 import main.fight.InvalidFightMoveException;
-import main.fight.PairHeroesAndMonsters;
 import main.legends.Hero;
 import main.legends.Legend;
-import main.legends.LegendList;
 import main.legends.Monster;
 import main.utils.Colors;
 import main.utils.GetUserCommand;
@@ -18,7 +16,6 @@ import main.world.InvalidMoveDirection;
 import main.world.ValorWorld;
 import main.world.World;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
@@ -42,7 +39,6 @@ public class LegendsOfValorTurn implements TurnExecutor {
     private final ListIterator<Monster> monsterIterator;
     private boolean finished;
     private FightMove fightMove;
-    // private Move move; TODO when Moves have been built
 
     /**
      * Standard constructor
