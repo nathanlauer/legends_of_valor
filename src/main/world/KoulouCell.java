@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Koulou cell
+ * Koulou cells buff the strength of any hero who is inside them by 10%. 
+ * This boost persists for each round that the hero stays in this cell. 
  * @author Sandra Zhen
  */
 public class KoulouCell extends Cell{
@@ -31,7 +32,9 @@ public class KoulouCell extends Cell{
 
     @Override
     public void enter(List<Hero> heroes) {
-
+    	for(Hero hero: heroes) {
+    		hero.getStrength().increaseAbilityByPercentage(10);
+    	}
     }
 
     /**
@@ -49,4 +52,14 @@ public class KoulouCell extends Cell{
         output.add(color + "K-----K " + Colors.ANSI_RESET); // Reset the color for the next Cell
         return output;
     }
+
+	@Override
+	public void exit(List<Hero> heroes) {
+		// TODO Auto-generated method stub
+		for(Hero hero: heroes) {
+			double amount = hero.getStrength().getAbilityValue()/1.1;
+			hero.getStrength().decreaseAbilityBy(amount);
+		}
+		
+	}
 }

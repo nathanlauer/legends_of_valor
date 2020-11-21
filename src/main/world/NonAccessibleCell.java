@@ -57,4 +57,10 @@ public class NonAccessibleCell extends Cell {
         output.add(color + "+-----+ " + Colors.ANSI_RESET); // Reset the color for the next Cell
         return output;
     }
+
+	@Override
+	public void exit(List<Hero> heroes) {
+		// TODO Auto-generated method stub
+		
+	}
 }
