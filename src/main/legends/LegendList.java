@@ -35,11 +35,10 @@ public class LegendList {
     private final List<Hero> chosenHeroes;
 
     /**
-     *
      * @return the static instance of this class
      */
     public static LegendList getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new LegendList();
         }
         return instance;
@@ -49,7 +48,7 @@ public class LegendList {
      * Private constructor
      */
     private LegendList() {
-        legends = new ArrayList<>(); 
+        legends = new ArrayList<>();
         try {
             new ReadLegendsFromDisk().run();
 
@@ -57,56 +56,55 @@ public class LegendList {
             e.printStackTrace();
             // Shouldn't happen
         }
-       
+
         //Collections.shuffle(legends); // so we don't have the same order every time
         List<Hero> allHeroes = getHeroes();
-        this.chosenHeroes = chooseHeroes(allHeroes); 
+        this.chosenHeroes = chooseHeroes(allHeroes);
         /**Random random = new Random();
-        int numHeroes = random.nextInt(3) + 1;
-        this.chosenHeroes = allHeroes.subList(0, numHeroes);**/
+         int numHeroes = random.nextInt(3) + 1;
+         this.chosenHeroes = allHeroes.subList(0, numHeroes);**/
     }
-    
+
     /**
      * Player chooses a team of heroes.
-     * Default max number of heroes: 3. 
+     * Default max number of heroes: 3.
      */
     private List<Hero> chooseHeroes(List<Hero> allHeroes) {
-    	int heroNum = 0;
-    	List<Hero> heroChosen = new ArrayList<>();
-    	Output.printOutputables(allHeroes);
-    	List<String> options = new ArrayList<>();
-    	for(Hero hero: allHeroes) {
-    		options.add(hero.getName());
-    	}
-    	String prompt = "Please choose your team of Heroes. Up to 3 heroes.";
+        int heroNum = 0;
+        List<Hero> heroChosen = new ArrayList<>();
+        Output.printOutputables(allHeroes);
+        List<String> options = new ArrayList<>();
+        for (Hero hero : allHeroes) {
+            options.add(hero.getName());
+        }
+        String prompt = "Please choose your team of Heroes. Up to 3 heroes.";
         List<Integer> chosen = new GetUserListNumericalInput(new Scanner(System.in), prompt, options).run();
-        for(Integer i : chosen) {
-        	if(heroChosen.contains(allHeroes.get(i-1))) {//The program only supports unique heroes.
-            	System.out.println("You can only have one "+allHeroes.get(i-1).getName()+"in your team");
-            	continue;
+        for (Integer i : chosen) {
+            if (heroChosen.contains(allHeroes.get(i - 1))) {//The program only supports unique heroes.
+                System.out.println("You can only have one " + allHeroes.get(i - 1).getName() + "in your team");
+                continue;
             }
-        	if(heroNum == 3) {
-            	System.out.println("You can only choose 3 heroes at most.");
-            	break;
+            if (heroNum == 3) {
+                System.out.println("You can only choose 3 heroes at most.");
+                break;
             }
-        	heroChosen.add(allHeroes.get(i-1));
-            heroNum++;  
+            heroChosen.add(allHeroes.get(i - 1));
+            heroNum++;
         }
         return heroChosen;
     }
-    
+
     /**
      * print out the initial stats of the chosen heroes.
      */
     public void printChosenHeroes() {
-    	Output.printSeparator();
-    	System.out.println("Your team: ");
-    	Output.printOutputables(chosenHeroes);
-    	Output.printSeparator();
+        Output.printSeparator();
+        System.out.println("Your team: ");
+        Output.printOutputables(chosenHeroes);
+        Output.printSeparator();
     }
 
     /**
-     *
      * @return a List of all Legends
      */
     public List<Legend> getLegends() {
@@ -114,21 +112,19 @@ public class LegendList {
     }
 
     /**
-     *
      * @return a List of every Hero
      */
     public List<Hero> getHeroes() {
         List<Hero> heroes = new ArrayList<>();
-        for(Legend legend : legends) {
-            if(legend instanceof Hero) {
-                heroes.add((Hero)legend);
+        for (Legend legend : legends) {
+            if (legend instanceof Hero) {
+                heroes.add((Hero) legend);
             }
         }
         return heroes;
     }
 
     /**
-     *
      * @return the list of chosen Heroes.
      */
     public List<Hero> getChosenHeroes() {
@@ -136,7 +132,6 @@ public class LegendList {
     }
 
     /**
-     *
      * @return a List of Monsters of equal size to chosen Heroes. Attempts to pick Monsters
      * of lower level than the highest level of the chosen Heroes.
      */
@@ -155,6 +150,7 @@ public class LegendList {
 
     /**
      * Looks for a Hero with the passed in name.
+     *
      * @param name Name of the requested Hero
      * @return Hero with the passed in name, or null if not found
      */
@@ -166,14 +162,13 @@ public class LegendList {
     }
 
     /**
-     *
      * @return a List of every Monster.
      */
     public List<Monster> getMonsters() {
         List<Monster> monsters = new ArrayList<>();
-        for(Legend legend : legends) {
-            if(legend instanceof Monster) {
-                monsters.add((Monster)legend);
+        for (Legend legend : legends) {
+            if (legend instanceof Monster) {
+                monsters.add((Monster) legend);
             }
         }
         return monsters;
@@ -181,6 +176,7 @@ public class LegendList {
 
     /**
      * Finds the Monster with the passed in name
+     *
      * @param name Name of the desired Monster
      * @return the Monster that has the passed in name, or null if not found
      */
@@ -230,21 +226,22 @@ public class LegendList {
             readHeroFile(sorcerers, "Sorcerers");
             readHeroFile(warriors, "Warriors");
             readMonsterFile(dragons, "Dragons");
-            readMonsterFile(exoskeletons,"Exoskeletons");
+            readMonsterFile(exoskeletons, "Exoskeletons");
             readMonsterFile(spirits, "Spirits");
         }
 
         /**
          * Reads a List of Heroes from the passed in file
+         *
          * @param file the relevant Hero file
          */
         private void readHeroFile(File file, String heroType) throws IOException {
             List<String> lines = Files.readAllLines(file.toPath());
             List<String> relevantLines = lines.subList(1, lines.size()); // Ignore header line
-            for(String line : relevantLines) {
+            for (String line : relevantLines) {
                 line = line.trim();
                 String[] items = line.split("\\s+"); // split by whitespace
-                if(items.length <= 1) {
+                if (items.length <= 1) {
                     continue; // skip empty line
                 }
 
@@ -282,15 +279,16 @@ public class LegendList {
 
         /**
          * Reads a List of Monsters from the passed in file
+         *
          * @param file the relevant Monster file
          */
         private void readMonsterFile(File file, String monsterType) throws IOException {
             List<String> lines = Files.readAllLines(file.toPath());
             List<String> relevantLines = lines.subList(1, lines.size()); // Ignore header line
-            for(String line : relevantLines) {
+            for (String line : relevantLines) {
                 line = line.trim();
                 String[] items = line.split("\\s+"); // split by whitespace
-                if(items.length <= 1) {
+                if (items.length <= 1) {
                     continue; // No data on this line
                 }
 

@@ -139,6 +139,42 @@ public abstract class World implements Drawable {
     }
 
     /**
+     * Detects whether a hero is in range of an input position
+     * @param position
+     * @param range
+     * @return
+     */
+    protected boolean isHeroInRange(Position position,int range){
+
+        //check up direction
+        for(int i = position.getRow(); i<=Math.min(position.getRow()+range,getCells().length-1);i++){
+            if(isHeroInCell(getCellAt(i,position.getCol()))){
+                return true;
+            }
+        }
+        //check down direction
+        for(int i = position.getRow(); i>=Math.max(position.getRow()-range,0);i--){
+            if(isHeroInCell(getCellAt(i,position.getCol()))){
+                return true;
+            }
+        }
+
+        //check left
+        for(int i = position.getCol(); i>=Math.max(position.getCol()-range,0);i--){
+            if(isHeroInCell(getCellAt(position.getRow(),i))){
+                return true;
+            }
+        }
+        //check right
+        for(int i = position.getCol(); i<=Math.min(position.getCol()+range,getCells()[0].length-1);i++){
+            if(isHeroInCell(getCellAt(position.getRow(),i))){
+                return true;
+            }
+        }
+
+        return false;
+    }
+    /**
      * Indicates whether or not there is a hero in the passed in Cell
      * @param cell the Cell in question
      * @return true if the Hero is in the cell, false otherwise
