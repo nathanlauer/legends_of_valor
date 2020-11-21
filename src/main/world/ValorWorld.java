@@ -80,7 +80,7 @@ public class ValorWorld extends World {
      * the passed in Hero. Next to means that a Monster is in the same Cell
      * as a Hero, or the Cell to the left, or the Cell to the right
      * as a Hero, or the Cell to the left, or the Cell to the right
-     * @param hero
+     * @param hero the Hero in question
      */
     private boolean monsterInCellNextToHero(Hero hero) {
         int heroRow = getHeroRow(hero);
