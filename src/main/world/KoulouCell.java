@@ -55,10 +55,8 @@ public class KoulouCell extends Cell{
 
 	@Override
 	public void exit(List<Hero> heroes) {
-		// TODO Auto-generated method stub
 		for(Hero hero: heroes) {
-			double amount = hero.getStrength().getAbilityValue()/1.1;
-			hero.getStrength().decreaseAbilityBy(amount);
+            hero.getStrength().decreaseAbilityByPercentage(10);
 		}
 		
 	}

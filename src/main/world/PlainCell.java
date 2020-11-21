@@ -51,7 +51,6 @@ public class PlainCell extends Cell{
 
 	@Override
 	public void exit(List<Hero> heroes) {
-		// TODO Auto-generated method stub
-		
+		// nothing to do
 	}
 }
