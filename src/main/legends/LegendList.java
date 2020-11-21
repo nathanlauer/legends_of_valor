@@ -33,6 +33,7 @@ public class LegendList {
     private static LegendList instance = null;
     private final List<Legend> legends;
     private final List<Hero> chosenHeroes;
+    private final List<Monster> activeMonsters;
 
     /**
      * @return the static instance of this class
@@ -60,9 +61,8 @@ public class LegendList {
         //Collections.shuffle(legends); // so we don't have the same order every time
         List<Hero> allHeroes = getHeroes();
         this.chosenHeroes = chooseHeroes(allHeroes);
-        /**Random random = new Random();
-         int numHeroes = random.nextInt(3) + 1;
-         this.chosenHeroes = allHeroes.subList(0, numHeroes);**/
+        this.activeMonsters = new ArrayList<>();
+        spawnNewMonsters();
     }
 
     /**
@@ -92,6 +92,55 @@ public class LegendList {
             heroNum++;
         }
         return heroChosen;
+    }
+
+    /**
+     * "Spawns" new monsters, meaning that it demarcates a certain number
+     * of Monsters as being initially active.
+     * @return List of Monsters initially active
+     */
+    public List<Monster> spawnNewMonsters() {
+        // Find the max level
+        getChosenHeroes().sort(new HigherLevelComparator());
+        Level max = getChosenHeroes().get(0).getLevel();
+
+        // Filter out Monsters that have a Level that is too high
+        Stream<Monster> monsterStream = getMonsters().stream()
+                .filter(monster -> monster.getLevel().isLessThanOrEqual(max));
+
+        List<Monster> output = monsterStream.collect(Collectors.toList());
+        activeMonsters.addAll(output.subList(0, getChosenHeroes().size()));
+        return activeMonsters;
+    }
+
+    /**
+     *
+     * @return the active Monsters currently in the game
+     */
+    public List<Monster> getActiveMonsters() {
+        return activeMonsters;
+    }
+
+    /**
+     * Adds a new monster to the active list
+     */
+    public Monster spawnNewMonster() {
+        List<Monster> monsters = getMonsters();
+        for(Monster monster : monsters) {
+            if(!activeMonsters.contains(monster)) {
+                activeMonsters.add(monster);
+                return monster;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Removes the passed in Monster from the current list
+     * @param monster
+     */
+    public void removeMonsterFromActiveList(Monster monster) {
+
     }
 
     /**

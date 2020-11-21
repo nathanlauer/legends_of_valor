@@ -424,30 +424,24 @@ public class ValorWorld extends World {
      * @return list of spawned monsters
      */
     public List<Monster> spawnNewMonsters(){
-        List<Monster > monsterList = LegendList.getInstance().getCorrespondingMonsters();
+        List<Monster > monsterList = LegendList.getInstance().getActiveMonsters();
         List<Monster> monsters = new ArrayList<>();
         for(int i = 0; i<monsterList.size();i++){
             int col = 0; // +1 accounts for separate between lanes
             Monster monster = null;
-            try {
-                //try to clone the monster and set its position to empty nexus cell
-                monster = (Monster)(monsterList.get(i).clone());
-                Cell emptyMonsterNexus=null;
-                do{
-                    col = lanesInsertedMonster * (laneWidth + space);
-                    //spawn in one of the columns of the lane randomly
-                    col+=new Random().nextInt(laneWidth);
+            //try to clone the monster and set its position to empty nexus cell
+            monster = monsterList.get(i);
+            Cell emptyMonsterNexus=null;
+            do{
+                col = lanesInsertedMonster * (laneWidth + space);
+                //spawn in one of the columns of the lane randomly
+                col+=new Random().nextInt(laneWidth);
 
-                    emptyMonsterNexus = getEmptyMonsterNexusCell(col);
-                    lanesInsertedMonster++;
-                }while(emptyMonsterNexus==null);
-                setMonsterLocation(monster,emptyMonsterNexus.getRow(),emptyMonsterNexus.getCol());
-                monsters.add(monster);
-            } catch (CloneNotSupportedException e) {
-                e.printStackTrace();
-            }
-
-
+                emptyMonsterNexus = getEmptyMonsterNexusCell(col);
+                lanesInsertedMonster++;
+            }while(emptyMonsterNexus==null);
+            setMonsterLocation(monster,emptyMonsterNexus.getRow(),emptyMonsterNexus.getCol());
+            monsters.add(monster);
         }
         return monsters;
     }
@@ -544,6 +538,66 @@ public class ValorWorld extends World {
         return null;
     }
 
+    /**
+     * Returns a list of Heroes that are "in range" of the passed in Monster.
+     * In range is defined as a Hero having a position adjacent to the position
+     * of the passed in Monster.
+     * @param monster The monster in question
+     * @return a List of the Heroes that are in range
+     */
+    public List<Hero> getHeroesInRange(Monster monster) {
+        List<Hero> inRange = new ArrayList<>();
+        int monsterRow = getMonsterRow(monster);
+        int monsterCol = getMonsterCol(monster);
 
+        for(int row = -1; row <= 1; row++) {
+            for(int col = -1; col <= 1; col++) {
+                int relevantRow = monsterRow + row;
+                int relevantCol = monsterCol + col;
+                Position position = new Position(relevantRow, relevantCol);
+                if(isPositionValid(position)) {
+                    // Check if there is a Hero in this Cell
+                    Cell cell = getCellAt(relevantRow, relevantCol);
+                    Hero hero = getHeroInCell(cell);
+                    if(hero != null) {
+                        inRange.add(hero);
+                    }
+                }
+            }
+        }
+
+        return inRange;
+    }
+
+    /**
+     * Returns a list of Monsters that are "in range" of the passed in Hero.
+     * In range is defined as a Monster having a position adjacent to the position
+     * of the passed in Hero.
+     * @param hero The Hero in question
+     * @return a List of the Monsters that are in range
+     */
+    public List<Monster> getMonstersInRange(Hero hero) {
+        List<Monster> inRange = new ArrayList<>();
+        Position herosPosition = heroPositions.get(hero);
+        if(herosPosition == null) {
+            return inRange;
+        }
+
+        for(int row = -1; row <= 1; row++) {
+            for(int col = -1; col <= 1; col++) {
+                Position position = new Position(row, col);
+                if(isPositionValid(position)) {
+                    // Check if there is a Hero in this Cell
+                    Cell cell = getCellAt(row, col);
+                    Monster monster = getMonsterInCell(cell);
+                    if(monster != null) {
+                        inRange.add(monster);
+                    }
+                }
+            }
+        }
+
+        return inRange;
+    }
 
 }

@@ -15,6 +15,7 @@ import main.utils.Output;
 import main.utils.UserCommand;
 import main.world.Direction;
 import main.world.InvalidMoveDirection;
+import main.world.ValorWorld;
 import main.world.World;
 
 import java.util.ArrayList;
@@ -215,8 +216,9 @@ public class LegendsOfValorTurn implements TurnExecutor {
      * Otherwise, move forward (forward for Monsters is down)
      */
     private void playNextMonstersTurn() {
-        // TODO: List<Hero> heroesInRange = Runner.getInstance().getWorld().heroesInRange(current);
-        List<Hero> heroesInRange = new ArrayList<>();
+        displayCurrentMonsterStatus();
+        ValorWorld world = (ValorWorld)Runner.getInstance().getWorld();
+        List<Hero> heroesInRange = world.getHeroesInRange((Monster)current);
         if(heroesInRange.size() > 0){
             Hero toAttack = heroesInRange.get(0);
             FightMove attack = new Attack(current, Collections.singletonList(toAttack));
@@ -228,10 +230,24 @@ public class LegendsOfValorTurn implements TurnExecutor {
             }
         } else {
             // Build a downward move for this Monster
-            // TODO:
-            // Move downwards = new DirectionalMove(current, Direction.DOWN);
-            // downwards.execute();
+            try {
+                world.move((Monster)current, Direction.DOWN);
+            } catch (InvalidMoveDirection invalidMoveDirection) {
+                invalidMoveDirection.printStackTrace();
+                // Shouldn't happen
+            }
         }
+    }
+
+    /**
+     * Helper function which outputs the status of the current Monster
+     */
+    private void displayCurrentMonsterStatus() {
+        Output.printSeparator();
+        Monster monster = (Monster)current;
+        String firstTwoLetters = Colors.ANSI_RED + monster.getName().substring(0, 2) + Colors.ANSI_RESET;
+        System.out.println("It is " + monster.getName() + " turn. Identified by (" + firstTwoLetters + ") on the map. Status:");
+        Output.printOutputables(Collections.singletonList(monster));
     }
 
     /**
@@ -287,34 +303,15 @@ public class LegendsOfValorTurn implements TurnExecutor {
     private boolean attemptMoveIfPossible(Hero hero, Direction direction) {
         String failure = "Unable to move " + direction + "! Please enter a different move.";
         World world = Runner.getInstance().getWorld();
-        //if(world.canMove(hero, direction)) {
-            try {
-                world.move(hero, direction);
-                return true;
-            } catch (InvalidMoveDirection e) {
-                System.out.println(failure);
-            }
-        //} else {
-           // System.out.println(failure);
-        //}
-        return false;
+        try {
+            world.move(hero, direction);
+        } catch (InvalidMoveDirection e) {
+            System.out.println(failure);
+            return false;
+        }
+        return true;
     }
 
-    /**
-     * Attempts to Teleport the passed in Hero
-     * @param hero the Hero to Teleport
-     * @return true if the teleportation was successful, false otherwise.
-     */
-    public boolean attemptTeleport(Hero hero) {
-        return false;
-//		 Hero teleportee = teleportTo();//get the target hero that the current hero wants to teleport to.
-//		 String failure = "Unable to transport to " +teleportee.getName()  + "! Please teleport to anther hero's side.";
-//     if(valorWorld.canTeleport(hero, teleportee.getPosition())) {
-//         valorWorld.setHeroLocation(hero, valorWorld.getHeroRow(teleportee),valorWorld.getHeroCol(hero));
-//     } else {
-//         System.out.println(failure);
-//     }
-    }
 
     /**
      * Performs any processing necessary at the completion of the previous turn.
