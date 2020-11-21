@@ -1,6 +1,5 @@
 package main.world;
 
-import javafx.geometry.Pos;
 import main.attributes.Position;
 import main.legends.*;
 import main.utils.Colors;
