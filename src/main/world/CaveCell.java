@@ -1,7 +1,8 @@
 package main.world;
 
 /**
- * Cave cell
+ * Cave cells boost the agility of any hero who is inside them by 10%, which also
+ * persists for each round that the hero stays in this cell. 
  * @author Sandra Zhen
  */
 import main.Runner;
@@ -32,6 +33,9 @@ public class CaveCell extends Cell{
     @Override
     public void enter(List<Hero> heroes) {
         // TODO: increase Hero's relevant ability
+    	for(Hero hero: heroes) {
+    		hero.getAgility().increaseAbilityByPercentage(10);
+    	}
     }
 
     /**
@@ -49,4 +53,13 @@ public class CaveCell extends Cell{
         output.add(color + "C-----C " + Colors.ANSI_RESET); // Reset the color for the next Cell
         return output;
     }
+
+	@Override
+	public void exit(List<Hero> heroes) {
+		// TODO Auto-generated method stub
+		for(Hero hero: heroes) {
+			double amount = hero.getAgility().getAbilityValue()/1.1;
+    		hero.getAgility().decreaseAbilityBy(amount);
+    	}
+	}
 }

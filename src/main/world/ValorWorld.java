@@ -127,7 +127,8 @@ public class ValorWorld extends World {
 		List<String> options = new ArrayList<>(Arrays.asList("Top lane", "Mid lane", "Bot lane"));
 		int choice = new GetUserNumericInput(new Scanner(System.in), prompt, options).run();
 		int heroCol = heroPositions.get(hero).getCol();
-		if((choice == 0 && (heroCol ==0 || heroCol ==1))||(choice ==1 && (heroCol ==3 || heroCol ==4))|| (choice == 2 &&(heroCol ==6|| heroCol == 7))){ 
+		int lane = choice +1;
+		if(heroCol != (lane*3 - 2) && heroCol != (lane*3 - 3)){
 			System.out.println(failure);
 			return false;
 		} else {
@@ -205,7 +206,7 @@ public class ValorWorld extends World {
 			this.setHeroLocation(hero, this.numRows()-1, targetCol);
 		}
 		teleportPositions.put(hero, curPos);
-    	teleported.put(hero, true);
+		teleported.put(hero, true);
     }
     /**
      * Check if there's monster behind the target position. If so, return the farthest Monster position.
@@ -238,7 +239,8 @@ public class ValorWorld extends World {
      * Hero makes a move.
      */
     @Override
-    public void move(Hero hero,Direction direction) throws InvalidMoveDirection {
+    public void move(Hero hero, Direction direction) throws InvalidMoveDirection {
+    	Cell currCell = getCellAt(getHeroRow(hero), getHeroCol(hero));
         if (!canMove(hero,direction)) {
             throw new InvalidMoveDirection("Cannot move in this direction!");
         }
@@ -266,14 +268,15 @@ public class ValorWorld extends World {
                 throw new InvalidMoveDirection("Unknown move direction!");
     	}
 
-        // Now, enter the new Cell
-        Cell cell = getCellAt(getHeroRow(hero), getHeroCol(hero));
+        // Now, exit the old cell and enter the new Cell
+        Cell newCell = getCellAt(getHeroRow(hero), getHeroCol(hero));
         List<Hero> heroList = new ArrayList<>();
         heroList.add(hero);
-        if (!cell.canEnter(heroList)) {
+        if (!newCell.canEnter(heroList)) {
             throw new InvalidMoveDirection("Unable to enter the cell!");
         }
-        cell.enter(heroList); // may cause certain events to occur, like entering a Market or starting a Fight.
+        currCell.exit(heroList); 
+        newCell.enter(heroList); // may cause certain events to occur, like entering a Market or starting a Fight.
     }
     
     /**

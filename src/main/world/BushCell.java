@@ -1,7 +1,8 @@
 package main.world;
 
 /**
- * Bush cell
+ * Bush cells increase the dexterity of any hero who is inside them by 10%. 
+ * This boost persists for each round that the hero stays in this cell. 
  * @author Sandra Zhen
  */
 import main.Runner;
@@ -32,6 +33,9 @@ public class BushCell extends Cell{
     @Override
     public void enter(List<Hero> heroes) {
         // TODO: increase Hero's relevant ability
+    	for(Hero hero : heroes) {
+    		hero.getDexterity().increaseAbilityByPercentage(10);
+    	}
     }
 
     /**
@@ -49,4 +53,13 @@ public class BushCell extends Cell{
         output.add(color + "B-----B " + Colors.ANSI_RESET); // Reset the color for the next Cell
         return output;
     }
+
+	@Override
+	public void exit(List<Hero> heroes) {
+		// TODO Auto-generated method stub
+		for(Hero hero: heroes) {
+			double amount = hero.getDexterity().getAbilityValue()/1.1;
+			hero.getDexterity().decreaseAbilityBy(amount);
+		}
+	}
 }

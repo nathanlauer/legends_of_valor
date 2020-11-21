@@ -110,7 +110,7 @@ public abstract class Cell implements Drawable {
      * @param heroes - the heroes to enter this cell
      */
     public abstract void enter(List<Hero> heroes);
-
+    public abstract void exit(List<Hero> heroes);
 
 
     @Override
