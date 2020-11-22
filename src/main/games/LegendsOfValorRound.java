@@ -1,8 +1,11 @@
 package main.games;
 
+import main.Runner;
 import main.legends.Hero;
 import main.legends.Legend;
+import main.legends.LegendList;
 import main.legends.Monster;
+import main.world.ValorWorld;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +34,8 @@ import java.util.List;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public class LegendsOfValorRound implements RoundExecutor {
-    public static final int roundsToNewMonsters = 8;
+    public static final int roundsToNewMonsters = 2;
+    public static final int numMonstersToSpawn = 3;
     private final List<Hero> heroes;
     private final List<Monster> monsters;
     private TurnBasedGame turnBasedGame;
@@ -84,7 +88,6 @@ public class LegendsOfValorRound implements RoundExecutor {
         this.turnExecutor = new LegendsOfValorTurn(heroes, monsters);
         this.turnBasedGame = new TurnBasedGame(turnExecutor);
         roundNum++;
-        // TODO: some status to display?
     }
 
     /**
@@ -156,8 +159,13 @@ public class LegendsOfValorRound implements RoundExecutor {
      */
     private void spawnMonstersIfNecessary() {
         if(roundNum != 0 && roundNum % numRoundsToNewMonsters == 0) {
+            System.out.println("Spawning new Monsters!");
+            ValorWorld world = (ValorWorld) Runner.getInstance().getWorld();
             System.out.println("New Monsters have been spawned in their Nexus!");
-            // TODO: spawn new Monsters in each Nexus
+            for(int i = 0; i < LegendsOfValorRound.numMonstersToSpawn; i++) {
+                Monster monster = LegendList.getInstance().spawnNewMonster();
+                world.addNewlySpawnedMonster(monster);
+            }
         }
     }
 

@@ -181,9 +181,13 @@ public class LegendsOfValorTurn implements TurnExecutor {
             }
         }
 
-        // If we were unable to find a valid Hero, then this turn based game has finished
         if(!found) {
-            finished = true;
+            // Check if there are Monsters that need to go
+            if(monsterIterator.hasNext()) {
+                current = monsterIterator.next();
+            } else {
+                finished = true;
+            }
         }
     }
 
@@ -224,9 +228,10 @@ public class LegendsOfValorTurn implements TurnExecutor {
             // Build a downward move for this Monster
             try {
                 world.move((Monster)current, Direction.DOWN);
-            } catch (InvalidMoveDirection invalidMoveDirection) {
-                invalidMoveDirection.printStackTrace();
-                // Shouldn't happen
+            } catch (InvalidMoveDirection e) {
+                // Don't do anything - it's possible that a Monster tries
+                // to move down to a Cell that is already occupied by another
+                // Monster. In this case, just ignore it, the Monster doesn't do anything
             }
         }
     }

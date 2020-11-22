@@ -477,6 +477,24 @@ public class ValorWorld extends World {
         return monsters;
     }
 
+    /**
+     * "Spawns" the passed in Monster into a Nexus cell.
+     * @param monster the Monster to add
+     */
+    public void addNewlySpawnedMonster(Monster monster) {
+        if(lanesInsertedMonster >= this.numLanes) {
+            lanesInsertedMonster = 0;
+        }
+
+        // spawn in one of the columns of the lane randomly
+        int row = 0;
+        int col = lanesInsertedMonster * (laneWidth + space);
+        col += new Random().nextInt(laneWidth);
+        setMonsterLocation(monster, row, col);
+
+        lanesInsertedMonster++;
+    }
+
 
     /**
      * Gets the first empty monster nexus cell in a specified column
