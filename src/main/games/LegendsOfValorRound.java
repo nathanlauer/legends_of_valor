@@ -160,7 +160,6 @@ public class LegendsOfValorRound implements RoundExecutor {
     private void removeDeadMonsters() {
         for(Monster monster : monsters) {
             if(!monster.isAlive()) {
-//                LegendList.getInstance().removeMonsterFromActive(monster);
                 ValorWorld world = (ValorWorld)Runner.getInstance().getWorld();
                 world.removeDeadMonster(monster);
             }

@@ -1,6 +1,9 @@
 package main.legends;
 
 import main.attributes.*;
+import main.market_and_gear.Armor;
+import main.market_and_gear.MarketInventory;
+import main.market_and_gear.Weapon;
 import main.utils.Coffer;
 import main.utils.GetUserListNumericalInput;
 import main.utils.Output;
@@ -59,6 +62,7 @@ public class LegendList {
         this.chosenHeroes = chooseHeroes(allHeroes);
         this.activeMonsters = new ArrayList<>();
         spawnNewMonsters();
+        equipHeroesInitially();
     }
 
     /**
@@ -88,6 +92,21 @@ public class LegendList {
             heroNum++;
         }
         return heroChosen;
+    }
+
+    /**
+     * Equips the initially chosen Heroes with the cheapest Weapons
+     */
+    private void equipHeroesInitially() {
+        Weapon weapon = MarketInventory.getInstance().getCheapestWeapon();
+        Armor armor = MarketInventory.getInstance().getCheapestArmor();
+
+        for(Hero hero : getChosenHeroes()) {
+            hero.getGearItemList().addGearItem(weapon);
+            hero.getGearItemList().addGearItem(armor);
+            hero.getActiveGearItems().activateWeapon(weapon);
+            hero.getActiveGearItems().putOnArmor(armor);
+        }
     }
 
     /**
@@ -129,14 +148,6 @@ public class LegendList {
             }
         }
         return null;
-    }
-
-    /**
-     * Removes the passed in Monster from the active list
-     * @param monster the Monster in question
-     */
-    public void removeMonsterFromActive(Monster monster) {
-        this.activeMonsters.remove(monster);
     }
 
     /**
