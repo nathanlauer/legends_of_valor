@@ -230,16 +230,17 @@ public class ValorWorld extends World {
 					this.setHeroLocation(hero, monsterPos.getRow()+1, monsterPos.getCol());//back up
 			} else {
 				if(isHeroInCell(getCellAt(targetRow,farthestCol))) {
-					if(farthestCol%2 == 0)
+					if(farthestCol%2 == 0) {
 						if(!isHeroInCell(getCellAt(targetRow, farthestCol+1)))
 							this.setHeroLocation(hero, targetRow, farthestCol+1);
 						else //both left cell and right cell have heroes occupied
 							this.setHeroLocation(hero, targetRow+1, farthestCol);//back up
-					else
+					} else {
 						if(!isHeroInCell(getCellAt(targetRow, farthestCol-1)))
 							this.setHeroLocation(hero, targetRow, farthestCol-1);
 						else //both left cell and right cell have heroes occupied
 							this.setHeroLocation(hero, targetRow+1, farthestCol);//back up
+					}
 				} else {
 					this.setHeroLocation(hero, targetRow, farthestCol);
 				}
