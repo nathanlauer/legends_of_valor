@@ -286,9 +286,28 @@ public class LegendsOfValorTurn implements TurnExecutor {
         FightMove fightMove = new GetUserFightMove((Hero) current, Collections.singletonList(toAttack)).run();
         try {
             fightMove.execute();
+            if(!toAttack.isAlive()) {
+                processDeadMonster(toAttack);
+            }
         } catch (InvalidFightMoveException e) {
             e.printStackTrace();
             // Shouldn't happen
+        }
+    }
+
+    /**
+     * Processes the situation when a Monster has been killed by a Hero
+     * @param monster the Monster that died
+     */
+    private void processDeadMonster(Monster monster) {
+        // Heroes gain 2 experience and level * 100 coins for killing a Monster
+        Hero hero = (Hero)current;
+        int gainedCoins = 100 * monster.getLevel().getLevel();
+        hero.getCoffer().addCoins(gainedCoins);
+        boolean leveledUp = hero.getExperience().increaseExperience(2);
+        System.out.println(hero.getName() + " has killed a Monster! Gains " + gainedCoins + " coins and two experience points.");
+        if(leveledUp) {
+            System.out.println(hero.getName() + " leveled up! Now at Level " + hero.getLevel().getLevel());
         }
     }
 
