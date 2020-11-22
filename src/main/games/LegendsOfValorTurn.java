@@ -360,10 +360,14 @@ public class LegendsOfValorTurn implements TurnExecutor {
      */
     @Override
     public void processEndOfTurn() {
-        // TODO: after a turn, check if current has reached a nexus
-//        if(Runner.getInstance().getWorld().legendReachedNexus(current)) {
-//            finished = true;
-//        }
+        ValorWorld world = (ValorWorld)Runner.getInstance().getWorld();
+        if(world.heroInMonstersNexus()) {
+            finished = true;
+        }
+
+        if(world.monsterInHeroesNexus()) {
+            finished = true;
+        }
     }
 
     /**
