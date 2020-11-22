@@ -609,17 +609,17 @@ public class ValorWorld extends World {
      */
     public List<Monster> getMonstersInRange(Hero hero) {
         List<Monster> inRange = new ArrayList<>();
-        Position herosPosition = heroPositions.get(hero);
-        if(herosPosition == null) {
-            return inRange;
-        }
+        int heroRow = getHeroRow(hero);
+        int heroCol = getHeroCol(hero);
 
         for(int row = -1; row <= 1; row++) {
             for(int col = -1; col <= 1; col++) {
-                Position position = new Position(row, col);
+                int relevantRow = heroRow + row;
+                int relevantCol = heroCol + col;
+                Position position = new Position(relevantRow, relevantCol);
                 if(isPositionValid(position)) {
                     // Check if there is a Hero in this Cell
-                    Cell cell = getCellAt(row, col);
+                    Cell cell = getCellAt(relevantRow, relevantCol);
                     Monster monster = getMonsterInCell(cell);
                     if(monster != null) {
                         inRange.add(monster);

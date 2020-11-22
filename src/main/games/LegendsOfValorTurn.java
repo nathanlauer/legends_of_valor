@@ -3,22 +3,18 @@ package main.games;
 import main.Runner;
 import main.fight.Attack;
 import main.fight.FightMove;
+import main.fight.GetUserFightMove;
 import main.fight.InvalidFightMoveException;
 import main.legends.Hero;
 import main.legends.Legend;
 import main.legends.Monster;
-import main.utils.Colors;
-import main.utils.GetUserCommand;
-import main.utils.Output;
-import main.utils.UserCommand;
+import main.utils.*;
 import main.world.Direction;
 import main.world.InvalidMoveDirection;
 import main.world.ValorWorld;
 import main.world.World;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 /**
  * Class LegendsOfValorTurn implements TurnExecutor, and is therefore a TurnBasedGame,
@@ -253,10 +249,55 @@ public class LegendsOfValorTurn implements TurnExecutor {
      */
     private void playNextHeroesTurn() {
         displayCurrentHeroStatus();
-        Hero hero = (Hero)current;
+        ValorWorld world = (ValorWorld)Runner.getInstance().getWorld();
+        List<Monster> monstersInRange = world.getMonstersInRange((Hero)current);
+        boolean wantsToAttack = false;
+        if(monstersInRange.size() > 0) {
+            String prompt = "There are Monsters in range you can attack. Would you like to attack one?";
+            wantsToAttack = new GetUserYesNoInput().run(prompt);
+        }
+
+        if(wantsToAttack) {
+            heroAttackMonster(monstersInRange);
+        } else {
+            moveHero();
+        }
+    }
+
+
+
+    /**
+     * Helper function which walks a user through the process of attacking a Monster
+     * as their turn.
+     */
+    private void heroAttackMonster(List<Monster> monstersInRange) {
+        String prompt = "Which Monster would you like to attack?";
+        List<String> options = new ArrayList<>();
+        for(Monster monster : monstersInRange) {
+            options.add(monster.toString());
+        }
+        int chosen = new GetUserNumericInput(new Scanner(System.in), prompt, options).run();
+        Monster toAttack = monstersInRange.get(chosen);
+
+        // The user does not actually have to attack this Monster. They can choose
+        // to cast a spell or a Potion instead
+        fightMove = new GetUserFightMove((Hero)current, Collections.singletonList(toAttack)).run();
+        try {
+            fightMove.execute();
+        } catch (InvalidFightMoveException e) {
+            e.printStackTrace();
+            // Shouldn't happen
+        }
+    }
+
+    /**
+     * Helper function which moves a Hero for their turn.
+     */
+    private void moveHero() {
         boolean enteredLegalMove = false;
-        // TODO: prompt user for attack or move first, then if choose move, proceed as below
+        Hero hero = (Hero)current;
         while(!enteredLegalMove) {
+            // TODO: add switch armor and weapon as option for Turn
             UserCommand command = new GetUserCommand().run();
             switch (command) {
                 case UP:
@@ -275,7 +316,7 @@ public class LegendsOfValorTurn implements TurnExecutor {
                     enteredLegalMove = attemptMoveIfPossible(hero, Direction.TELEPORT);
                     break;
                 case BACK:
-	                enteredLegalMove = attemptMoveIfPossible(hero,Direction.BACK);
+                    enteredLegalMove = attemptMoveIfPossible(hero,Direction.BACK);
                     break;
                 default:
                     throw new RuntimeException("Unknown command!");
