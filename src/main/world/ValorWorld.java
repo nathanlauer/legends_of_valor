@@ -20,7 +20,7 @@ public class ValorWorld extends World {
     private int laneTeleportTo;
     private HashMap<Hero,Boolean> teleported;
     private HashMap<Hero,Position> teleportPositions;
-    private HashMap<Integer, Integer> farthestRow;
+    private HashMap<Integer, Integer> farthestRow;//<Col, Row>
     private int lanesInsertedMonster;
     private HashMap<Hero,Position> spawnPositions;
     private HashMap<Monster,Position> monsterPositions;
@@ -94,7 +94,7 @@ public class ValorWorld extends World {
     }
     
     /**
-     * Hero can only teleport to a different lane. However, hero can always teleport back to his departure lane.
+     * Hero can only teleport to a different lane. However, if the hero has already teleported, he must teleport back first.
      * @param hero
      * @return
      */
@@ -136,6 +136,7 @@ public class ValorWorld extends World {
 			return true;
 		}
     }
+    
     /**
      * Hero teleports to another lane
      * @param hero
@@ -208,6 +209,7 @@ public class ValorWorld extends World {
 		teleportPositions.put(hero, curPos);
     	teleported.put(hero, true);
     }
+    
     /**
      * Check if there's monster behind the target position. If so, return the farthest Monster position.
      * @param targetCol
