@@ -136,14 +136,6 @@ public class LegendList {
     }
 
     /**
-     * Removes the passed in Monster from the current list
-     * @param monster
-     */
-    public void removeMonsterFromActiveList(Monster monster) {
-
-    }
-
-    /**
      * print out the initial stats of the chosen heroes.
      */
     public void printChosenHeroes() {
