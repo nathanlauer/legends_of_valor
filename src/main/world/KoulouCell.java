@@ -56,7 +56,8 @@ public class KoulouCell extends Cell{
 	@Override
 	public void exit(List<Hero> heroes) {
 		for(Hero hero: heroes) {
-            hero.getStrength().decreaseAbilityByPercentage(10);
+			double originalVal = hero.getStrength().getAbilityValue()/1.1;
+            hero.getStrength().setAbilityValue(originalVal);
 		}
 		
 	}
