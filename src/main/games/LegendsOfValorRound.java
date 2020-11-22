@@ -145,10 +145,11 @@ public class LegendsOfValorRound implements RoundExecutor {
      * respective Nexus.
      */
     private void respawnFaintedHeroes() {
+        ValorWorld world = (ValorWorld)Runner.getInstance().getWorld();
         for(Hero hero : heroes) {
             if(hero.hasFainted()) {
                 System.out.println(hero.getName() + " has fainted, and will be respawned in their Nexus.");
-                // TODO: respawn in Nexus
+                world.respawnHero(hero);
             }
         }
     }
@@ -180,19 +181,16 @@ public class LegendsOfValorRound implements RoundExecutor {
      */
     @Override
     public boolean finishedGame() {
-        // TODO:
-        // Something like:
-//        for(Hero hero : heroes) {
-//            if(world.heroReachedMonsterNexus(hero)) {
-//                return true;
-//            }
-//        }
-//
-//        for(Monster monster : monsters) {
-//            if(world.monsterReachedHeroNexus(monster)) {
-//                return true;
-//            }
-//        }
+        ValorWorld world = (ValorWorld)Runner.getInstance().getWorld();
+        if(world.heroInMonstersNexus()) {
+            System.out.println("A Hero has made it to the Monsters nexus and so the Heroes win! Congratulations!");
+            return true;
+        }
+
+        if(world.monsterInHeroesNexus()) {
+            System.out.println("Oh no! A Monster has made it the Heros nexus, and so the Monsters win!");
+            return true;
+        }
         return false;
     }
 }

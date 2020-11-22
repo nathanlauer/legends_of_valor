@@ -649,4 +649,32 @@ public class ValorWorld extends World {
         return inRange;
     }
 
+    /**
+     * Indicates whether or not a Hero is in a Monster's nexus cell
+     * @return true if a Hero made it to a Monster's nexus, false otherwise
+     */
+    public boolean heroInMonstersNexus() {
+        for(Map.Entry<Hero, Position> entry : heroPositions.entrySet()) {
+            Cell cell = getCellAt(entry.getValue().getRow(), entry.getValue().getCol());
+            if(cell instanceof MonsterNexusCell) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Indicates whether or not a Monster is in a Hero's nexus cell
+     * @return true if a Monster made it a Hero's nexus, false otherwise
+     */
+    public boolean monsterInHeroesNexus() {
+        for(Map.Entry<Monster, Position> entry : monsterPositions.entrySet()) {
+            Cell cell = getCellAt(entry.getValue().getRow(), entry.getValue().getCol());
+            if(cell instanceof HeroNexusCell) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
