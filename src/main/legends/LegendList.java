@@ -141,13 +141,36 @@ public class LegendList {
      */
     public Monster spawnNewMonster() {
         List<Monster> monsters = getMonsters();
+
+        // First, identify all possible Monsters
+        List<Monster> possibleMonsters = new ArrayList<>();
         for(Monster monster : monsters) {
             if(!activeMonsters.contains(monster)) {
-                activeMonsters.add(monster);
-                return monster;
+                possibleMonsters.add(monster);
             }
         }
-        return null;
+
+        // Now, choose one with the lowest level: note that we aren't sorting, so that
+        // we avoid concurrent modification exceptions with iterators - there are iterators
+        // outside this class that point to lists here.
+        // (I realize that this is not ideal. It would be better to have separate copies, and
+        // probably a separate class for tracking "active" Heroes and Monsters. However, that
+        // is a refactoring for some future time)
+        Monster spawned = null;
+        for(Monster monster : possibleMonsters) {
+            if(spawned == null) {
+                spawned = monster;
+            }
+            if(monster.getLevel().compareTo(spawned.getLevel()) < 0) {
+                spawned = monster;
+            }
+        }
+
+        if(spawned != null) {
+            activeMonsters.add(spawned);
+        }
+
+        return spawned;
     }
 
     /**

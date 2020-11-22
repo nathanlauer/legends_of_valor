@@ -369,7 +369,9 @@ public class ValorWorld extends World {
         String rightSide = "  ";
         if(this.isMonsterInCell(cell)) {
             Monster monster = getMonsterInCell(cell);
-            rightSide = Colors.ANSI_RED + monster.getName().substring(0, 2);
+            if(monster != null) {
+                rightSide = Colors.ANSI_RED + monster.getName().substring(0, 2);
+            }
         }
 
         return color + "|" +

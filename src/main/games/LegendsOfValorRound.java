@@ -177,7 +177,9 @@ public class LegendsOfValorRound implements RoundExecutor {
             System.out.println("New Monsters have been spawned in their Nexus!");
             for(int i = 0; i < LegendsOfValorRound.numMonstersToSpawn; i++) {
                 Monster monster = LegendList.getInstance().spawnNewMonster();
-                world.addNewlySpawnedMonster(monster);
+                if(monster != null) {
+                    world.addNewlySpawnedMonster(monster);
+                }
             }
         }
     }
