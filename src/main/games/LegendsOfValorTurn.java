@@ -31,8 +31,8 @@ import java.util.*;
 public class LegendsOfValorTurn implements TurnExecutor {
     private Legend current;
     private boolean firstTurn;
-    private final ListIterator<Hero> heroIterator;
-    private final ListIterator<Monster> monsterIterator;
+    private ListIterator<Hero> heroIterator;
+    private ListIterator<Monster> monsterIterator;
     private boolean finished;
 
     /**
@@ -392,6 +392,10 @@ public class LegendsOfValorTurn implements TurnExecutor {
      */
     @Override
     public boolean finishedAllTurns() {
+        if(finished) {
+            heroIterator = null;
+            monsterIterator = null;
+        }
         return finished;
     }
 }
