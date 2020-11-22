@@ -191,11 +191,11 @@ public class ValorWorld extends World {
     public void teleportBack(Hero hero) {
     	int teleportedRow = teleportPositions.get(hero).getRow();
 		int teleportedCol = teleportPositions.get(hero).getCol();
-		Position monsterPos = getFarthestMonster(teleportedRow, teleportedCol);
+		Position monsterPos = getFarthestMonster(teleportedCol, teleportedRow);
 		if(monsterPos != null) {	
 			this.setHeroLocation(hero, monsterPos.getRow(), monsterPos.getCol());		
 		} else {
-			this.setHeroLocation(hero, teleportPositions.get(hero).getRow(), teleportPositions.get(hero).getCol());
+			this.setHeroLocation(hero, teleportedRow, teleportedCol);
 		}
 		teleportPositions.remove(hero);
 		teleported.remove(hero);
@@ -230,21 +230,22 @@ public class ValorWorld extends World {
 					this.setHeroLocation(hero, monsterPos.getRow()+1, monsterPos.getCol());//back up
 			} else {
 				if(isHeroInCell(getCellAt(targetRow,farthestCol))) {
-					if(farthestCol%2 == 0)
+					if(farthestCol%2 == 0) {
 						if(!isHeroInCell(getCellAt(targetRow, farthestCol+1)))
 							this.setHeroLocation(hero, targetRow, farthestCol+1);
 						else //both left cell and right cell have heroes occupied
 							this.setHeroLocation(hero, targetRow+1, farthestCol);//back up
-					else
+					} else {
 						if(!isHeroInCell(getCellAt(targetRow, farthestCol-1)))
 							this.setHeroLocation(hero, targetRow, farthestCol-1);
 						else //both left cell and right cell have heroes occupied
 							this.setHeroLocation(hero, targetRow+1, farthestCol);//back up
+					}
 				} else {
 					this.setHeroLocation(hero, targetRow, farthestCol);
 				}
 			}
-		} else {// if no further path has been explored, transports to nexus of that lane.
+		} else {// if no further path has been explored, teleport to nexus of that lane.
 			if(isHeroInCell(getCellAt(this.numRows()-1, targetCol))) {
 				this.setHeroLocation(hero, this.numRows()-1, targetCol+1);
 			} else {
@@ -252,7 +253,7 @@ public class ValorWorld extends World {
 			}
 		}
 		teleportPositions.put(hero, curPos);
-		teleported.put(hero, true);
+    	teleported.put(hero, true);
     }
     /**
      * Check if there's monster behind the target position. If so, return the farthest Monster position.
@@ -266,9 +267,9 @@ public class ValorWorld extends World {
 		Position farthestPos = null;
 		for(Position pos : monsterPositions.values()) {
 			if(pos.getCol() == targetCol || pos.getCol() == targetCol+1 || pos.getCol() == targetCol-1) {
-				if(pos.getRow()>=targetRow) {
+				if(pos.getRow()>targetRow) {
 					monsterBehind = true;
-					if(largestSeen < pos.getRow()) {
+					if(largestSeen <= pos.getRow()) {
 						largestSeen = pos.getRow();
 						farthestPos = pos;
 					}
