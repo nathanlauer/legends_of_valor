@@ -685,4 +685,15 @@ public class ValorWorld extends World {
         return false;
     }
 
+    /**
+     * Enters the passed in Hero to the Market, if they are currently in a Market cell.
+     * @param hero the Hero to enter into the Market.
+     */
+    public void enterHeroToMarketIfPossible(Hero hero) {
+        Position position = heroPositions.get(hero);
+        Cell cell = getCellAt(position.getRow(), position.getCol());
+        if(cell instanceof HeroNexusCell) {
+            cell.enter(Collections.singletonList(hero));
+        }
+    }
 }

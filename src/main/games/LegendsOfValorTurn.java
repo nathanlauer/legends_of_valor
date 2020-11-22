@@ -1,6 +1,7 @@
 package main.games;
 
 import main.Runner;
+import main.attributes.Position;
 import main.fight.Attack;
 import main.fight.FightMove;
 import main.fight.GetUserFightMove;
@@ -34,18 +35,20 @@ public class LegendsOfValorTurn implements TurnExecutor {
     private ListIterator<Hero> heroIterator;
     private ListIterator<Monster> monsterIterator;
     private boolean finished;
+    private boolean firstRound;
 
     /**
      * Standard constructor
      * @param heroes the Heroes playing in this Turn
      * @param monsters the Monsters playing in this Turn
      */
-    public LegendsOfValorTurn(List<Hero> heroes, List<Monster> monsters) {
+    public LegendsOfValorTurn(List<Hero> heroes, List<Monster> monsters, boolean firstRound) {
         heroIterator = heroes.listIterator();
         monsterIterator = monsters.listIterator();
         current = null; // will be set in setupNextTurn method
         firstTurn = true;
         finished = false;
+        this.firstRound = firstRound;
     }
 
     /**
@@ -253,6 +256,11 @@ public class LegendsOfValorTurn implements TurnExecutor {
      */
     private void playNextHeroesTurn() {
         displayCurrentHeroStatus();
+        // If it's the first round, prompt the user if they'd like their Hero to enter the Market
+        if(firstRound) {
+            promptHeroToEnterMarket();
+        }
+
         ValorWorld world = (ValorWorld)Runner.getInstance().getWorld();
         List<Monster> monstersInRange = world.getMonstersInRange((Hero)current);
         boolean wantsToAttack = false;
@@ -265,6 +273,19 @@ public class LegendsOfValorTurn implements TurnExecutor {
             heroAttackMonster(monstersInRange);
         } else {
             moveHero();
+        }
+    }
+
+    /**
+     * Helper function which prompts the Hero if they'd like to enter the Market
+     */
+    private void promptHeroToEnterMarket() {
+        Hero hero = (Hero)current;
+        String prompt = "Would you like " + hero.getName() + " to enter the Market? You can come back to the Market at any point as well";
+        boolean enter = new GetUserYesNoInput().run(prompt);
+        if(enter) {
+            ValorWorld world = (ValorWorld)Runner.getInstance().getWorld();
+            world.enterHeroToMarketIfPossible(hero);
         }
     }
 

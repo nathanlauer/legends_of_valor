@@ -42,6 +42,7 @@ public class LegendsOfValorRound implements RoundExecutor {
     private TurnExecutor turnExecutor;
     private int roundNum;
     private final int numRoundsToNewMonsters;
+    private boolean firstRound;
 
     /**
      * Empty constructor
@@ -59,10 +60,6 @@ public class LegendsOfValorRound implements RoundExecutor {
      */
     public LegendsOfValorRound(int roundsToNewMonsters) {
         this(new ArrayList<>(), new ArrayList<>(), roundsToNewMonsters);
-
-        // TODO: once world or world interaction built for valor, call these methods
-        //heroes = Runner.getInstance().getWorld().getHeroes();
-        //monsters = Runner.getInstance().getWorld().getMonsters();
     }
 
     /**
@@ -74,7 +71,8 @@ public class LegendsOfValorRound implements RoundExecutor {
     public LegendsOfValorRound(List<Hero> heroes, List<Monster> monsters, int roundsToNewMonsters) {
         this.heroes = heroes;
         this.monsters = monsters;
-        this.turnExecutor = new LegendsOfValorTurn(heroes, monsters);
+        this.firstRound = true;
+        this.turnExecutor = new LegendsOfValorTurn(heroes, monsters, firstRound);
         this.turnBasedGame = new TurnBasedGame(turnExecutor);
         this.numRoundsToNewMonsters = roundsToNewMonsters;
         roundNum = 0;
@@ -85,7 +83,7 @@ public class LegendsOfValorRound implements RoundExecutor {
      */
     @Override
     public void setupNextRound() {
-        this.turnExecutor = new LegendsOfValorTurn(heroes, monsters);
+        this.turnExecutor = new LegendsOfValorTurn(heroes, monsters, firstRound);
         this.turnBasedGame = new TurnBasedGame(turnExecutor);
         roundNum++;
     }
@@ -110,6 +108,7 @@ public class LegendsOfValorRound implements RoundExecutor {
         respawnFaintedHeroes();
         spawnMonstersIfNecessary();
         removeDeadMonsters();
+        this.firstRound = false;
     }
 
     /**
@@ -161,7 +160,7 @@ public class LegendsOfValorRound implements RoundExecutor {
     private void removeDeadMonsters() {
         for(Monster monster : monsters) {
             if(!monster.isAlive()) {
-                LegendList.getInstance().removeMonsterFromActive(monster);
+//                LegendList.getInstance().removeMonsterFromActive(monster);
                 ValorWorld world = (ValorWorld)Runner.getInstance().getWorld();
                 world.removeDeadMonster(monster);
             }
