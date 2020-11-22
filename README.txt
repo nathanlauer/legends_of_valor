@@ -1,8 +1,6 @@
-Legends, Heroes and Monsters!
+Legends of Valor!
 
-Author: Nathan Lauer
-Email: lauern@bu.edu
-BU ID: U19756624
+Author: Sandra Zhen, Ling Xie, Nathan Lauer
 
 Please feel free to ask me any questions!
 
@@ -11,21 +9,15 @@ It will be difficult, if not almost impossible, to view the text on a dark color
 
 Description:
 ============
-This repository contains code for a game, "Legends, Heroes and Monsters," in which users can explore a world,
-fight monsters, buy and sell items, and gain experience along the way. Instructions for how to proceed through
-the game, as well as the rules, are explained along the way.
+This repository contains code for a game, "Legends of Valor," in which users lead a team of Heroes 
+in competition against of team of Monsters to reach the opposite Nexus. Heroes can buy/sell weapons,
+armor, potions, and spells, and attack Monsters that are in range. Once a Hero kills a Monster, they
+can advance past it, and the game is won once a Hero or Monster reaches the opposite Nexus.
 
 
 Compilation Instructions:
 =========================
-There are two options for compiling:
-
-- I have provided a script which can be run, which compiles and runs the game. To do so:
-$ chmod +x run.sh
-$ ./run.sh
-
-- If, however, you prefer to not run a script, and compile then run manually, perform the following steps:
-$ find ./src/main -name "*.java" > sources.txt (I have already provided the sources.txt file, but feel free to regenerate it if desired)
+$ find ./src/main -name "*.java" > sources.txt (We have already provided the sources.txt file, but feel free to regenerate it if desired)
 $ javac @sources.txt
 $ java -cp src main.Main
 
@@ -37,16 +29,27 @@ A few notes to be aware of:
 - There are a number of data files included, which define the Heroes, Monsters, and various GearItems that are
 a part of the game. These files are included in the data directory.
 
-- I wrote a number of unit tests, and they are included in the src/test directory. However, these tests will
+- We wrote a number of unit tests, and they are included in the src/test directory. However, these tests will
 not compile using the instrutions above, as the JUnit jars are not linked. The instructions above will ignore
 the test directory, so this should not present a problem. However, if you'd like to run the tests, you'll 
 need to link the JUnit Jupiter jar, which can be done manually, or perhaps with an IDE by loading this
 repo to your preferred IDE.
 
+CLASSES TO IGNORE:
+==================
+There are a number of classes that are leftover from the previous implementation of Heroes vs Monsters. These
+classes are few, and they do not contribute to the implementation for Legeds of Valor. They are:
+- Fight
+- HeroesVsMonstersTurn
+- HeroesVsMonstersRound
+- PairHeroesAndMonsters
+- RandomWorld
+- RandomWorldBuilder
+
 Design:
 =======
 
-I have organized this repository into a number of logical packages. They are:
+We have organized this repository into a number of logical packages. They are:
 1) Attributes
 2) Fight
 3) Games
@@ -56,7 +59,7 @@ I have organized this repository into a number of logical packages. They are:
 7) World
 
 Each of these packages contain a number of classes that logically fit within said package. In general, there is some
-overlap between these packages, but I tried hard to keep them as independent as possible.
+overlap between these packages, but we tried hard to keep them as independent as possible.
 
 Details for each of these packages (which includes architectural design decisions):
 
@@ -80,18 +83,11 @@ have a Strength Ability, etc. This makes it quite easy to compose each of these 
 different Legends throughout the game.
 
 2) Fight
-The fight is built as both a round-based-game, and a turn-based-game. Specifically, the fight proceeds in rounds, 
-and each round is effectively its own turn-based-game, where Heroes and Monsters alternate their "turns." Each
-turn in this game is either an attack by a Monster, or a FightMove by a Hero.
-
-We use the strategy pattern to define both RoundExecutors and TurnExecutors to build the flow of the game. This
-makes it quite simple to encode the process of how the fight proceeds, as we simply implement the logic for
-each step of the game. For example, instead of having to implement the flow of the game in the HeroesVsMonstersTurn
-class, we simply build the logic for setupNextTurn(), playNextTurn(), processEndOfTurn(), and finishedAllTurns().
 
 In this package, we provide three types of classes:
-- The classes used to implement the RoundExecutor and TurnExecutor interfaces from the games package.
-- The class used to compose these together into a single Fight.
+- The classes used to implement the RoundExecutor and TurnExecutor interfaces from the games package. (NOTE: 
+these only applied to the previous game, see section on classes to ignore)
+- The class used to compose these together into a single Fight. (NOTE: see section on classes to ignore.)
 - The FightMove class which represent the kinds of actions that Legends can take in a fight.
 
 FightMoves are grouped into an inheritance hierarchy, with abstract class FightMove at the top. Each FightMove
@@ -102,21 +98,6 @@ moves that affect Legends other than the executing Legend.
 - Every fight move must implement the abstract method execute(), which allows for an easy interface to creating and
 executing moves in a fight.
 
-I also extracted the logic for pairing Heroes and Monsters into its own class. This class allows the user
-to choose how Heroes and Monsters are paired - the user can allow the pairing to happen automatically, 
-which sets up a 1v1 pairing as best as possible, or, the user can do the pairing themselves, in which
-case this class walks them through the process of pairing Heroes to Monsters manually.
-Some notes:
-- This class does not assume the same number of Heroes and Monsters. When paired automatically, it attempts
-1v1 as much as possible, but if there are additional Heroes or Monsters, it pairs the extra with all
-of the other type. 
-- Monsters are paired randomly 1v1 to Heroes as much as possible, according to the logic above, randomly.
-That means that Monsters are not necessarily attacking the Hero that is attacking it. Truth be told, 
-this wasn't quite intentional, and I only realized this later, but didn't have time to go back and change it.
-In any event, I don't think it's that big a deal, but it can be a little more confusing to the user 
-in terms of what is happening in the fight. To counter that, each step in the fight displays the status, 
-and it can be easily seen which Monsters a Hero is facing, and which Heroes a Monster is facing.
-
 3) Games
 This package defines the interfaces RoundExecutor and TurnExecutor, as well as the classes RoundBasedGame and
 TurnBasedGame. 
@@ -126,8 +107,11 @@ of its required functions sequentially until the game has finished.
 - A TurnBasedGame also uses the strategy pattern, by taking a TurnExecutor as input, and then calling
 each of its required functions sequentially until the game has finished.
 
-These classes and interfaces are used in a Fight to deefine the flow of a Fight, whereas the classes within the
-Fight package define the logic implementation for each of the required methods in said flow.
+We use these classes to implement the process of actually playing Legends of Valor. We do this by
+implementing it as a RoundBasedGame, where each round is inherently a TurnBasedGame. This makes the 
+process of running the game quite simple - the logic for the "flow" is contained in RoundBasedGame and
+TurnBasedGame, while the specific implementations of each point in the game are built into the 
+methods enforced by TurnExecutor and RoundExecutor.
 
 4) Legends
 Here, we define the Legends in the game, where a Legend is either a Hero or a Monster. Both Heroes and Monsters
