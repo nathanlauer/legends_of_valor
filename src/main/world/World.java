@@ -356,4 +356,21 @@ public abstract class World implements Drawable {
         assert row < numRows();
         assert col < numCols();
     }
+
+    /**
+     * Indicates whether or not the passed in Position is valid, meaning
+     * that it represents an actual location in the world
+     * @param position the Position in question
+     * @return true if the passed in Position has a row/col pair that are valid, false otherwise.
+     */
+    protected boolean isPositionValid(Position position) {
+        int row = position.getRow();
+        int col = position.getCol();
+
+        if(row < 0 || row >= this.numRows()) {
+            return false;
+        }
+
+        return col >= 0 && col < numCols();
+    }
 }

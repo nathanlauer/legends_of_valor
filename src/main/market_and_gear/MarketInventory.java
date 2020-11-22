@@ -79,11 +79,43 @@ public class MarketInventory {
 
     /**
      *
+     * @return the cheapest Weapon available
+     */
+    public Weapon getCheapestWeapon() {
+        Weapon cheapest = null;
+        int price = Integer.MAX_VALUE;
+        for(GearItem weapon : getAllWeapons()) {
+            if(weapon.getPrice() < price) {
+                price = weapon.getPrice();
+                cheapest = (Weapon)weapon;
+            }
+        }
+        return cheapest;
+    }
+
+    /**
+     *
      * @return all GearItems that are Armor
      */
     public List<GearItem> getAllArmor() {
         Stream<GearItem> armors = gearItems.stream().filter(gearItem -> gearItem instanceof Armor);
         return armors.collect(Collectors.toList());
+    }
+
+    /**
+     *
+     * @return the cheapest Armor available
+     */
+    public Armor getCheapestArmor() {
+        Armor cheapest = null;
+        int price = Integer.MAX_VALUE;
+        for(GearItem armor : getAllArmor()) {
+            if(armor.getPrice() < price) {
+                price = armor.getPrice();
+                cheapest = (Armor) armor;
+            }
+        }
+        return cheapest;
     }
 
     /**

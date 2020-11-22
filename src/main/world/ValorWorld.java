@@ -1,6 +1,5 @@
 package main.world;
 
-import javafx.geometry.Pos;
 import main.attributes.Position;
 import main.legends.*;
 import main.utils.Colors;
@@ -52,7 +51,7 @@ public class ValorWorld extends World {
         boolean allowed = false;
         switch (direction) {
             case UP:
-                allowed = getHeroRow(hero) > 0 && !isHeroInCell(getCellAt(getHeroRow(hero)-1, getHeroCol(hero))) && !isMonsterInCell(getCellAt(getHeroRow(hero), getHeroCol(hero)))  ;
+                allowed = getHeroRow(hero) > 0 && !isHeroInCell(getCellAt(getHeroRow(hero)-1, getHeroCol(hero))) && !monsterInCellNextToHero(hero);
                 break;
             case DOWN:
                 allowed = getHeroRow(hero) < numRows() - 1 && !isHeroInCell(getCellAt(getHeroRow(hero)+1, getHeroCol(hero)));
@@ -73,6 +72,38 @@ public class ValorWorld extends World {
                 throw new RuntimeException("Unknown direction!");
         }
         return allowed;
+    }
+
+    /**
+     * Helper function which indicates if there is a Monster that is next to
+     * the passed in Hero. Next to means that a Monster is in the same Cell
+     * as a Hero, or the Cell to the left, or the Cell to the right
+     * as a Hero, or the Cell to the left, or the Cell to the right
+     * @param hero the Hero in question
+     */
+    private boolean monsterInCellNextToHero(Hero hero) {
+        int heroRow = getHeroRow(hero);
+        int heroCol = getHeroCol(hero);
+
+        // check same Cells
+        if(isMonsterInCell(getCellAt(heroRow, heroCol))) {
+            return true;
+        }
+
+        // Check cell to the left
+        if(heroCol > 0) {
+            if(isMonsterInCell(getCellAt(heroRow, heroCol - 1))) {
+                return true;
+            }
+        }
+
+        // Check cell to the right
+        if(heroCol < numCols() - 1) {
+            if(isMonsterInCell(getCellAt(heroRow, heroCol + 1))) {
+                return true;
+            }
+        }
+        return false;
     }
     
    
@@ -338,7 +369,9 @@ public class ValorWorld extends World {
         String rightSide = "  ";
         if(this.isMonsterInCell(cell)) {
             Monster monster = getMonsterInCell(cell);
-            rightSide = Colors.ANSI_RED + monster.getName().substring(0, 2);
+            if(monster != null) {
+                rightSide = Colors.ANSI_RED + monster.getName().substring(0, 2);
+            }
         }
 
         return color + "|" +
@@ -424,32 +457,52 @@ public class ValorWorld extends World {
      * @return list of spawned monsters
      */
     public List<Monster> spawnNewMonsters(){
-        List<Monster > monsterList = LegendList.getInstance().getCorrespondingMonsters();
+        List<Monster > monsterList = LegendList.getInstance().getActiveMonsters();
         List<Monster> monsters = new ArrayList<>();
         for(int i = 0; i<monsterList.size();i++){
             int col = 0; // +1 accounts for separate between lanes
             Monster monster = null;
-            try {
-                //try to clone the monster and set its position to empty nexus cell
-                monster = (Monster)(monsterList.get(i).clone());
-                Cell emptyMonsterNexus=null;
-                do{
-                    col = lanesInsertedMonster * (laneWidth + space);
-                    //spawn in one of the columns of the lane randomly
-                    col+=new Random().nextInt(laneWidth);
+            //try to clone the monster and set its position to empty nexus cell
+            monster = monsterList.get(i);
+            Cell emptyMonsterNexus=null;
+            do{
+                col = lanesInsertedMonster * (laneWidth + space);
+                //spawn in one of the columns of the lane randomly
+                col+=new Random().nextInt(laneWidth);
 
-                    emptyMonsterNexus = getEmptyMonsterNexusCell(col);
-                    lanesInsertedMonster++;
-                }while(emptyMonsterNexus==null);
-                setMonsterLocation(monster,emptyMonsterNexus.getRow(),emptyMonsterNexus.getCol());
-                monsters.add(monster);
-            } catch (CloneNotSupportedException e) {
-                e.printStackTrace();
-            }
-
-
+                emptyMonsterNexus = getEmptyMonsterNexusCell(col);
+                lanesInsertedMonster++;
+            }while(emptyMonsterNexus==null);
+            setMonsterLocation(monster,emptyMonsterNexus.getRow(),emptyMonsterNexus.getCol());
+            monsters.add(monster);
         }
         return monsters;
+    }
+
+    /**
+     * "Spawns" the passed in Monster into a Nexus cell.
+     * @param monster the Monster to add
+     */
+    public void addNewlySpawnedMonster(Monster monster) {
+        if(lanesInsertedMonster >= this.numLanes) {
+            lanesInsertedMonster = 0;
+        }
+
+        // spawn in one of the columns of the lane randomly
+        int row = 0;
+        int col = lanesInsertedMonster * (laneWidth + space);
+        col += new Random().nextInt(laneWidth);
+        setMonsterLocation(monster, row, col);
+
+        lanesInsertedMonster++;
+    }
+
+    /**
+     * Removes a dead monster
+     * @param monster the dead Monster
+     */
+    public void removeDeadMonster(Monster monster) {
+        monsterPositions.remove(monster);
     }
 
 
@@ -544,6 +597,105 @@ public class ValorWorld extends World {
         return null;
     }
 
+    /**
+     * Returns a list of Heroes that are "in range" of the passed in Monster.
+     * In range is defined as a Hero having a position adjacent to the position
+     * of the passed in Monster.
+     * @param monster The monster in question
+     * @return a List of the Heroes that are in range
+     */
+    public List<Hero> getHeroesInRange(Monster monster) {
+        List<Hero> inRange = new ArrayList<>();
+        int monsterRow = getMonsterRow(monster);
+        int monsterCol = getMonsterCol(monster);
 
+        for(int row = -1; row <= 1; row++) {
+            for(int col = -1; col <= 1; col++) {
+                int relevantRow = monsterRow + row;
+                int relevantCol = monsterCol + col;
+                Position position = new Position(relevantRow, relevantCol);
+                if(isPositionValid(position)) {
+                    // Check if there is a Hero in this Cell
+                    Cell cell = getCellAt(relevantRow, relevantCol);
+                    Hero hero = getHeroInCell(cell);
+                    if(hero != null) {
+                        inRange.add(hero);
+                    }
+                }
+            }
+        }
 
+        return inRange;
+    }
+
+    /**
+     * Returns a list of Monsters that are "in range" of the passed in Hero.
+     * In range is defined as a Monster having a position adjacent to the position
+     * of the passed in Hero.
+     * @param hero The Hero in question
+     * @return a List of the Monsters that are in range
+     */
+    public List<Monster> getMonstersInRange(Hero hero) {
+        List<Monster> inRange = new ArrayList<>();
+        int heroRow = getHeroRow(hero);
+        int heroCol = getHeroCol(hero);
+
+        for(int row = -1; row <= 1; row++) {
+            for(int col = -1; col <= 1; col++) {
+                int relevantRow = heroRow + row;
+                int relevantCol = heroCol + col;
+                Position position = new Position(relevantRow, relevantCol);
+                if(isPositionValid(position)) {
+                    // Check if there is a Hero in this Cell
+                    Cell cell = getCellAt(relevantRow, relevantCol);
+                    Monster monster = getMonsterInCell(cell);
+                    if(monster != null) {
+                        inRange.add(monster);
+                    }
+                }
+            }
+        }
+
+        return inRange;
+    }
+
+    /**
+     * Indicates whether or not a Hero is in a Monster's nexus cell
+     * @return true if a Hero made it to a Monster's nexus, false otherwise
+     */
+    public boolean heroInMonstersNexus() {
+        for(Map.Entry<Hero, Position> entry : heroPositions.entrySet()) {
+            Cell cell = getCellAt(entry.getValue().getRow(), entry.getValue().getCol());
+            if(cell instanceof MonsterNexusCell) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Indicates whether or not a Monster is in a Hero's nexus cell
+     * @return true if a Monster made it a Hero's nexus, false otherwise
+     */
+    public boolean monsterInHeroesNexus() {
+        for(Map.Entry<Monster, Position> entry : monsterPositions.entrySet()) {
+            Cell cell = getCellAt(entry.getValue().getRow(), entry.getValue().getCol());
+            if(cell instanceof HeroNexusCell) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Enters the passed in Hero to the Market, if they are currently in a Market cell.
+     * @param hero the Hero to enter into the Market.
+     */
+    public void enterHeroToMarketIfPossible(Hero hero) {
+        Position position = heroPositions.get(hero);
+        Cell cell = getCellAt(position.getRow(), position.getCol());
+        if(cell instanceof HeroNexusCell) {
+            cell.enter(Collections.singletonList(hero));
+        }
+    }
 }

@@ -1,26 +1,21 @@
 package main.games;
 
 import main.Runner;
+import main.attributes.Position;
 import main.fight.Attack;
 import main.fight.FightMove;
+import main.fight.GetUserFightMove;
 import main.fight.InvalidFightMoveException;
-import main.fight.PairHeroesAndMonsters;
 import main.legends.Hero;
 import main.legends.Legend;
-import main.legends.LegendList;
 import main.legends.Monster;
-import main.utils.Colors;
-import main.utils.GetUserCommand;
-import main.utils.Output;
-import main.utils.UserCommand;
+import main.utils.*;
 import main.world.Direction;
 import main.world.InvalidMoveDirection;
+import main.world.ValorWorld;
 import main.world.World;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 /**
  * Class LegendsOfValorTurn implements TurnExecutor, and is therefore a TurnBasedGame,
@@ -37,23 +32,23 @@ import java.util.ListIterator;
 public class LegendsOfValorTurn implements TurnExecutor {
     private Legend current;
     private boolean firstTurn;
-    private final ListIterator<Hero> heroIterator;
-    private final ListIterator<Monster> monsterIterator;
+    private ListIterator<Hero> heroIterator;
+    private ListIterator<Monster> monsterIterator;
     private boolean finished;
-    private FightMove fightMove;
-    // private Move move; TODO when Moves have been built
+    private boolean firstRound;
 
     /**
      * Standard constructor
      * @param heroes the Heroes playing in this Turn
      * @param monsters the Monsters playing in this Turn
      */
-    public LegendsOfValorTurn(List<Hero> heroes, List<Monster> monsters) {
+    public LegendsOfValorTurn(List<Hero> heroes, List<Monster> monsters, boolean firstRound) {
         heroIterator = heroes.listIterator();
         monsterIterator = monsters.listIterator();
         current = null; // will be set in setupNextTurn method
         firstTurn = true;
         finished = false;
+        this.firstRound = firstRound;
     }
 
     /**
@@ -136,7 +131,7 @@ public class LegendsOfValorTurn implements TurnExecutor {
      * Heroes are respawned in their Nexus as soon as they faint, and hence
      * there is not actually a possibility that there may be no Heroes on the board.
      */
-    private void setupLaterTurns() throws InvalidNextTurnException {
+    private void setupLaterTurns() {
         // Not the first turn. Check to see if a Hero or a Monster went previously.
         if(monsterShouldGoNext()) {
             monsterGoesNext();
@@ -158,7 +153,7 @@ public class LegendsOfValorTurn implements TurnExecutor {
      * supposed to go next. As noted in the above function, there is
      * a possible scenario where there are actually no living Monsters.
      */
-    private void monsterGoesNext() throws InvalidNextTurnException {
+    private void monsterGoesNext() {
         boolean found = false;
         while(monsterIterator.hasNext() && !found) {
             Monster monster = monsterIterator.next();
@@ -178,7 +173,7 @@ public class LegendsOfValorTurn implements TurnExecutor {
      * Private helper function which handles the situation where a Hero is
      * supposed to go next.
      */
-    private void heroGoesNext() throws InvalidNextTurnException {
+    private void heroGoesNext() {
         boolean found = false;
         while(heroIterator.hasNext() && !found) {
             Hero hero = heroIterator.next();
@@ -188,9 +183,13 @@ public class LegendsOfValorTurn implements TurnExecutor {
             }
         }
 
-        // If we were unable to find a valid Hero, then this turn based game has finished
         if(!found) {
-            finished = true;
+            // Check if there are Monsters that need to go
+            if(monsterIterator.hasNext()) {
+                current = monsterIterator.next();
+            } else {
+                finished = true;
+            }
         }
     }
 
@@ -215,8 +214,9 @@ public class LegendsOfValorTurn implements TurnExecutor {
      * Otherwise, move forward (forward for Monsters is down)
      */
     private void playNextMonstersTurn() {
-        // TODO: List<Hero> heroesInRange = Runner.getInstance().getWorld().heroesInRange(current);
-        List<Hero> heroesInRange = new ArrayList<>();
+        displayCurrentMonsterStatus();
+        ValorWorld world = (ValorWorld)Runner.getInstance().getWorld();
+        List<Hero> heroesInRange = world.getHeroesInRange((Monster)current);
         if(heroesInRange.size() > 0){
             Hero toAttack = heroesInRange.get(0);
             FightMove attack = new Attack(current, Collections.singletonList(toAttack));
@@ -228,10 +228,25 @@ public class LegendsOfValorTurn implements TurnExecutor {
             }
         } else {
             // Build a downward move for this Monster
-            // TODO:
-            // Move downwards = new DirectionalMove(current, Direction.DOWN);
-            // downwards.execute();
+            try {
+                world.move((Monster)current, Direction.DOWN);
+            } catch (InvalidMoveDirection e) {
+                // Don't do anything - it's possible that a Monster tries
+                // to move down to a Cell that is already occupied by another
+                // Monster. In this case, just ignore it, the Monster doesn't do anything
+            }
         }
+    }
+
+    /**
+     * Helper function which outputs the status of the current Monster
+     */
+    private void displayCurrentMonsterStatus() {
+        Output.printSeparator();
+        Monster monster = (Monster)current;
+        String firstTwoLetters = Colors.ANSI_RED + monster.getName().substring(0, 2) + Colors.ANSI_RESET;
+        System.out.println("It is " + monster.getName() + " turn. Identified by (" + firstTwoLetters + ") on the map. Status:");
+        Output.printOutputables(Collections.singletonList(monster));
     }
 
     /**
@@ -241,9 +256,88 @@ public class LegendsOfValorTurn implements TurnExecutor {
      */
     private void playNextHeroesTurn() {
         displayCurrentHeroStatus();
+        // If it's the first round, prompt the user if they'd like their Hero to enter the Market
+        if(firstRound) {
+            promptHeroToEnterMarket();
+        }
+
+        ValorWorld world = (ValorWorld)Runner.getInstance().getWorld();
+        List<Monster> monstersInRange = world.getMonstersInRange((Hero)current);
+        boolean wantsToAttack = false;
+        if(monstersInRange.size() > 0) {
+            String prompt = "There are Monsters in range you can attack. Would you like to attack one?";
+            wantsToAttack = new GetUserYesNoInput().run(prompt);
+        }
+
+        if(wantsToAttack) {
+            heroAttackMonster(monstersInRange);
+        } else {
+            moveHero();
+        }
+    }
+
+    /**
+     * Helper function which prompts the Hero if they'd like to enter the Market
+     */
+    private void promptHeroToEnterMarket() {
         Hero hero = (Hero)current;
+        String prompt = "Would you like " + hero.getName() + " to enter the Market? You can come back to the Market at any point as well";
+        boolean enter = new GetUserYesNoInput().run(prompt);
+        if(enter) {
+            ValorWorld world = (ValorWorld)Runner.getInstance().getWorld();
+            world.enterHeroToMarketIfPossible(hero);
+        }
+    }
+
+    /**
+     * Helper function which walks a user through the process of attacking a Monster
+     * as their turn.
+     */
+    private void heroAttackMonster(List<Monster> monstersInRange) {
+        String prompt = "Which Monster would you like to attack?";
+        List<String> options = new ArrayList<>();
+        for(Monster monster : monstersInRange) {
+            options.add(monster.toString());
+        }
+        int chosen = new GetUserNumericInput(new Scanner(System.in), prompt, options).run();
+        Monster toAttack = monstersInRange.get(chosen);
+
+        // The user does not actually have to attack this Monster. They can choose
+        // to cast a spell or a Potion instead
+        FightMove fightMove = new GetUserFightMove((Hero) current, Collections.singletonList(toAttack)).run();
+        try {
+            fightMove.execute();
+            if(!toAttack.isAlive()) {
+                processDeadMonster(toAttack);
+            }
+        } catch (InvalidFightMoveException e) {
+            e.printStackTrace();
+            // Shouldn't happen
+        }
+    }
+
+    /**
+     * Processes the situation when a Monster has been killed by a Hero
+     * @param monster the Monster that died
+     */
+    private void processDeadMonster(Monster monster) {
+        // Heroes gain 2 experience and level * 100 coins for killing a Monster
+        Hero hero = (Hero)current;
+        int gainedCoins = 100 * monster.getLevel().getLevel();
+        hero.getCoffer().addCoins(gainedCoins);
+        boolean leveledUp = hero.getExperience().increaseExperience(2);
+        System.out.println(hero.getName() + " has killed a Monster! Gains " + gainedCoins + " coins and two experience points.");
+        if(leveledUp) {
+            System.out.println(hero.getName() + " leveled up! Now at Level " + hero.getLevel().getLevel());
+        }
+    }
+
+    /**
+     * Helper function which moves a Hero for their turn.
+     */
+    private void moveHero() {
         boolean enteredLegalMove = false;
-        // TODO: prompt user for attack or move first, then if choose move, proceed as below
+        Hero hero = (Hero)current;
         while(!enteredLegalMove) {
             UserCommand command = new GetUserCommand().run();
             switch (command) {
@@ -263,7 +357,7 @@ public class LegendsOfValorTurn implements TurnExecutor {
                     enteredLegalMove = attemptMoveIfPossible(hero, Direction.TELEPORT);
                     break;
                 case BACK:
-	                enteredLegalMove = attemptMoveIfPossible(hero,Direction.BACK);
+                    enteredLegalMove = attemptMoveIfPossible(hero,Direction.BACK);
                     break;
                 default:
                     throw new RuntimeException("Unknown command!");
@@ -287,44 +381,29 @@ public class LegendsOfValorTurn implements TurnExecutor {
     private boolean attemptMoveIfPossible(Hero hero, Direction direction) {
         String failure = "Unable to move " + direction + "! Please enter a different move.";
         World world = Runner.getInstance().getWorld();
-        //if(world.canMove(hero, direction)) {
-            try {
-                world.move(hero, direction);
-                return true;
-            } catch (InvalidMoveDirection e) {
-                System.out.println(failure);
-            }
-        //} else {
-           // System.out.println(failure);
-        //}
-        return false;
+        try {
+            world.move(hero, direction);
+        } catch (InvalidMoveDirection e) {
+            System.out.println(failure);
+            return false;
+        }
+        return true;
     }
 
-    /**
-     * Attempts to Teleport the passed in Hero
-     * @param hero the Hero to Teleport
-     * @return true if the teleportation was successful, false otherwise.
-     */
-    public boolean attemptTeleport(Hero hero) {
-        return false;
-//		 Hero teleportee = teleportTo();//get the target hero that the current hero wants to teleport to.
-//		 String failure = "Unable to transport to " +teleportee.getName()  + "! Please teleport to anther hero's side.";
-//     if(valorWorld.canTeleport(hero, teleportee.getPosition())) {
-//         valorWorld.setHeroLocation(hero, valorWorld.getHeroRow(teleportee),valorWorld.getHeroCol(hero));
-//     } else {
-//         System.out.println(failure);
-//     }
-    }
 
     /**
      * Performs any processing necessary at the completion of the previous turn.
      */
     @Override
     public void processEndOfTurn() {
-        // TODO: after a turn, check if current has reached a nexus
-//        if(Runner.getInstance().getWorld().legendReachedNexus(current)) {
-//            finished = true;
-//        }
+        ValorWorld world = (ValorWorld)Runner.getInstance().getWorld();
+        if(world.heroInMonstersNexus()) {
+            finished = true;
+        }
+
+        if(world.monsterInHeroesNexus()) {
+            finished = true;
+        }
     }
 
     /**
@@ -334,6 +413,10 @@ public class LegendsOfValorTurn implements TurnExecutor {
      */
     @Override
     public boolean finishedAllTurns() {
+        if(finished) {
+            heroIterator = null;
+            monsterIterator = null;
+        }
         return finished;
     }
 }

@@ -32,7 +32,6 @@ public class BushCell extends Cell{
 
     @Override
     public void enter(List<Hero> heroes) {
-        // TODO: increase Hero's relevant ability
     	for(Hero hero : heroes) {
     		hero.getDexterity().increaseAbilityByPercentage(10);
     	}
@@ -56,10 +55,8 @@ public class BushCell extends Cell{
 
 	@Override
 	public void exit(List<Hero> heroes) {
-		// TODO Auto-generated method stub
 		for(Hero hero: heroes) {
-			double amount = hero.getDexterity().getAbilityValue()/1.1;
-			hero.getDexterity().decreaseAbilityBy(amount);
+            hero.getDexterity().decreaseAbilityByPercentage(10);
 		}
 	}
 }

@@ -69,9 +69,8 @@ public class Runner {
     public void run() {
         Output.printWelcomeInformation();
         LegendList.getInstance(); // prompts the user to choose their Hero's
-//        worldInteraction.run();
         List<Hero> heroes = LegendList.getInstance().getChosenHeroes();
-        List<Monster> monsters = LegendList.getInstance().getCorrespondingMonsters(); // TODO: This might change
+        List<Monster> monsters = LegendList.getInstance().getActiveMonsters();
         new ValorGame(heroes, monsters).play();
     }
 

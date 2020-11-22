@@ -27,7 +27,7 @@ public class MonsterNexusCell extends NexusCell{
 
     @Override
     public boolean canEnter(List<Hero> heroes) {
-        return false;
+        return true;
     }
 
     @Override

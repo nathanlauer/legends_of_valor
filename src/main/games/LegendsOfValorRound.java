@@ -1,8 +1,11 @@
 package main.games;
 
+import main.Runner;
 import main.legends.Hero;
 import main.legends.Legend;
+import main.legends.LegendList;
 import main.legends.Monster;
+import main.world.ValorWorld;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,13 +34,15 @@ import java.util.List;
  * Please feel free to ask me any questions. I hope you're having a nice day!
  */
 public class LegendsOfValorRound implements RoundExecutor {
-    public static final int roundsToNewMonsters = 8;
+    public static final int roundsToNewMonsters = 2;
+    public static final int numMonstersToSpawn = 3;
     private final List<Hero> heroes;
     private final List<Monster> monsters;
     private TurnBasedGame turnBasedGame;
     private TurnExecutor turnExecutor;
     private int roundNum;
     private final int numRoundsToNewMonsters;
+    private boolean firstRound;
 
     /**
      * Empty constructor
@@ -55,10 +60,6 @@ public class LegendsOfValorRound implements RoundExecutor {
      */
     public LegendsOfValorRound(int roundsToNewMonsters) {
         this(new ArrayList<>(), new ArrayList<>(), roundsToNewMonsters);
-
-        // TODO: once world or world interaction built for valor, call these methods
-        //heroes = Runner.getInstance().getWorld().getHeroes();
-        //monsters = Runner.getInstance().getWorld().getMonsters();
     }
 
     /**
@@ -70,7 +71,8 @@ public class LegendsOfValorRound implements RoundExecutor {
     public LegendsOfValorRound(List<Hero> heroes, List<Monster> monsters, int roundsToNewMonsters) {
         this.heroes = heroes;
         this.monsters = monsters;
-        this.turnExecutor = new LegendsOfValorTurn(heroes, monsters);
+        this.firstRound = true;
+        this.turnExecutor = new LegendsOfValorTurn(heroes, monsters, firstRound);
         this.turnBasedGame = new TurnBasedGame(turnExecutor);
         this.numRoundsToNewMonsters = roundsToNewMonsters;
         roundNum = 0;
@@ -81,10 +83,9 @@ public class LegendsOfValorRound implements RoundExecutor {
      */
     @Override
     public void setupNextRound() {
-        this.turnExecutor = new LegendsOfValorTurn(heroes, monsters);
+        this.turnExecutor = new LegendsOfValorTurn(heroes, monsters, firstRound);
         this.turnBasedGame = new TurnBasedGame(turnExecutor);
         roundNum++;
-        // TODO: some status to display?
     }
 
     /**
@@ -106,6 +107,8 @@ public class LegendsOfValorRound implements RoundExecutor {
         processSurvivingHeroes();
         respawnFaintedHeroes();
         spawnMonstersIfNecessary();
+        removeDeadMonsters();
+        this.firstRound = false;
     }
 
     /**
@@ -142,10 +145,23 @@ public class LegendsOfValorRound implements RoundExecutor {
      * respective Nexus.
      */
     private void respawnFaintedHeroes() {
+        ValorWorld world = (ValorWorld)Runner.getInstance().getWorld();
         for(Hero hero : heroes) {
             if(hero.hasFainted()) {
                 System.out.println(hero.getName() + " has fainted, and will be respawned in their Nexus.");
-                // TODO: respawn in Nexus
+                world.respawnHero(hero);
+            }
+        }
+    }
+
+    /**
+     * Removes any dead Monsters
+     */
+    private void removeDeadMonsters() {
+        for(Monster monster : monsters) {
+            if(!monster.isAlive()) {
+                ValorWorld world = (ValorWorld)Runner.getInstance().getWorld();
+                world.removeDeadMonster(monster);
             }
         }
     }
@@ -156,8 +172,15 @@ public class LegendsOfValorRound implements RoundExecutor {
      */
     private void spawnMonstersIfNecessary() {
         if(roundNum != 0 && roundNum % numRoundsToNewMonsters == 0) {
+            System.out.println("Spawning new Monsters!");
+            ValorWorld world = (ValorWorld) Runner.getInstance().getWorld();
             System.out.println("New Monsters have been spawned in their Nexus!");
-            // TODO: spawn new Monsters in each Nexus
+            for(int i = 0; i < LegendsOfValorRound.numMonstersToSpawn; i++) {
+                Monster monster = LegendList.getInstance().spawnNewMonster();
+                if(monster != null) {
+                    world.addNewlySpawnedMonster(monster);
+                }
+            }
         }
     }
 
@@ -172,19 +195,16 @@ public class LegendsOfValorRound implements RoundExecutor {
      */
     @Override
     public boolean finishedGame() {
-        // TODO:
-        // Something like:
-//        for(Hero hero : heroes) {
-//            if(world.heroReachedMonsterNexus(hero)) {
-//                return true;
-//            }
-//        }
-//
-//        for(Monster monster : monsters) {
-//            if(world.monsterReachedHeroNexus(monster)) {
-//                return true;
-//            }
-//        }
+        ValorWorld world = (ValorWorld)Runner.getInstance().getWorld();
+        if(world.heroInMonstersNexus()) {
+            System.out.println("A Hero has made it to the Monsters nexus and so the Heroes win! Congratulations!");
+            return true;
+        }
+
+        if(world.monsterInHeroesNexus()) {
+            System.out.println("Oh no! A Monster has made it the Heros nexus, and so the Monsters win!");
+            return true;
+        }
         return false;
     }
 }

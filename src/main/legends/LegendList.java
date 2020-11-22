@@ -1,19 +1,18 @@
 package main.legends;
 
 import main.attributes.*;
+import main.market_and_gear.Armor;
+import main.market_and_gear.MarketInventory;
+import main.market_and_gear.Weapon;
 import main.utils.Coffer;
 import main.utils.GetUserListNumericalInput;
-import main.utils.GetUserNumericInput;
 import main.utils.Output;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -33,6 +32,7 @@ public class LegendList {
     private static LegendList instance = null;
     private final List<Legend> legends;
     private final List<Hero> chosenHeroes;
+    private final List<Monster> activeMonsters;
 
     /**
      * @return the static instance of this class
@@ -60,9 +60,9 @@ public class LegendList {
         //Collections.shuffle(legends); // so we don't have the same order every time
         List<Hero> allHeroes = getHeroes();
         this.chosenHeroes = chooseHeroes(allHeroes);
-        /**Random random = new Random();
-         int numHeroes = random.nextInt(3) + 1;
-         this.chosenHeroes = allHeroes.subList(0, numHeroes);**/
+        this.activeMonsters = new ArrayList<>();
+        spawnNewMonsters();
+        equipHeroesInitially();
     }
 
     /**
@@ -92,6 +92,85 @@ public class LegendList {
             heroNum++;
         }
         return heroChosen;
+    }
+
+    /**
+     * Equips the initially chosen Heroes with the cheapest Weapons
+     */
+    private void equipHeroesInitially() {
+        Weapon weapon = MarketInventory.getInstance().getCheapestWeapon();
+        Armor armor = MarketInventory.getInstance().getCheapestArmor();
+
+        for(Hero hero : getChosenHeroes()) {
+            hero.getGearItemList().addGearItem(weapon);
+            hero.getGearItemList().addGearItem(armor);
+            hero.getActiveGearItems().activateWeapon(weapon);
+            hero.getActiveGearItems().putOnArmor(armor);
+        }
+    }
+
+    /**
+     * "Spawns" new monsters, meaning that it demarcates a certain number
+     * of Monsters as being initially active.
+     * @return List of Monsters initially active
+     */
+    public List<Monster> spawnNewMonsters() {
+        // Find the max level
+        getChosenHeroes().sort(new HigherLevelComparator());
+        Level max = getChosenHeroes().get(0).getLevel();
+
+        // Filter out Monsters that have a Level that is too high
+        Stream<Monster> monsterStream = getMonsters().stream()
+                .filter(monster -> monster.getLevel().isLessThanOrEqual(max));
+
+        List<Monster> output = monsterStream.collect(Collectors.toList());
+        activeMonsters.addAll(output.subList(0, getChosenHeroes().size()));
+        return activeMonsters;
+    }
+
+    /**
+     *
+     * @return the active Monsters currently in the game
+     */
+    public List<Monster> getActiveMonsters() {
+        return activeMonsters;
+    }
+
+    /**
+     * Adds a new monster to the active list
+     */
+    public Monster spawnNewMonster() {
+        List<Monster> monsters = getMonsters();
+
+        // First, identify all possible Monsters
+        List<Monster> possibleMonsters = new ArrayList<>();
+        for(Monster monster : monsters) {
+            if(!activeMonsters.contains(monster)) {
+                possibleMonsters.add(monster);
+            }
+        }
+
+        // Now, choose one with the lowest level: note that we aren't sorting, so that
+        // we avoid concurrent modification exceptions with iterators - there are iterators
+        // outside this class that point to lists here.
+        // (I realize that this is not ideal. It would be better to have separate copies, and
+        // probably a separate class for tracking "active" Heroes and Monsters. However, that
+        // is a refactoring for some future time)
+        Monster spawned = null;
+        for(Monster monster : possibleMonsters) {
+            if(spawned == null) {
+                spawned = monster;
+            }
+            if(monster.getLevel().compareTo(spawned.getLevel()) < 0) {
+                spawned = monster;
+            }
+        }
+
+        if(spawned != null) {
+            activeMonsters.add(spawned);
+        }
+
+        return spawned;
     }
 
     /**
