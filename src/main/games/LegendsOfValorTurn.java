@@ -34,7 +34,6 @@ public class LegendsOfValorTurn implements TurnExecutor {
     private final ListIterator<Hero> heroIterator;
     private final ListIterator<Monster> monsterIterator;
     private boolean finished;
-    private FightMove fightMove;
 
     /**
      * Standard constructor
@@ -129,7 +128,7 @@ public class LegendsOfValorTurn implements TurnExecutor {
      * Heroes are respawned in their Nexus as soon as they faint, and hence
      * there is not actually a possibility that there may be no Heroes on the board.
      */
-    private void setupLaterTurns() throws InvalidNextTurnException {
+    private void setupLaterTurns() {
         // Not the first turn. Check to see if a Hero or a Monster went previously.
         if(monsterShouldGoNext()) {
             monsterGoesNext();
@@ -151,7 +150,7 @@ public class LegendsOfValorTurn implements TurnExecutor {
      * supposed to go next. As noted in the above function, there is
      * a possible scenario where there are actually no living Monsters.
      */
-    private void monsterGoesNext() throws InvalidNextTurnException {
+    private void monsterGoesNext() {
         boolean found = false;
         while(monsterIterator.hasNext() && !found) {
             Monster monster = monsterIterator.next();
@@ -171,7 +170,7 @@ public class LegendsOfValorTurn implements TurnExecutor {
      * Private helper function which handles the situation where a Hero is
      * supposed to go next.
      */
-    private void heroGoesNext() throws InvalidNextTurnException {
+    private void heroGoesNext() {
         boolean found = false;
         while(heroIterator.hasNext() && !found) {
             Hero hero = heroIterator.next();
@@ -269,8 +268,6 @@ public class LegendsOfValorTurn implements TurnExecutor {
         }
     }
 
-
-
     /**
      * Helper function which walks a user through the process of attacking a Monster
      * as their turn.
@@ -286,7 +283,7 @@ public class LegendsOfValorTurn implements TurnExecutor {
 
         // The user does not actually have to attack this Monster. They can choose
         // to cast a spell or a Potion instead
-        fightMove = new GetUserFightMove((Hero)current, Collections.singletonList(toAttack)).run();
+        FightMove fightMove = new GetUserFightMove((Hero) current, Collections.singletonList(toAttack)).run();
         try {
             fightMove.execute();
         } catch (InvalidFightMoveException e) {
@@ -302,7 +299,6 @@ public class LegendsOfValorTurn implements TurnExecutor {
         boolean enteredLegalMove = false;
         Hero hero = (Hero)current;
         while(!enteredLegalMove) {
-            // TODO: add switch armor and weapon as option for Turn
             UserCommand command = new GetUserCommand().run();
             switch (command) {
                 case UP:
