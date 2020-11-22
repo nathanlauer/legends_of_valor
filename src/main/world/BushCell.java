@@ -56,7 +56,8 @@ public class BushCell extends Cell{
 	@Override
 	public void exit(List<Hero> heroes) {
 		for(Hero hero: heroes) {
-            hero.getDexterity().decreaseAbilityByPercentage(10);
+			double originalVal = hero.getDexterity().getAbilityValue()/1.1;
+            hero.getDexterity().setAbilityValue(originalVal);
 		}
 	}
 }

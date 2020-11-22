@@ -56,7 +56,8 @@ public class CaveCell extends Cell{
 	@Override
 	public void exit(List<Hero> heroes) {
 		for(Hero hero: heroes) {
-            hero.getAgility().decreaseAbilityByPercentage(10);
+			double originalVal = hero.getAgility().getAbilityValue()/1.1;
+            hero.getAgility().setAbilityValue(originalVal);
     	}
 	}
 }
