@@ -109,6 +109,7 @@ public class LegendsOfValorRound implements RoundExecutor {
         processSurvivingHeroes();
         respawnFaintedHeroes();
         spawnMonstersIfNecessary();
+        removeDeadMonsters();
     }
 
     /**
@@ -150,6 +151,19 @@ public class LegendsOfValorRound implements RoundExecutor {
             if(hero.hasFainted()) {
                 System.out.println(hero.getName() + " has fainted, and will be respawned in their Nexus.");
                 world.respawnHero(hero);
+            }
+        }
+    }
+
+    /**
+     * Removes any dead Monsters
+     */
+    private void removeDeadMonsters() {
+        for(Monster monster : monsters) {
+            if(!monster.isAlive()) {
+                LegendList.getInstance().removeMonsterFromActive(monster);
+                ValorWorld world = (ValorWorld)Runner.getInstance().getWorld();
+                world.removeDeadMonster(monster);
             }
         }
     }

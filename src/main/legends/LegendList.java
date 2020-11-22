@@ -132,6 +132,14 @@ public class LegendList {
     }
 
     /**
+     * Removes the passed in Monster from the active list
+     * @param monster the Monster in question
+     */
+    public void removeMonsterFromActive(Monster monster) {
+        this.activeMonsters.remove(monster);
+    }
+
+    /**
      * print out the initial stats of the chosen heroes.
      */
     public void printChosenHeroes() {

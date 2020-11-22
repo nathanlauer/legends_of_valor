@@ -495,6 +495,14 @@ public class ValorWorld extends World {
         lanesInsertedMonster++;
     }
 
+    /**
+     * Removes a dead monster
+     * @param monster the dead Monster
+     */
+    public void removeDeadMonster(Monster monster) {
+        monsterPositions.remove(monster);
+    }
+
 
     /**
      * Gets the first empty monster nexus cell in a specified column
