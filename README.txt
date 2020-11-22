@@ -1,6 +1,6 @@
 Legends of Valor!
 
-Author: Sandra Zhen, Ling Xie, Nathan Lauer
+Author: Sandra Zhen, Lingyan Xie, Nathan Lauer
 
 Please feel free to ask me any questions!
 
@@ -175,17 +175,25 @@ for the user to enter Q/q or I/i at *any* point in the game! No matter what else
 those commands are always available.
 
 7) World
-The world uses the Factory pattern to be constructed, and right now I only provided a simple random
-builder that follows the general outlines of the instructions. However, the architecture allows 
-for other types of Worlds to be easily defined.
+The world uses the Factory pattern to be constructed, and we provide a factory ValorWorldBuilder
+to contstruct the actual world
 
 Every world is composed of a list of Cells, and Cells are instances of concrete subclasses which 
-can be Common, NonAccessible, and Market Cells.
+can be Common, NonAccessible, and Market Cells, as well as the special cells which increase
+Heroes abilities. Each of these cells implement enter() and exit(), which perform the requisite
+actions upon a Hero entering a cell, or leaving a cell, respectively.
 
-We also provide a WorldInteraction class which handles the process of allowing a user to move
-throughout the world.
-
-Finally, I provided some color when drawing the world, which should hopefully make it a bit easier
+Finally, we provided some color when drawing the world, which should hopefully make it a bit easier
 to see the board and what is going on.
+
+Moves:
+======
+For teleport(): 
+A hero can only teleport to a different lane. When a hero teleports to a new lane, they will be set to an already-explored cell that is closest to Monster Nexus. If the cell has a hero occupied already, set the hero to its neighboring hero-free cell(left/right/back). However, if the cell has a monster behind, teleport to the farthest monster cell. If the monster cell has a another hero occupied already, the hero will be set to its neighboring hero-free cell(back).
+
+A hero can only teleport to a different lane once. If they would like to teleport to a new lane again, they must teleport back to their initial departure cell. However, if the cell has another hero occupied, they cannot teleport back. They can teleport back to their departure cell later if the hero occupied the cell leaves. Also, if the initial departure cell is now behind monster, the hero will be teleported back to the same cell of the farthest(to Monster Nexus) monster. 
+
+For back():
+A hero can always go back to their specific Nexus, unless it is occupied by another hero.
 
 
